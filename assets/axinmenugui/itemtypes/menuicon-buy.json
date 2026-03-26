@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-buy",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-buy"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

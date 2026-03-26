@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblyName>AxinMenuGUI</AssemblyName>
+    <RootNamespace>AxinMenuGUI</RootNamespace>
+    <Optimize>true</Optimize>
+    <!-- Suprimir los warnings MSB3277 de conflicto de versiones (esperados al usar DLLs de VS) -->
+    <MSBuildWarningsAsErrors />
+    <NoWarn>MSB3277</NoWarn>
+  </PropertyGroup>
+
+  <!-- Ruta a VintageStory — usa variable de entorno VINTAGE_STORY -->
+  <PropertyGroup>
+    <GamePath>$(VINTAGE_STORY)</GamePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- API principal de VintageStory -->
+    <Reference Include="VintagestoryAPI">
+      <HintPath>$(GamePath)\VintagestoryAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Newtonsoft.Json viene incluido con VintageStory -->
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(GamePath)\Lib\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Protobuf-net — usado por VS para serializar paquetes de red -->
+    <Reference Include="protobuf-net">
+      <HintPath>$(GamePath)\Lib\protobuf-net.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+
+  <!-- Menús de ejemplo embebidos en el DLL — se extraen al disco si no existen -->
+  <ItemGroup>
+    <EmbeddedResource Include="DefaultMenus\ejemplo.json">
+      <LogicalName>AxinMenuGUI.DefaultMenus.ejemplo.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefaultMenus\ejemplo_tienda.json">
+      <LogicalName>AxinMenuGUI.DefaultMenus.ejemplo_tienda.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefaultMenus\ejemplo_admin.json">
+      <LogicalName>AxinMenuGUI.DefaultMenus.ejemplo_admin.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

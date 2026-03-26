@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-coin",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-coin"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

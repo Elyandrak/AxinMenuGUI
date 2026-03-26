@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-info",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-info"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-mail",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-mail"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

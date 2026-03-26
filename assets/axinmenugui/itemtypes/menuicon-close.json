@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-close",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-close"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-circle-gold",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-circle-gold"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

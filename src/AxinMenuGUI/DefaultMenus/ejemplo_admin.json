@@ -1,0 +1,156 @@
+{
+  "id": "ejemplo_admin",
+  "title": "Panel de Administración",
+  "rows": 3,
+  "commandAlias": "",
+  "commandAliasTarget": "DISABLED",
+  "permission": "controlserver",
+  "openTriggers": [],
+  "scenes": {
+
+    "0": {
+      "delay": 0,
+      "items": {
+
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-crown",
+          "amount": 1,
+          "name": "<font color='gold'>Panel de Administración</font>",
+          "lore": [
+            "Acceso restringido — solo admins",
+            "permission: controlserver aplicado al menú completo"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>[Admin]</font> Bienvenido al panel, <font color='red'>{player}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "reload_menus": {
+          "slot": 9,
+          "item": "axinmenugui:menuicon-refresh",
+          "amount": 1,
+          "name": "Recargar menús",
+          "lore": [
+            "Ejecuta /amenu reload",
+            "Recarga todos los JSONs sin reiniciar el servidor"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "consoleCommand",
+              "clickType": "ANY",
+              "commands": ["/amenu reload"]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Menús recargados correctamente</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "list_menus": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "Listar menús",
+          "lore": [
+            "Ejecuta /amenu list",
+            "Ver todos los menús activos en el servidor"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": ["/amenu list"]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "info_ejemplo": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-info",
+          "amount": 1,
+          "name": "Info menú 'ejemplo'",
+          "lore": [
+            "Ejecuta /amenu info ejemplo",
+            "Ver detalles del menú principal de ejemplo"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": ["/amenu info ejemplo"]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "abrir_a_mi": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-menu",
+          "amount": 1,
+          "name": "Abrir menú principal",
+          "lore": [
+            "Ejecuta /amenu open ejemplo",
+            "Abre el menú principal para ti mismo"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": ["/amenu open ejemplo"]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "volver": {
+          "slot": 16,
+          "item": "axinmenugui:menuicon-back",
+          "amount": 1,
+          "name": "← Volver",
+          "lore": ["Vuelve al menú anterior"],
+          "clickEvents": {
+            "back": {
+              "type": "back",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "cerrar": {
+          "slot": 17,
+          "item": "axinmenugui:menuicon-close",
+          "amount": 1,
+          "name": "<font color='red'>Cerrar</font>",
+          "lore": ["Cierra el menú"],
+          "clickEvents": {
+            "close": {
+              "type": "closeGui",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+
+      }
+    }
+
+  }
+}

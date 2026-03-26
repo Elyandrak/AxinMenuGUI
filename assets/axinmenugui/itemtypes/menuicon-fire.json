@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-fire",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-fire"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

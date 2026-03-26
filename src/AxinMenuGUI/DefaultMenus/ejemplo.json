@@ -1,0 +1,294 @@
+{
+  "id": "ejemplo",
+  "title": "AxinMenuGUI — Menú de Ejemplo",
+  "rows": 3,
+  "commandAlias": "menu",
+  "commandAliasTarget": "OPTIONAL",
+  "permission": "",
+  "openTriggers": [],
+  "scenes": {
+
+    "0": {
+      "delay": 0,
+      "items": {
+
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gold'>AxinMenuGUI</font>",
+          "lore": [
+            "Menú de ejemplo del mod",
+            "Haz clic para ver tus datos",
+            "Navega con las flechas"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>[AxinMenuGUI]</font> Hola <font color='cyan'>{player}</font> — estás en <font color='burlywood'>{pos}</font> — modo: <font color='lime'>{gamemode}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "info_menus": {
+          "slot": 9,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "Listar menús cargados",
+          "lore": [
+            "Ejecuta /amenu list",
+            "Muestra todos los menús disponibles en el servidor"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": ["/amenu list"]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "info_este": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-info",
+          "amount": 1,
+          "name": "Info de este menú",
+          "lore": [
+            "Ejecuta /amenu info ejemplo",
+            "Muestra título, filas, alias y escenas"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": ["/amenu info ejemplo"]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "abrir_tienda": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-shop",
+          "amount": 1,
+          "name": "<font color='gold'>Tienda de ejemplo</font>",
+          "lore": [
+            "Abre el menú de tienda",
+            "Prueba de navegación entre menús"
+          ],
+          "clickEvents": {
+            "open": {
+              "type": "openGui",
+              "clickType": "ANY",
+              "guiId": "ejemplo_tienda"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "panel_admin": {
+          "slot": 16,
+          "item": "axinmenugui:menuicon-shield-role",
+          "amount": 1,
+          "name": "<font color='red'>Panel Admin</font>",
+          "lore": [
+            "Solo accesible para administradores",
+            "Los jugadores normales verán el mensaje de bloqueo"
+          ],
+          "clickEvents": {
+            "open": {
+              "type": "openGui",
+              "clickType": "ANY",
+              "guiId": "ejemplo_admin"
+            }
+          },
+          "conditions": {
+            "esadmin": {
+              "type": "hasPrivilege",
+              "privilege": "controlserver",
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Solo los administradores pueden acceder al panel de admin.</font>"
+        },
+
+        "cerrar": {
+          "slot": 17,
+          "item": "axinmenugui:menuicon-close",
+          "amount": 1,
+          "name": "<font color='red'>Cerrar</font>",
+          "lore": ["Cierra el menú"],
+          "clickEvents": {
+            "close": {
+              "type": "closeGui",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "Página 2 →",
+          "lore": ["Información de tu personaje"],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+
+      }
+    },
+
+    "1": {
+      "delay": 0,
+      "items": {
+
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-player",
+          "amount": 1,
+          "name": "<font color='gold'>Página 2 — Sobre ti</font>",
+          "lore": ["Información de tu personaje"],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>[AxinMenuGUI]</font> Jugador: {player} | UID: {uid}"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "mi_nombre": {
+          "slot": 9,
+          "item": "game:feather",
+          "amount": 1,
+          "name": "Tu nombre: {player}",
+          "lore": [
+            "El token {player} funciona también en el nombre del botón",
+            "Clic para ver tu nombre en el chat"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Tu nombre es: <font color='cyan'>{player}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "mi_pos": {
+          "slot": 10,
+          "item": "game:survivalpack",
+          "amount": 1,
+          "name": "Tu posición",
+          "lore": [
+            "Muestra tus coordenadas actuales",
+            "Token: {pos}"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Estás en: <font color='burlywood'>{pos}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "mi_modo": {
+          "slot": 11,
+          "item": "game:gem-diamond-rough-low",
+          "amount": 1,
+          "name": "Modo de juego",
+          "lore": [
+            "Muestra tu modo de juego actual",
+            "Token: {gamemode}"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Modo de juego: <font color='lime'>{gamemode}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "mi_uid": {
+          "slot": 12,
+          "item": "game:key",
+          "amount": 1,
+          "name": "Tu UID",
+          "lore": [
+            "Muestra tu identificador único de jugador",
+            "Token: {uid}"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Tu UID: <font color='gray'>{uid}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "cerrar": {
+          "slot": 17,
+          "item": "axinmenugui:menuicon-close",
+          "amount": 1,
+          "name": "<font color='red'>Cerrar</font>",
+          "lore": ["Cierra el menú"],
+          "clickEvents": {
+            "close": {
+              "type": "closeGui",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← Página 1",
+          "lore": ["Volver al inicio"],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+
+      }
+    }
+
+  }
+}

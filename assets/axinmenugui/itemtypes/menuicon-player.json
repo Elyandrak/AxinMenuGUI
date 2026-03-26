@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-player",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-player"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

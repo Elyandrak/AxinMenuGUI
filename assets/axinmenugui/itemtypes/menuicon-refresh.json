@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-refresh",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-refresh"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

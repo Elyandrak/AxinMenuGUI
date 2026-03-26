@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-trophy",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-trophy"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

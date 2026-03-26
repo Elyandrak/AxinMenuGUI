@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-minus",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-minus"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

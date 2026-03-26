@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-shield-role",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-shield-role"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

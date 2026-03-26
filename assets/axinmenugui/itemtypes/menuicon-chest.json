@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-chest",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-chest"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

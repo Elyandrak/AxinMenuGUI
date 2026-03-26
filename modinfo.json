@@ -1,0 +1,12 @@
+{
+  "modid": "axinmenugui",
+  "name": "AxinMenuGUI",
+  "description": "Sistema de menús GUI 100% configurables por JSON para servidores VintageStory. Inspirado en GUIPlus (Minecraft). Parte del ecosistema AXIN.",
+  "authors": ["Hector (elYandrack)"],
+  "version": "0.5.4",
+  "type": "code",
+  "side": "Universal",
+  "dependencies": {
+    "game": "1.21.6"
+  }
+}

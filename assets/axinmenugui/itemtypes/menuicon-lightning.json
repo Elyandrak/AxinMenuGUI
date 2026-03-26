@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-lightning",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-lightning"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

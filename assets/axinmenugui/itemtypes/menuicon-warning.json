@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-warning",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-warning"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

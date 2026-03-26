@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-unlock",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-unlock"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}
