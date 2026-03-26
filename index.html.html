@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AxinMenuGUI — Documentación v0.2.0</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+:root {
+  --bg:        #0f0e0c;
+  --bg2:       #161410;
+  --bg3:       #1e1b16;
+  --bg4:       #252118;
+  --border:    #2e2a20;
+  --border2:   #3a3528;
+  --gold:      #c9a84c;
+  --gold2:     #e8c96a;
+  --gold3:     #f5e199;
+  --amber:     #d47c2a;
+  --stone:     #8a7f6a;
+  --stone2:    #b5a98a;
+  --text:      #e8e0cc;
+  --text2:     #b5a98a;
+  --text3:     #7a7060;
+  --green:     #6aab6a;
+  --red:       #c96a6a;
+  --blue:      #6a9ec9;
+  --purple:    #9a6ac9;
+  --sidebar-w: 260px;
+  --toc-w:     220px;
+  --header-h:  52px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.7;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════ HEADER ═══════════════════════ */
+#header {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px;
+  z-index: 100;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.logo-icon {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.logo-text {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  color: var(--gold2);
+  letter-spacing: 0.03em;
+}
+.logo-sub {
+  font-size: 11px;
+  color: var(--stone);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: -2px;
+}
+.header-search {
+  flex: 1; max-width: 420px;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: text;
+}
+.header-search input {
+  background: none; border: none; outline: none;
+  color: var(--text2); font-family: 'Crimson Pro', serif; font-size: 15px;
+  width: 100%;
+}
+.header-search input::placeholder { color: var(--text3); }
+.search-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  border: 1px solid var(--border2);
+  border-radius: 3px; padding: 1px 5px;
+  flex-shrink: 0;
+}
+.header-badge {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--stone);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 3px 8px;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════ LAYOUT ═══════════════════════ */
+#layout {
+  display: flex;
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ═══════════════════════ SIDEBAR ═══════════════════════ */
+#sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  position: fixed;
+  top: var(--header-h); bottom: 0; left: 0;
+  overflow-y: auto;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 20px 0 40px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.nav-section {
+  margin-bottom: 6px;
+}
+.nav-section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--stone);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 20px 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-section-title::before {
+  content: '';
+  width: 12px; height: 1px;
+  background: var(--border2);
+}
+.nav-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 20px;
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 14.5px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.nav-link:hover { color: var(--text); background: var(--bg3); }
+.nav-link.active {
+  color: var(--gold2);
+  background: rgba(201,168,76,0.08);
+  border-left-color: var(--gold);
+}
+.nav-link .nav-icon { font-size: 13px; flex-shrink: 0; width: 16px; text-align: center; }
+.nav-home {
+  padding: 8px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.nav-home a {
+  display: flex; align-items: center; gap: 8px;
+  color: var(--text2); text-decoration: none;
+  font-size: 14.5px;
+  padding: 6px 0;
+}
+.nav-home a:hover { color: var(--gold2); }
+
+/* ═══════════════════════ CONTENT ═══════════════════════ */
+#content-wrap {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+#content {
+  flex: 1;
+  max-width: 820px;
+  padding: 48px 48px 80px;
+  min-width: 0;
+}
+
+/* ── Modo generador: header y TOC ocultos, iframe ocupa todo ── */
+body.gen-mode #header { display: none; }
+body.gen-mode #toc    { display: none; }
+body.gen-mode #layout { margin-top: 0; min-height: 100vh; }
+body.gen-mode #sidebar { top: 0; }
+body.gen-mode #content-wrap { align-items: stretch; }
+body.gen-mode #content { max-width: 100%; padding: 0; display: flex; flex-direction: column; }
+body.gen-mode #page-generator { flex: 1; display: flex !important; flex-direction: column; }
+body.gen-mode #gen-frame { flex: 1; width: 100%; border: none; display: block; }
+
+/* ═══════════════════════ TOC (right) ═══════════════════════ */
+#toc {
+  width: var(--toc-w);
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+  align-self: flex-start;
+  padding: 0 0 0 24px;
+  margin-top: 48px;
+}
+.toc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--stone);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.toc-item {
+  display: block;
+  font-size: 13px; color: var(--text3);
+  text-decoration: none;
+  padding: 3px 0 3px 10px;
+  border-left: 1px solid var(--border);
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+.toc-item:hover { color: var(--gold2); border-left-color: var(--gold); }
+.toc-item.active { color: var(--gold2); border-left-color: var(--gold); }
+
+/* ═══════════════════════ PAGES ═══════════════════════ */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ═══════════════════════ PAGE ELEMENTS ═══════════════════════ */
+.breadcrumb {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--stone);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 6px;
+}
+.breadcrumb .sep { color: var(--border2); }
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 32px; font-weight: 700;
+  color: var(--gold2);
+  line-height: 1.2;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+h1 .h1-icon { font-size: 28px; }
+.page-subtitle {
+  font-style: italic;
+  color: var(--stone2);
+  font-size: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+h3 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 17px; font-weight: 600;
+  color: var(--text);
+  margin: 28px 0 12px;
+}
+h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 600;
+  color: var(--gold);
+  margin: 20px 0 8px;
+  letter-spacing: 0.04em;
+}
+
+p { margin-bottom: 16px; color: var(--text); }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--gold2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+ul, ol { margin: 0 0 16px 20px; }
+li { margin-bottom: 4px; }
+
+strong { color: var(--text); font-weight: 600; }
+em { color: var(--stone2); }
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  color: var(--gold3);
+}
+
+pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  position: relative;
+}
+pre code {
+  background: none; border: none; padding: 0;
+  font-size: 13px; color: var(--text2);
+  line-height: 1.6;
+}
+.pre-label {
+  position: absolute; top: 8px; right: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text3);
+  letter-spacing: 0.08em;
+}
+
+/* Syntax highlight classes */
+.kw  { color: #c97adb; }
+.str { color: #7ac99a; }
+.num { color: #c9a84c; }
+.cmt { color: var(--stone); font-style: italic; }
+.key { color: #7ab5c9; }
+.val { color: #c9a06a; }
+.fn  { color: #c9c97a; }
+
+/* Callouts */
+.callout {
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  display: flex; gap: 12px;
+  border-left: 3px solid;
+}
+.callout-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+.callout-body { flex: 1; }
+.callout-body p { margin-bottom: 8px; }
+.callout-body p:last-child { margin-bottom: 0; }
+.callout-body strong { display: block; margin-bottom: 4px; }
+
+.callout.tip    { background: rgba(106,171,106,0.08); border-color: var(--green); }
+.callout.warn   { background: rgba(212,124,42,0.1);  border-color: var(--amber); }
+.callout.info   { background: rgba(106,158,201,0.08); border-color: var(--blue); }
+.callout.danger { background: rgba(201,106,106,0.08); border-color: var(--red); }
+
+/* Tables */
+.table-wrap { overflow-x: auto; margin: 16px 0 24px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+th {
+  background: var(--bg3);
+  color: var(--stone2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--border2);
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+td code { font-size: 12px; }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  padding: 2px 7px; border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+.badge-v1  { background: rgba(106,171,106,0.15); color: var(--green); border: 1px solid rgba(106,171,106,0.3); }
+.badge-v2  { background: rgba(106,158,201,0.15); color: var(--blue);  border: 1px solid rgba(106,158,201,0.3); }
+.badge-v3  { background: rgba(154,106,201,0.15); color: var(--purple); border: 1px solid rgba(154,106,201,0.3); }
+.badge-wip { background: rgba(212,124,42,0.15);  color: var(--amber); border: 1px solid rgba(212,124,42,0.3); }
+
+/* Feature cards grid */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+.feat-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.feat-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.feat-card-icon { font-size: 22px; margin-bottom: 10px; }
+.feat-card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; color: var(--gold2);
+  margin-bottom: 6px;
+}
+.feat-card-desc { font-size: 13.5px; color: var(--text2); line-height: 1.5; }
+
+/* Divider */
+hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Phase timeline */
+.phase-list { margin: 0; }
+.phase-item {
+  display: flex; gap: 16px;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  align-items: flex-start;
+}
+.phase-num {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; color: var(--bg);
+}
+.phase-body { flex: 1; }
+.phase-title { font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.phase-desc { font-size: 14px; color: var(--text2); }
+
+/* Slot grid visual */
+.slot-grid {
+  display: inline-grid;
+  gap: 3px;
+  background: var(--bg4);
+  border: 2px solid var(--border2);
+  border-radius: 6px;
+  padding: 8px;
+  margin: 12px 0;
+}
+.slot {
+  width: 36px; height: 36px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--text3);
+}
+.slot.highlight { background: rgba(201,168,76,0.15); border-color: var(--gold); color: var(--gold2); }
+
+/* Nav arrows at bottom */
+.page-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 60px; padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.page-nav-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.page-nav-btn:hover { border-color: var(--gold); color: var(--gold2); background: rgba(201,168,76,0.06); }
+.page-nav-btn .direction { font-size: 11px; color: var(--text3); display: block; }
+.page-nav-btn .label { font-weight: 600; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1100px) { #toc { display: none; } }
+@media (max-width: 768px) {
+  #sidebar { transform: translateX(-100%); transition: transform 0.3s; z-index: 90; }
+  #sidebar.open { transform: translateX(0); }
+  #content-wrap { margin-left: 0; }
+  #content { padding: 32px 20px 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <a class="logo" href="#" onclick="showPage('home')">
+    <div class="logo-icon">⚔</div>
+    <div>
+      <div class="logo-text">AxinMenuGUI</div>
+      <div class="logo-sub">for VintageStory</div>
+    </div>
+  </a>
+  <div class="header-search">
+    <span style="color:var(--stone);font-size:13px">🔍</span>
+    <input type="text" placeholder="Buscar en la documentación..." id="searchInput" onkeyup="handleSearch(event)">
+    <span class="search-hint">Ctrl K</span>
+  </div>
+  <div class="header-badge">M=4 · v0.1.0.5</div>
+</header>
+
+<!-- LAYOUT -->
+<div id="layout">
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="nav-home">
+    <a href="#" onclick="showPage('home')"><span>🏠</span> Inicio</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">⚙ Comenzar</div>
+    <a class="nav-link" onclick="showPage('quickstart')"><span class="nav-icon">🚀</span> Inicio rápido</a>
+    <a class="nav-link" onclick="showPage('commands')"><span class="nav-icon">📋</span> Comandos y permisos</a>
+    <a class="nav-link" onclick="showPage('config')"><span class="nav-icon">⚙</span> Configuración</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">🎨 Crear GUIs</div>
+    <a class="nav-link" onclick="showPage('creating')"><span class="nav-icon">🖼</span> Estructura del GUI</a>
+    <a class="nav-link" onclick="showPage('scenes')"><span class="nav-icon">📄</span> Escenas (páginas)</a>
+    <a class="nav-link" onclick="showPage('clickevents')"><span class="nav-icon">🖱</span> Click Events</a>
+    <a class="nav-link" onclick="showPage('conditions')"><span class="nav-icon">✅</span> Condiciones</a>
+    <a class="nav-link" onclick="showPage('generator')"><span class="nav-icon">⚡</span> Generador Visual</a>
+    <a class="nav-link" onclick="showPage('modicons')"><span class="nav-icon">🎨</span> Iconos del mod</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">💬 Interactivo</div>
+    <a class="nav-link" onclick="showPage('chatfetcher')"><span class="nav-icon">💬</span> Chat Fetcher</a>
+    <a class="nav-link" onclick="showPage('playerdata')"><span class="nav-icon">💾</span> Player Data</a>
+    <a class="nav-link" onclick="showPage('tokens')"><span class="nav-icon">🔗</span> Tokens / Placeholders</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">🔌 Triggers</div>
+    <a class="nav-link" onclick="showPage('triggers')"><span class="nav-icon">⚡</span> Modos de apertura</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">📖 Recursos</div>
+    <a class="nav-link" onclick="showPage('examples')"><span class="nav-icon">📦</span> Ejemplos completos</a>
+    <a class="nav-link" onclick="showPage('roadmap')"><span class="nav-icon">🗺</span> Roadmap</a>
+    <a class="nav-link" onclick="showPage('vs-diff')"><span class="nav-icon">⚔</span> vs GUIPlus (MC)</a>
+  </div>
+</nav>
+
+<!-- CONTENT WRAP -->
+<div id="content-wrap">
+<main id="content">
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div class="page active" id="page-home">
+  <div class="breadcrumb">AxinMenuGUI</div>
+  <h1><span class="h1-icon">⚔</span> AxinMenuGUI</h1>
+  <p class="page-subtitle">Crea menús GUI completamente configurables para tu servidor VintageStory — sin escribir código.</p>
+
+  <p>AxinMenuGUI es un mod de menús interactivos para <strong>VintageStory</strong> que permite a los administradores construir menús complejos y multipágina mediante ficheros <strong>JSON</strong>. Sin programar, sin reiniciar el servidor.</p>
+  <p>Inspirado en <em>GUIPlus</em> (Minecraft/Spigot), diseñado desde cero para la API de VintageStory y la metodología <strong>AXIN</strong>.</p>
+
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-card-icon">🖼</div>
+      <div class="feat-card-title">100% JSON</div>
+      <div class="feat-card-desc">Crea y edita menús con ficheros JSON. Recarga en caliente sin reiniciar.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">🖱</div>
+      <div class="feat-card-title">16 Click Events</div>
+      <div class="feat-card-desc">Mensajes, comandos, dar/quitar ítems, teletransporte, navegar entre escenas y más.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">✅</div>
+      <div class="feat-card-title">Condiciones</div>
+      <div class="feat-card-desc">Muestra u oculta botones según permisos, ítems en inventario, cooldowns y variables.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">📄</div>
+      <div class="feat-card-title">Multi-escena</div>
+      <div class="feat-card-desc">Menús multipágina con navegación independiente por escena.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">💾</div>
+      <div class="feat-card-title">Player Data</div>
+      <div class="feat-card-desc">Variables por jugador con operaciones matemáticas. Puntos, rangos, contadores.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">⚡</div>
+      <div class="feat-card-title">Múltiples triggers</div>
+      <div class="feat-card-desc">Abre menús por comando, ítem, hotkey, al conectarse, o al entrar en una zona.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">💬</div>
+      <div class="feat-card-title">Chat Fetcher</div>
+      <div class="feat-card-desc">Solicita input al jugador via chat y úsalo en acciones dinámicas.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon">🔗</div>
+      <div class="feat-card-title">Tokens dinámicos</div>
+      <div class="feat-card-desc">Usa <code>{player}</code>, <code>{var:campo}</code> y más en cualquier texto del menú.</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>📋 Requisitos</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Requisito</th><th>Valor</th></tr>
+    <tr><td>VintageStory</td><td>1.21.x+</td></tr>
+    <tr><td>Tipo de mod</td><td>Universal (cliente <strong>y</strong> servidor)</td></tr>
+    <tr><td>Dependencias</td><td>Ninguna (mod standalone)</td></tr>
+    <tr><td>Integración opcional</td><td>AxinClaimsRules (trigger de zona, Fase 3)</td></tr>
+  </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <strong>Distribución al cliente — obligatoria</strong>
+      <p>AxinMenuGUI ejecuta código en el lado del cliente y renderiza GUI. Debe estar instalado en el cliente además del servidor. En VintageStory esto significa publicarlo en ModDB o distribuirlo manualmente — el servidor <em>no</em> lo envía automáticamente.</p>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <div></div>
+    <a class="page-nav-btn" onclick="showPage('quickstart')">
+      <div><span class="direction">Siguiente</span><span class="label">Inicio rápido →</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════ QUICKSTART ═══════════════ -->
+<div class="page" id="page-quickstart">
+  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Inicio rápido</div>
+  <h1><span class="h1-icon">🚀</span> Inicio rápido</h1>
+  <p class="page-subtitle">Instala AxinMenuGUI y crea tu primer menú en minutos.</p>
+
+  <h2>📥 Instalación</h2>
+  <p>Descarga el <code>.zip</code> del mod e instálalo como cualquier mod de VintageStory:</p>
+  <ol>
+    <li>Copia el fichero <code>AxinMenuGUI_vX.Y.Z.zip</code> en la carpeta <code>Mods/</code> del servidor.</li>
+    <li>Reinicia el servidor. El mod generará sus ficheros de configuración.</li>
+    <li>Comprueba en los logs: <code>[AxinMenuGUI] Mod cargado. X menús encontrados.</code></li>
+  </ol>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">El mod es <strong>Universal</strong>: también debe estar presente en el cliente. VintageStory lo descargará automáticamente si está publicado en ModDB.</div>
+  </div>
+
+  <h2>📂 Ficheros generados</h2>
+  <pre><code><span class="cmt"># Estructura de ficheros tras el primer inicio</span>
+ModConfig/AxinMenuGUI/
+├── menus/                 <span class="cmt"># Un fichero .json por menú</span>
+│   └── example.json       <span class="cmt"># Menú de ejemplo generado automáticamente</span>
+└── playerdata/            <span class="cmt"># Variables por jugador (se crea al necesitarse)</span>
+    └── {uid-sanitizado}.json</code></pre>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">No hay fichero <code>Config.json</code> global. Toda la configuración vive en los propios JSON de cada menú dentro de <code>menus/</code>.</div>
+  </div>
+
+  <h2>🎯 Tu primer menú</h2>
+  <p>Crea un fichero <code>ModConfig/AxinMenuGUI/menus/hola.json</code>:</p>
+  <pre><span class="pre-label">hola.json</span><code>{
+  <span class="key">"id"</span>: <span class="str">"hola"</span>,
+  <span class="key">"title"</span>: <span class="str">"Mi primer menú"</span>,
+  <span class="key">"rows"</span>: <span class="num">3</span>,
+  <span class="key">"commandAlias"</span>: <span class="str">"hola"</span>,
+  <span class="key">"scenes"</span>: {
+    <span class="key">"0"</span>: {
+      <span class="key">"items"</span>: {
+        <span class="key">"1"</span>: {
+          <span class="key">"slot"</span>: <span class="num">13</span>,
+          <span class="key">"item"</span>: <span class="str">"game:gem-diamond"</span>,
+          <span class="key">"name"</span>: <span class="str">"Hola, {player}!"</span>,
+          <span class="key">"lore"</span>: [<span class="str">"Haz clic en mí"</span>],
+          <span class="key">"clickEvents"</span>: {
+            <span class="key">"saludo"</span>: {
+              <span class="key">"type"</span>: <span class="str">"message"</span>,
+              <span class="key">"message"</span>: <span class="str">"¡Bienvenido, {player}!"</span>
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+
+  <p>Recarga sin reiniciar:</p>
+  <pre><code><span class="fn">/amenu reload</span></code></pre>
+  <p>Abre el menú:</p>
+  <pre><code><span class="fn">/hola</span>   <span class="cmt"># alias directo</span>
+<span class="fn">/amenu open hola</span>   <span class="cmt"># comando estándar</span></code></pre>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('home')"><div><span class="direction">Anterior</span><span class="label">← Inicio</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Siguiente</span><span class="label">Comandos y permisos →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ COMMANDS ═══════════════ -->
+<div class="page" id="page-commands">
+  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Comandos y permisos</div>
+  <h1><span class="h1-icon">📋</span> Comandos y permisos</h1>
+  <p class="page-subtitle">Todos los comandos disponibles y sus nodos de permiso.</p>
+
+  <h2>📋 Comandos</h2>
+  <p>El comando base es <code>/amenu</code>. Cada menú puede definir un alias propio con el campo <code>"commandAlias"</code> en su JSON.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Comando</th><th>Descripción</th><th>Permiso</th></tr>
+    <tr><td><code>/amenu open &lt;id&gt;</code></td><td>Abre un menú para el propio jugador</td><td>—</td></tr>
+    <tr><td><code>/amenu open &lt;id&gt; &lt;jugador&gt;</code></td><td>Abre un menú para otro jugador</td><td><code>controlserver</code></td></tr>
+    <tr><td><code>/amenu reload</code></td><td>Recarga todos los JSONs sin reiniciar</td><td><code>controlserver</code></td></tr>
+    <tr><td><code>/amenu list</code></td><td>Lista todos los menús cargados</td><td><code>controlserver</code></td></tr>
+    <tr><td><code>/amenu info &lt;id&gt;</code></td><td>Muestra detalles de un menú</td><td><code>controlserver</code></td></tr>
+    <tr><td><code>/&lt;alias&gt;</code></td><td>Atajo directo (definido por menú con <code>commandAlias</code>)</td><td>Permiso del menú</td></tr>
+    <tr><td><code>/&lt;alias&gt; &lt;jugador&gt;</code></td><td>Abre el menú para otro jugador (según <code>commandAliasTarget</code>)</td><td><code>controlserver</code></td></tr>
+  </table>
+  </div>
+
+  <h2>🔑 Permisos</h2>
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">VintageStory no tiene un gestor de permisos externo como LuckPerms. Los privilegios se asignan por rol en el <code>serverconfig.json</code> del servidor. El campo <code>"permission"</code> de un menú comprueba si el jugador tiene ese privilegio via la API nativa <code>player.HasPrivilege()</code>.</div>
+  </div>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Permiso</th><th>Descripción</th></tr>
+    <tr><td><code>controlserver</code></td><td>Privilegio nativo VS requerido para reload, list, info, y abrir menús para otros jugadores</td></tr>
+    <tr><td><em>(por menú)</em></td><td>Permiso definido en el campo <code>"permission"</code> del JSON del menú. Cualquier string de privilegio VS válido — el admin lo asigna al rol en serverconfig.</td></tr>
+  </table>
+  </div>
+
+  <h2>🔐 Permisos por menú</h2>
+  <p>Cada menú puede requerir un privilegio específico. El jugador que no lo tenga no podrá abrir el menú:</p>
+  <pre><span class="pre-label">vipshop.json</span><code>{
+  <span class="key">"id"</span>: <span class="str">"vipshop"</span>,
+  <span class="key">"title"</span>: <span class="str">"Tienda VIP"</span>,
+  <span class="key">"permission"</span>: <span class="str">"axinmenu.vip"</span>,
+  ...
+}</code></pre>
+  <p>Para que funcione, el rol correspondiente en tu <code>serverconfig.json</code> debe incluir <code>"axinmenu.vip"</code> en su lista de <code>Privileges</code>.</p>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('quickstart')"><div><span class="direction">Anterior</span><span class="label">← Inicio rápido</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('config')"><div><span class="direction">Siguiente</span><span class="label">Configuración →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CONFIG ═══════════════ -->
+<div class="page" id="page-config">
+  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Configuración</div>
+  <h1><span class="h1-icon">⚙</span> Configuración</h1>
+  <p class="page-subtitle">AxinMenuGUI no tiene fichero de configuración global. Todo se configura por menú.</p>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <strong>Sin Config.json global</strong>
+      <p>A diferencia de otros sistemas de menús, AxinMenuGUI no usa un fichero de configuración central. Cada menú es autónomo y se configura completamente dentro de su propio <code>.json</code> en <code>ModConfig/AxinMenuGUI/menus/</code>.</p>
+    </div>
+  </div>
+
+  <h2>📂 Dónde va cada cosa</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Elemento</th><th>Ubicación</th></tr>
+    <tr><td>Definición de menús</td><td><code>ModConfig/AxinMenuGUI/menus/*.json</code></td></tr>
+    <tr><td>Variables por jugador</td><td><code>ModConfig/AxinMenuGUI/playerdata/{uid}.json</code> (auto-gestionado)</td></tr>
+    <tr><td>Alias del comando</td><td>Campo <code>"commandAlias"</code> dentro del JSON de cada menú</td></tr>
+    <tr><td>Permiso de acceso</td><td>Campo <code>"permission"</code> dentro del JSON de cada menú</td></tr>
+    <tr><td>Triggers de apertura</td><td>Campo <code>"openTriggers"</code> dentro del JSON de cada menú</td></tr>
+  </table>
+  </div>
+
+  <h2>🔄 Recarga en caliente</h2>
+  <p>Puedes editar cualquier fichero JSON y recargar sin reiniciar el servidor:</p>
+  <pre><code><span class="fn">/amenu reload</span>   <span class="cmt">// Recarga todos los menús desde disco</span></code></pre>
+  <p>Los cambios son inmediatos. No se necesita reiniciar ni desconectar a los jugadores.</p>
+
+  <h2>📝 Formato de nombres de fichero</h2>
+  <p>Los ficheros de menú pueden llamarse con cualquier nombre. El ID del menú se define <em>dentro</em> del JSON con el campo <code>"id"</code>, que es el que se usa en los comandos:</p>
+  <pre><code><span class="cmt">// Fichero: ModConfig/AxinMenuGUI/menus/mi-fichero.json</span>
+{
+  <span class="key">"id"</span>: <span class="str">"mainmenu"</span>,   <span class="cmt">// Este es el ID que usa /amenu open mainmenu</span>
+  ...
+}</code></pre>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Anterior</span><span class="label">← Comandos y permisos</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('creating')"><div><span class="direction">Siguiente</span><span class="label">Estructura del GUI →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CREATING ═══════════════ -->
+<div class="page" id="page-creating">
+  <div class="breadcrumb">🎨 CREAR GUIs <span class="sep">›</span> Estructura del GUI</div>
+  <h1><span class="h1-icon">🖼</span> Estructura del GUI</h1>
+  <p class="page-subtitle">Define menús personalizados mediante ficheros JSON.</p>
+
+  <p>Cada menú es un fichero <code>.json</code> en <code>ModConfig/AxinMenuGUI/menus/</code>. El nombre del fichero es libre; el ID del menú se define dentro.</p>
+
+  <h2>📐 Estructura completa</h2>
+  <p>Esta es la estructura real generada por el mod. Los campos vacíos (<code>""</code>, <code>[]</code>, <code>{}</code>) son opcionales — solo incluye los que necesites.</p>
+  <pre><span class="pre-label">ejemplo.json</span><code>{
+  <span class="key">"id"</span>: <span class="str">"ejemplo"</span>,              <span class="cmt">// ID único del menú (requerido)</span>
+  <span class="key">"title"</span>: <span class="str">"Menú de Ejemplo"</span>,   <span class="cmt">// Título mostrado al jugador</span>
+  <span class="key">"rows"</span>: <span class="num">3</span>,                  <span class="cmt">// Filas del grid (define el tamaño de la ventana)</span>
+  <span class="key">"commandAlias"</span>: <span class="str">"ejemplo"</span>,  <span class="cmt">// /ejemplo → abre este menú</span>
+  <span class="key">"commandAliasTarget"</span>: <span class="str">"OPTIONAL"</span>, <span class="cmt">// OPTIONAL | REQUIRED | DISABLED</span>
+  <span class="key">"permission"</span>: <span class="str">""</span>,           <span class="cmt">// Permiso requerido (vacío = todos)</span>
+  <span class="key">"openTriggers"</span>: [],         <span class="cmt">// Triggers adicionales (ver Triggers)</span>
+  <span class="key">"scenes"</span>: {
+    <span class="key">"0"</span>: {                     <span class="cmt">// Primera escena/página (índice 0)</span>
+      <span class="key">"delay"</span>: <span class="num">0</span>,             <span class="cmt">// Reservado (presente en modelo, no funcional aún)</span>
+      <span class="key">"items"</span>: {
+        <span class="key">"bienvenida"</span>: {       <span class="cmt">// ID del ítem (único dentro de la escena)</span>
+          <span class="key">"slot"</span>: <span class="num">13</span>,          <span class="cmt">// Posición en el grid (0-indexed)</span>
+          <span class="key">"item"</span>: <span class="str">"game:gem-diamond"</span>,
+          <span class="key">"amount"</span>: <span class="num">1</span>,
+          <span class="key">"name"</span>: <span class="str">"Hola, {player}!"</span>,
+          <span class="key">"lore"</span>: [<span class="str">"Línea 1"</span>, <span class="str">"Línea 2"</span>],
+          <span class="key">"clickEvents"</span>: {
+            <span class="key">"saludo"</span>: {
+              <span class="key">"type"</span>: <span class="str">"message"</span>,
+              <span class="key">"clickType"</span>: <span class="str">"ANY"</span>,    <span class="cmt">// LEFT | RIGHT | ANY</span>
+              <span class="key">"delay"</span>: <span class="num">0</span>,            <span class="cmt">// ms antes de ejecutar</span>
+              <span class="key">"message"</span>: <span class="str">"¡Bienvenido, {player}!"</span>,
+              <span class="key">"commands"</span>: [],        <span class="cmt">// para consoleCommand / playerCommand</span>
+              <span class="key">"item"</span>: <span class="str">""</span>,            <span class="cmt">// para giveItem / takeItem</span>
+              <span class="key">"amount"</span>: <span class="num">1</span>,           <span class="cmt">// para giveItem / takeItem</span>
+              <span class="key">"location"</span>: <span class="str">""</span>,        <span class="cmt">// para teleport: "x,y,z"</span>
+              <span class="key">"guiId"</span>: <span class="str">""</span>            <span class="cmt">// para openGui: id del menú destino</span>
+            }
+          },
+          <span class="key">"conditions"</span>: {},       <span class="cmt">// vacío = sin condiciones</span>
+          <span class="key">"conditionFailMessage"</span>: <span class="str">""</span>
+        }
+      }
+    }
+  }
+}</code></pre>
+
+  <h2>🏷 Propiedades del menú</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+    <tr><td><code>id</code></td><td>string</td><td>Identificador único del menú. Se usa en comandos y en <code>openGui</code>. (requerido)</td></tr>
+    <tr><td><code>title</code></td><td>string</td><td>Título visible en la ventana del GUI</td></tr>
+    <tr><td><code>rows</code></td><td>int</td><td>Número de filas del grid (columnas fijas = 9)</td></tr>
+    <tr><td><code>commandAlias</code></td><td>string</td><td>Alias de comando directo: <code>/alias</code> abre este menú</td></tr>
+    <tr><td><code>commandAliasTarget</code></td><td>string</td><td><code>OPTIONAL</code> = acepta jugador opcional · <code>REQUIRED</code> = requiere jugador · <code>DISABLED</code> = sin argumento</td></tr>
+    <tr><td><code>permission</code></td><td>string</td><td>Privilegio VS requerido para abrir el menú. Vacío = acceso libre.</td></tr>
+    <tr><td><code>openTriggers</code></td><td>array</td><td>Triggers adicionales de apertura (ver Triggers). Vacío = solo por comando.</td></tr>
+    <tr><td><code>scenes</code></td><td>map</td><td>Escenas del menú, indexadas por número (<code>"0"</code>, <code>"1"</code>…). Requerido.</td></tr>
+  </table>
+  </div>
+
+  <h2>🏷 Propiedades del ítem</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+    <tr><td><code>slot</code></td><td>int</td><td>Posición en el grid (0 = arriba-izquierda)</td></tr>
+    <tr><td><code>item</code></td><td>string</td><td>Código de ítem VS: <code>game:gem-diamond</code>, <code>game:stone</code>…</td></tr>
+    <tr><td><code>amount</code></td><td>int</td><td>Cantidad (default: 1)</td></tr>
+    <tr><td><code>name</code></td><td>string</td><td>Nombre mostrado. Admite tokens <code>{player}</code> etc.</td></tr>
+    <tr><td><code>lore</code></td><td>string[]</td><td>Líneas de descripción bajo el nombre</td></tr>
+    <tr><td><code>clickEvents</code></td><td>map</td><td>Acciones al hacer clic (ver Click Events)</td></tr>
+    <tr><td><code>conditions</code></td><td>map</td><td>Condiciones de acceso (ver Condiciones)</td></tr>
+    <tr><td><code>hideOnFail</code></td><td>bool</td><td><code>true</code> = ítem invisible si condición falla · <code>false</code> (default) = visible pero clic bloqueado</td></tr>
+    <tr><td><code>conditionFailMessage</code></td><td>string</td><td>Mensaje al jugador si una condición falla (solo si <code>hideOnFail: false</code>)</td></tr>
+  </table>
+  </div>
+
+  <h2>🔢 Numeración de slots</h2>
+  <p>Los slots se numeran de izquierda a derecha, de arriba a abajo, empezando en 0. El número de columnas es siempre <strong>9</strong>. El número de filas lo defines con el campo <code>"rows"</code> del menú (por defecto 3).</p>
+  <p><strong>Grid 3 filas × 9 columnas (27 slots):</strong></p>
+  <div class="slot-grid" style="grid-template-columns:repeat(9,1fr)">
+    <div class="slot">0</div><div class="slot">1</div><div class="slot">2</div><div class="slot">3</div><div class="slot highlight">4</div><div class="slot">5</div><div class="slot">6</div><div class="slot">7</div><div class="slot">8</div>
+    <div class="slot">9</div><div class="slot">10</div><div class="slot">11</div><div class="slot">12</div><div class="slot highlight">13</div><div class="slot">14</div><div class="slot">15</div><div class="slot">16</div><div class="slot">17</div>
+    <div class="slot">18</div><div class="slot">19</div><div class="slot">20</div><div class="slot">21</div><div class="slot highlight">22</div><div class="slot">23</div><div class="slot">24</div><div class="slot">25</div><div class="slot">26</div>
+  </div>
+  <p style="font-size:13px;color:var(--stone2)">Slots destacados = columna central (slot 4, 13, 22). Útil para ítems centrados en menús de 1 o 3 filas.</p>
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">El GUI de VS no es un inventario de cofre como en Minecraft. Es un <code>GuiDialog</code> renderizado con píxeles fijos. Los slots son posiciones lógicas dentro de un grid de 9 columnas — el mod calcula las coordenadas de pantalla automáticamente.</div>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('config')"><div><span class="direction">Anterior</span><span class="label">← Configuración</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('scenes')"><div><span class="direction">Siguiente</span><span class="label">Escenas →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENES ═══════════════ -->
+<div class="page" id="page-scenes">
+  <div class="breadcrumb">🎨 CREAR GUIs <span class="sep">›</span> Escenas (páginas)</div>
+  <h1><span class="h1-icon">📄</span> Escenas</h1>
+  <p class="page-subtitle">Crea menús multipágina con layouts independientes por escena.</p>
+
+  <p>Las <strong>escenas</strong> permiten tener múltiples páginas dentro de un mismo menú. Cada escena tiene su propio layout de ítems y puede navegarse con click events. Los índices empiezan en <code>0</code>.</p>
+
+  <h2>📐 Estructura de escenas</h2>
+  <pre><span class="pre-label">shop.json (2 páginas)</span><code>{
+  <span class="key">"id"</span>: <span class="str">"shop"</span>,
+  <span class="key">"title"</span>: <span class="str">"Tienda — Página {scene}"</span>,
+  <span class="key">"rows"</span>: <span class="num">3</span>,
+  <span class="key">"scenes"</span>: {
+
+    <span class="key">"0"</span>: {                          <span class="cmt">// Página 1 (slots 0-26 en grid 3×9)</span>
+      <span class="key">"items"</span>: {
+        <span class="key">"next"</span>: {
+          <span class="key">"slot"</span>: <span class="num">26</span>,              <span class="cmt">// última celda de la fila 3</span>
+          <span class="key">"item"</span>: <span class="str">"game:arrow-flint"</span>,
+          <span class="key">"name"</span>: <span class="str">"Siguiente >"</span>,
+          <span class="key">"clickEvents"</span>: {
+            <span class="key">"nav"</span>: { <span class="key">"type"</span>: <span class="str">"nextScene"</span> }
+          }
+        }
+      }
+    },
+
+    <span class="key">"1"</span>: {                          <span class="cmt">// Página 2</span>
+      <span class="key">"items"</span>: {
+        <span class="key">"prev"</span>: {
+          <span class="key">"slot"</span>: <span class="num">18</span>,              <span class="cmt">// primera celda de la fila 3</span>
+          <span class="key">"item"</span>: <span class="str">"game:arrow-flint"</span>,
+          <span class="key">"name"</span>: <span class="str">"< Anterior"</span>,
+          <span class="key">"clickEvents"</span>: {
+            <span class="key">"nav"</span>: { <span class="key">"type"</span>: <span class="str">"previousScene"</span> }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+
+  <h2>🏷 Propiedades de escena</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+    <tr><td><code>delay</code></td><td>int (ms)</td><td>Reservado — presente en el modelo. Funcionalidad planificada para fases futuras.</td></tr>
+    <tr><td><code>items</code></td><td>map</td><td>Ítems de esta escena (requerido)</td></tr>
+  </table>
+  </div>
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">Las escenas son páginas independientes del menú. La navegación entre ellas se hace con los click events <code>nextScene</code>, <code>previousScene</code>, <code>openGui</code> y <code>back</code>.</div>
+  </div>
+
+  <h2>🧭 Click Events de navegación</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>type</th><th>Descripción</th></tr>
+    <tr><td><code>nextScene</code></td><td>Avanza a la siguiente escena</td></tr>
+    <tr><td><code>previousScene</code></td><td>Retrocede a la escena anterior</td></tr>
+    <tr><td><code>openGui</code></td><td>Abre otro menú diferente</td></tr>
+    <tr><td><code>back</code></td><td>Reabre el último menú visto</td></tr>
+    <tr><td><code>closeGui</code></td><td>Cierra el menú</td></tr>
+  </table>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('creating')"><div><span class="direction">Anterior</span><span class="label">← Estructura del GUI</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('clickevents')"><div><span class="direction">Siguiente</span><span class="label">Click Events →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CLICK EVENTS ═══════════════ -->
+<div class="page" id="page-clickevents">
+  <div class="breadcrumb">🎨 CREAR GUIs <span class="sep">›</span> Click Events</div>
+  <h1><span class="h1-icon">🖱</span> Click Events</h1>
+  <p class="page-subtitle">Acciones que se ejecutan cuando un jugador hace clic en un ítem del menú.</p>
+
+  <p>Un ítem puede tener múltiples click events que se ejecutan en secuencia. Se definen en el map <code>clickEvents</code> del ítem, con una clave única por evento.</p>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">El mod serializa todos los campos del modelo en cada click event, aunque estén vacíos. En los ejemplos de esta página solo se muestran los campos relevantes para cada tipo — omitir el resto es perfectamente válido.</div>
+  </div>
+
+  <h2>📋 Referencia rápida</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>type</th><th>Descripción</th><th>Fase</th></tr>
+    <tr><td><code>message</code></td><td>Envía mensaje de chat al jugador</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>consoleCommand</code></td><td>Ejecuta comando como servidor (sin restricciones de permiso)</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>playerCommand</code></td><td>Ejecuta comando como el jugador (con sus permisos)</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>closeGui</code></td><td>Cierra el menú</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>openGui</code></td><td>Abre otro menú</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>nextScene</code></td><td>Va a la siguiente escena</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>previousScene</code></td><td>Va a la escena anterior</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>back</code></td><td>Reabre el menú anterior</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>buyItem</code></td><td>Intercambio de compra: el jugador paga ítems y recibe ítems</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>sellItem</code></td><td>Intercambio de venta: el jugador entrega ítems y recibe ítems</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>teleport</code></td><td>Teletransporta al jugador</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>savePlayerData</code></td><td>Guarda/modifica variable del jugador</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>title</code></td><td>Muestra título en pantalla</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>sound</code></td><td>Reproduce sonido</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>chatFetcher</code></td><td>Solicita input al jugador via chat</td><td><span class="badge badge-v3">v3</span></td></tr>
+    <tr><td><code>playerPicker</code></td><td>Selector de jugador + acción</td><td><span class="badge badge-v3">v3</span></td></tr>
+  </table>
+  </div>
+
+  <h2>⚙ Propiedades del modelo</h2>
+  <p>Estos son todos los campos que el mod serializa en un click event. En la práctica solo necesitas <code>type</code> y los campos relevantes a ese tipo — el resto puede omitirse o dejarse vacío.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Campo</th><th>Tipo</th><th>Default</th><th>Usado por</th></tr>
+    <tr><td><code>type</code></td><td>string</td><td>—</td><td>Todos (requerido)</td></tr>
+    <tr><td><code>clickType</code></td><td>string</td><td><code>ANY</code></td><td>Todos — <code>LEFT</code>, <code>RIGHT</code>, <code>ANY</code></td></tr>
+    <tr><td><code>delay</code></td><td>int (ms)</td><td><code>0</code></td><td>Todos — delay antes de ejecutar</td></tr>
+    <tr><td><code>message</code></td><td>string</td><td><code>""</code></td><td><code>message</code></td></tr>
+    <tr><td><code>commands</code></td><td>string[]</td><td><code>[]</code></td><td><code>consoleCommand</code>, <code>playerCommand</code></td></tr>
+    <tr><td><code>cost</code></td><td>ItemStack[]</td><td><code>[]</code></td><td><code>buyItem</code>, <code>sellItem</code> — ítems que el jugador debe pagar</td></tr>
+    <tr><td><code>give</code></td><td>ItemStack[]</td><td><code>[]</code></td><td><code>buyItem</code>, <code>sellItem</code> — ítems que el jugador recibe</td></tr>
+    <tr><td><code>consume</code></td><td>bool</td><td><code>true</code></td><td><code>buyItem</code>, <code>sellItem</code> — si los ítems de <code>cost</code> se consumen del inventario</td></tr>
+    <tr><td><code>location</code></td><td>string</td><td><code>""</code></td><td><code>teleport</code> — formato <code>"x,y,z"</code></td></tr>
+    <tr><td><code>guiId</code></td><td>string</td><td><code>""</code></td><td><code>openGui</code> — id del menú destino</td></tr>
+  </table>
+  </div>
+
+  <h2>🖱 Tipos de eventos detallados</h2>
+
+  <h3>message — Enviar mensaje</h3>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"message"</span>,
+  <span class="key">"message"</span>: <span class="str">"Hola, {player}! Bienvenido."</span>
+}</code></pre>
+
+  <h3>consoleCommand — Comando de consola</h3>
+  <p>Ejecuta uno o varios comandos como si los escribiera la consola del servidor (sin restricciones de permiso del jugador). El token <code>{player}</code> se expande al nombre del jugador.</p>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"consoleCommand"</span>,
+  <span class="key">"commands"</span>: [
+    <span class="str">"/tp {player} 512000 150 512000"</span>,
+    <span class="str">"/player {player} gamemode creative"</span>
+  ]
+}</code></pre>
+
+  <h3>buyItem — Comprar (intercambio)</h3>
+  <p>El jugador paga los ítems de <code>cost</code> y recibe los de <code>give</code>. El mod verifica que tenga suficiente stock antes de ejecutar — si no, muestra el <code>conditionFailMessage</code> del ítem sin hacer nada. Con <code>"consume": false</code> se verifica el stock pero no se consumen los ítems.</p>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"buyItem"</span>,
+  <span class="key">"consume"</span>: <span class="kw">true</span>,
+  <span class="key">"cost"</span>: [
+    { <span class="key">"item"</span>: <span class="str">"game:ingot-iron"</span>, <span class="key">"amount"</span>: <span class="num">5</span> },
+    { <span class="key">"item"</span>: <span class="str">"game:stick"</span>,      <span class="key">"amount"</span>: <span class="num">2</span> }
+  ],
+  <span class="key">"give"</span>: [
+    { <span class="key">"item"</span>: <span class="str">"game:sword-iron"</span>, <span class="key">"amount"</span>: <span class="num">1</span> }
+  ]
+}</code></pre>
+
+  <h3>sellItem — Vender (intercambio inverso)</h3>
+  <p>Semánticamente el inverso de <code>buyItem</code>: el jugador entrega los ítems de <code>cost</code> y recibe los de <code>give</code>. La lógica interna es idéntica — la diferencia es conceptual para que el JSON sea más legible.</p>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"sellItem"</span>,
+  <span class="key">"consume"</span>: <span class="kw">true</span>,
+  <span class="key">"conditionFailMessage"</span>: <span class="str">"No tienes suficiente piedra."</span>,
+  <span class="key">"cost"</span>: [
+    { <span class="key">"item"</span>: <span class="str">"game:stone"</span>, <span class="key">"amount"</span>: <span class="num">10</span> }
+  ],
+  <span class="key">"give"</span>: [
+    { <span class="key">"item"</span>: <span class="str">"game:ingot-iron"</span>, <span class="key">"amount"</span>: <span class="num">1</span> }
+  ]
+}</code></pre>
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <strong>ItemStack — formato de ítem en cost/give</strong>
+      <p>Cada entrada es un objeto con <code>"item"</code> (código VS) y <code>"amount"</code> (cantidad). Puedes incluir tantos como necesites en cada lista.</p>
+    </div>
+  </div>}</code></pre>
+
+  <h3>teleport — Teletransportar</h3>
+  <p>Las coordenadas en VintageStory son absolutas. El centro del mapa por defecto está cerca de <code>512000, Y, 512000</code>.</p>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"teleport"</span>,
+  <span class="key">"location"</span>: <span class="str">"512000,150,512000"</span>   <span class="cmt">// x,y,z absolutos en el mapa VS</span>
+}</code></pre>
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">A diferencia de Minecraft, las coordenadas en VS no son relativas al origen del mundo. El "spawn" de tu servidor tendrá coordenadas específicas que puedes ver con <code>/debug pos</code> en el chat del juego.</div>
+  </div>
+
+  <h3>savePlayerData — Guardar variable</h3>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"savePlayerData"</span>,
+  <span class="key">"saveFormat"</span>: <span class="str">"puntos:{var:puntos}+10"</span>
+}
+
+<span class="cmt">// Operadores: + - * /</span>
+<span class="cmt">// "puntos:{var:puntos}+10"  → suma 10 a puntos actuales</span>
+<span class="cmt">// "rango:vip"               → asigna string estático</span></code></pre>
+
+  <h2>🔗 Combinar múltiples eventos</h2>
+  <p>Puedes combinar varios click events en un mismo clic. Se ejecutan en secuencia. Ejemplo: comprar un ítem, mostrar mensaje y cerrar el menú.</p>
+  <pre><code><span class="key">"clickEvents"</span>: {
+  <span class="key">"compra"</span>: {
+    <span class="key">"type"</span>: <span class="str">"buyItem"</span>,
+    <span class="key">"consume"</span>: <span class="kw">true</span>,
+    <span class="key">"cost"</span>: [{ <span class="key">"item"</span>: <span class="str">"game:quartz"</span>, <span class="key">"amount"</span>: <span class="num">5</span> }],
+    <span class="key">"give"</span>: [{ <span class="key">"item"</span>: <span class="str">"game:sword-copper"</span>, <span class="key">"amount"</span>: <span class="num">1</span> }]
+  },
+  <span class="key">"mensaje"</span>: {
+    <span class="key">"type"</span>: <span class="str">"message"</span>,
+    <span class="key">"message"</span>: <span class="str">"¡Compra realizada, {player}!"</span>
+  },
+  <span class="key">"cerrar"</span>: {
+    <span class="key">"type"</span>: <span class="str">"closeGui"</span>
+  }
+}</code></pre>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">Los click events se ejecutan en el orden en que aparecen en el JSON. Usa claves descriptivas para que el fichero sea legible.</div>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('scenes')"><div><span class="direction">Anterior</span><span class="label">← Escenas</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('conditions')"><div><span class="direction">Siguiente</span><span class="label">Condiciones →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CONDITIONS ═══════════════ -->
+<div class="page" id="page-conditions">
+  <div class="breadcrumb">🎨 CREAR GUIs <span class="sep">›</span> Condiciones</div>
+  <h1><span class="h1-icon">✅</span> Condiciones</h1>
+  <p class="page-subtitle">Controla la visibilidad de ítems y la ejecución de click events.</p>
+
+  <p>Las condiciones determinan si un ítem se muestra al jugador y si sus click events pueden ejecutarse. El comportamiento por defecto cuando falla es mostrar el ítem pero bloquear el clic con <code>conditionFailMessage</code>. Con <code>"hideOnFail": true</code> el ítem directamente no aparece.</p>
+
+  <h2>✅ Todos los tipos de condición</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>type</th><th>Descripción</th><th>Fase</th></tr>
+    <tr><td><code>hasPrivilege</code></td><td>El jugador tiene un privilegio VS específico</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>hasItem</code></td><td>El jugador tiene ítem(s) en el inventario</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>hasRole</code></td><td>El jugador tiene exactamente el rol indicado (por <code>Code</code> del serverconfig)</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>hasPrivilegeLevel</code></td><td>El jugador tiene nivel de privilegio igual o superior al mínimo indicado</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>playerDataCompare</code></td><td>Compara una variable del jugador con un valor</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>cooldown</code></td><td>Cooldown por tiempo antes de poder usar de nuevo</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>isGameMode</code></td><td>El jugador está en un modo de juego concreto</td><td><span class="badge badge-v2">v2</span></td></tr>
+  </table>
+  </div>
+
+  <h2>🔍 Detalle de condiciones</h2>
+
+  <h3>hasPrivilege — Tiene privilegio VS</h3>
+  <p>Comprueba si el jugador tiene un privilegio nativo de VintageStory (como <code>build</code>, <code>gamemode</code>, etc.) o uno personalizado.</p>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"es-vip"</span>: {
+    <span class="key">"type"</span>: <span class="str">"hasPrivilege"</span>,
+    <span class="key">"privilege"</span>: <span class="str">"axinmenu.vip"</span>
+  }
+}</code></pre>
+
+  <h3>hasItem — Tiene ítem</h3>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"tiene-coste"</span>: {
+    <span class="key">"type"</span>: <span class="str">"hasItem"</span>,
+    <span class="key">"item"</span>: <span class="str">"game:gem-diamond"</span>,
+    <span class="key">"amount"</span>: <span class="num">5</span>
+  }
+}</code></pre>
+
+  <h3>hasRole — Tiene rol exacto</h3>
+  <p>Comprueba si el jugador tiene exactamente el rol indicado. Los códigos de rol se definen en el <code>serverconfig.json</code> del servidor.</p>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"es-admin"</span>: {
+    <span class="key">"type"</span>: <span class="str">"hasRole"</span>,
+    <span class="key">"roleCode"</span>: <span class="str">"admin"</span>     <span class="cmt">// Códigos estándar VS: suplayer, crplayer, sumod, crmod, admin…</span>
+  }
+}</code></pre>
+
+  <h3>hasPrivilegeLevel — Nivel mínimo de privilegio</h3>
+  <p>Más flexible que <code>hasRole</code>: pasa si el nivel del rol del jugador es ≥ al mínimo. Útil para agrupar todos los moderadores y admins.</p>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"es-mod-o-superior"</span>: {
+    <span class="key">"type"</span>: <span class="str">"hasPrivilegeLevel"</span>,
+    <span class="key">"minLevel"</span>: <span class="num">200</span>    <span class="cmt">// 200 = sumod · 500 = crmod · 99999 = admin</span>
+  }
+}</code></pre>
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">Los niveles de privilegio de tu servidor están definidos en <code>serverconfig.json</code> en el campo <code>"PrivilegeLevel"</code> de cada rol.</div>
+  </div>
+
+  <h3>playerDataCompare — Comparar variable</h3>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"tiene-puntos"</span>: {
+    <span class="key">"type"</span>: <span class="str">"playerDataCompare"</span>,
+    <span class="key">"field"</span>: <span class="str">"puntos"</span>,
+    <span class="key">"operator"</span>: <span class="str">">="</span>,       <span class="cmt">// =  !=  >  &lt;  >=  &lt;=</span>
+    <span class="key">"value"</span>: <span class="num">50</span>
+  }
+}</code></pre>
+
+  <h3>cooldown — Tiempo de espera</h3>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"espera-diaria"</span>: {
+    <span class="key">"type"</span>: <span class="str">"cooldown"</span>,
+    <span class="key">"id"</span>: <span class="str">"recompensa-diaria"</span>,
+    <span class="key">"durationMs"</span>: <span class="num">86400000</span>   <span class="cmt">// 24 horas en ms</span>
+  }
+}</code></pre>
+
+  <h2>👁 hideOnFail — Control de visibilidad</h2>
+  <p>Por defecto, cuando una condición falla el ítem se muestra pero el clic queda bloqueado. Con <code>"hideOnFail": true</code> el ítem directamente no aparece en el menú para ese jugador:</p>
+  <pre><code>{
+  <span class="key">"slot"</span>: <span class="num">13</span>,
+  <span class="key">"item"</span>: <span class="str">"game:gem-diamond"</span>,
+  <span class="key">"name"</span>: <span class="str">"Botón solo para admins"</span>,
+  <span class="key">"hideOnFail"</span>: <span class="kw">true</span>,           <span class="cmt">// invisible si la condición falla</span>
+  <span class="key">"conditions"</span>: {
+    <span class="key">"solo-admin"</span>: { <span class="key">"type"</span>: <span class="str">"hasRole"</span>, <span class="key">"roleCode"</span>: <span class="str">"admin"</span> }
+  }
+}</code></pre>
+  <div class="table-wrap">
+  <table>
+    <tr><th>hideOnFail</th><th>Condición falla</th><th>conditionFailMessage</th></tr>
+    <tr><td><code>false</code> (default)</td><td>Ítem visible, clic bloqueado</td><td>Se muestra al jugador</td></tr>
+    <tr><td><code>true</code></td><td>Ítem no aparece</td><td>No se muestra (ítem invisible)</td></tr>
+  </table>
+  </div>
+
+  <h2>🔄 Condiciones invertidas</h2>
+  <p>Añade <code>"inverted": true</code> para negar cualquier condición:</p>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"no-baneado"</span>: {
+    <span class="key">"type"</span>: <span class="str">"hasPrivilege"</span>,
+    <span class="key">"privilege"</span>: <span class="str">"axinmenu.banned"</span>,
+    <span class="key">"inverted"</span>: <span class="kw">true</span>
+  }
+}</code></pre>
+
+  <h2>🔗 Múltiples condiciones (AND)</h2>
+  <p>Si defines varias condiciones, <strong>todas deben cumplirse</strong> (lógica AND):</p>
+  <pre><code><span class="key">"conditions"</span>: {
+  <span class="key">"tiene-rango"</span>: { <span class="key">"type"</span>: <span class="str">"hasPrivilege"</span>, <span class="key">"privilege"</span>: <span class="str">"axinmenu.vip"</span> },
+  <span class="key">"tiene-coste"</span>: { <span class="key">"type"</span>: <span class="str">"hasItem"</span>, <span class="key">"item"</span>: <span class="str">"game:gem-diamond"</span>, <span class="key">"amount"</span>: <span class="num">5</span> },
+  <span class="key">"no-cooldown"</span>: { <span class="key">"type"</span>: <span class="str">"cooldown"</span>, <span class="key">"id"</span>: <span class="str">"compra-vip"</span>, <span class="key">"durationMs"</span>: <span class="num">3600000</span> }
+},
+<span class="key">"conditionFailMessage"</span>: <span class="str">"Necesitas ser VIP, tener 5 diamantes y esperar 1h"</span></code></pre>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('clickevents')"><div><span class="direction">Anterior</span><span class="label">← Click Events</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('generator')"><div><span class="direction">Siguiente</span><span class="label">Generador Visual →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ GENERADOR VISUAL ═══════════════ -->
+<div class="page" id="page-generator">
+  <iframe id="gen-frame" src="AxinMenuGUI_Generator_v1_2.html" title="Generador Visual AxinMenuGUI"></iframe>
+</div>
+
+
+<!-- ═══════════════ ICONOS DEL MOD ═══════════════ -->
+<div class="page" id="page-modicons">
+  <div class="breadcrumb">🎨 CREAR GUIs <span class="sep">›</span> Iconos del mod</div>
+  <h1><span class="h1-icon">🎨</span> Iconos personalizados</h1>
+  <p class="page-subtitle">50 iconos pixel art incluidos en AxinMenuGUI — úsalos en cualquier menú sin instalar nada más.</p>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>Cómo usarlos</strong>
+      <p>Estos iconos viven en el dominio <code>axinmenugui</code>. Cópialos directamente en el campo <code>"item"</code> de cualquier ítem de tu menú JSON.</p>
+      <pre style="margin-top:8px;font-size:12px">"item": "axinmenugui:menuicon-star"</pre>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">Los iconos son ítems virtuales — no aparecen en el inventario del jugador ni en la guía de crafteo. Solo son visibles en los menús GUI.</div>
+  </div>
+
+  
+  <h2>🧭 Navegación</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Icono</th><th>Nombre</th><th>Código</th><th></th></tr>
+    
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAcUlEQVR4nO3UsQ2AMAxE0UNiiFQgpmCJTMJAzJBVPAWCii1MlRIFGwuae725rxQAREREQaRklZLVetdHDAPAOA2ue3fA22F3QNTw44BTFgWAfTsQOVx11oPWC6R5NX3THNAK+SzgLsQaEMb7HyAiot9d0EEmbG9yK44AAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Flecha derecha</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-arrow-right</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-arrow-right').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAeUlEQVR4nO3TMQ2AMBBG4UeCCCYIKjCBADQgCA0IwERVEJhwUSYWBshxNzD83967l6YFERERozT3Oc19jppXWA8cacwA27oD0A2LeUZIwMUb4g7whoQF3EOatgag6qbHHaU14G2x9QbcAd438Dkg6heYA6IWi4jIb5zbFDElHA7qNQAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Flecha izquierda</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-arrow-left</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-arrow-left').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAfklEQVR4nGNgGAWjYBSMglEw0gEjqRpOrvD5L68oh1P+4f1HDOYRW4g2l4lUB1AbkOwA84gtjA/vP8IqR6rvyXIAtQFZDsAWCuT4nmwHDBpwcoXP/xcns/6fXOHzn1wzhnYIMDBAQoES/QMeAhQ7AF+pSBcHjIJRMApGAaUAALIAIliIVfEkAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Flecha arriba</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-arrow-up</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-arrow-up').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAZElEQVR4nO3SwQmAQAxE0cFCFPvZSqxsW0kVoie7WE+BPXjKCCEw774w+SwgIkJ67BjM++WvIWkDrvPOHcCiBlhvY9tXWG/hf1C3gF8PAEyFmgXm6120Qr0CX9e7SIX0AiIiIi+e1h5FVMGgOAAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Flecha abajo</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-arrow-down</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-arrow-down').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAdklEQVR4nGNgGAWjYBQMRXByhc//kyt8/g+Y5S9OZo1aPnwsZyTGcnlFOYaH9x8Rbah5xBaC5hLtAFJ9/vD+IwZ5RTkGCfNpRDuCqoDU6GKipWNGHTDqgFEHEANYSNVATDVMSqlJsgPkFeVI1TIKRsEoGAV4AQCzaDZ7GeX35gAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Volver</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-back</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-back').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoElEQVR4nGNgGAWjYBSMAgrBiWkB/ynRz0QNyylxBNkOQLeUXEeQ5QBclpHjCJIdQMgSUh1BkgOINZwURxDtAFJ9Rqx6ohxAbgIjRh9BB1CazwnpZyTFsEtNGkQ7Rq/uBlFms5DiAAYGBoa6/awE1TQ5/ibaPIpKQmoAkkMABs7deIohZqQhTbI5Ax4Cow4gOQ3AUrjPDdxyo2AUjIIhBQD/ATxDi6OrxAAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Inicio</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-home</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-home').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAQklEQVR4nGNgGAWjYBSMglEwwIARn+TJFT7/qWWRecQWrHax4NMkryhHLftHweAFo4lwFAw4GE2Eo2AUjIJRMOAAAOzrDSoK4jL0AAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Menú</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-menu</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-menu').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAhklEQVR4nO2T0Q2AMAhE0TiUY3TUjuFW+mXSGEsPCjEm934LvZcWRAgh5A8cpZxZPZv1wr3WJSL4ZkWK2lAtoD0biZoEEAlPuElAk/CGi4iYit8Ce4IophfQgjzhboFIXAKjIUwVeA4cuqIhAr1pn5GABUar5pWABNA9n/0OSCCzhxBCPuECSVRUHcEptREAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Cerrar</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-close</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-close').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+  </table>
+  </div>
+
+  <h2>🛒 Tienda / Economía</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Icono</th><th>Nombre</th><th>Código</th><th></th></tr>
+    
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAgklEQVR4nGNgGAWjYBSMgpEOGMnVeHKFz390MfOILWSbR7Hl+MTpYjldHUFNQHSckeMzYtIECykGct66Q7Ta72oqRKljIsUBtAAkhQAMiLk74ZR7tXMfSWYNzRCAAbOAFXD2qQ0R9HcAuZYig6EZBaQmNHxgaIUAsYXLKBgFo2BIAQBIDSGHzy7DWgAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Tienda</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-shop</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-shop').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABAklEQVR4nO2WrQ6DMBSF75YFheAJ2vQp5tGoqUkeDYlCTeN5CgJPgEBhmCrrStt715IsJD0K0gvnS8/tD0BUVNTZ1dXFGvL9JdSQCwZDP37V3J8v8n9/ApDmXDBrjYShQpABurpYTcbztECaJUYQCgQJQDefp8Vaq8JQIK4Uc/XdZW4ax5r0hgEAfDJXf56XzfbcVo8dRJolxgb1AtCVl83O1FdoBBSps3EogNp8tuxt5rKeC+bsA3QVmCCkqSsGuRqwleAdgWoeEoFXE7bVw7kKDgcY+hG4YJBmyRYDdfoxoRHo+Zm2Xdc4thOe4yxQIQD+dBrqEFKh94Fghd6IoqKi3sQQiouPDa7bAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Moneda</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-coin</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-coin').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoUlEQVR4nGNgGAWjYBSMgpEOGKlhyKUmjf/oYnp1N4gym4kaDqAEDLgDcAbTi5NZ/yXMp2GVP7nCByXIOW/dwVDzXU0FhW8esQWrWSy4HCBhPo3xxcms/zA2unz7zIdIPFZMA/Yj5CvT5XFZg9sByBbjcwilAK8DcDnk4f1H9HUAegigpwGaOYCWQU/QAfhyAQMD/oQ1CkbBKBgFo2AUkAIAlC4z7WVsXGUAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Comprar</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-buy</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-buy').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAtUlEQVR4nGNgGAWjgE7g5Aqf/9jEGellsbyiHMPD+48YGBgYGMwjtsDtpakDTq7w+S+vKIch/vD+I7gjmGjpAGIAzRyAy/cMDJDogEUNzRxgHrGFERbn6GBQRcGA5wK6AZLLAVwa8AFcPntxMuu/hPk0rHIs+AzkvHWHaMu/q6lgtZiBgYEBl+UEHUAuIMZimjiAFItp4gCYxQMWAuQ4BK8DsCUsch1CSrSMglEwCkbBKBhZAAAcXk+QtPzOWgAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Vender</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-sell</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-sell').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAjElEQVR4nGNgGAWjYBSMgpEOGHFJnFzh85/alplHbMGwjwWfhvaZD6lmeWW6PFZxJqrZQCYYdQDeNIAPzOiwxRDLqDhMsjmDOxdw3rqDU07M3Ylh3fpLcH5QoB7Dq537cKr/rqaCVZzsKIBZSikg2wH4fEsKGPBcMOqAUQcMuAPwZkNchccoGAXDCgAAKxYboGeT5OMAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Cofre</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-chest</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-chest').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAmElEQVR4nGNgGAWjYBSMgqEIXpzM+k+KOE0dgU6TChip4QgGBgYGCfNpZJlFUNPJFT54fSavKMfw8P4jvGaYR2zBaQ8LIQcwMDAwCK/Ao6wSv/zbiD94zWYixgG0BAPuAIJpgBpZC18CJZgGHt5/xPAfTxwrVEoxPGh/hlOecTQNjDpg1AGjDiAAiKqMCBUmhORHwSgY1AAAn6YuKu+hSq4AAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Regalo</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-gift</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-gift').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+  </table>
+  </div>
+
+  <h2>👑 Admin / Roles</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Icono</th><th>Nombre</th><th>Código</th><th></th></tr>
+    
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAvElEQVR4nGNgGAWjYBSMglFAITgREPCfEv1MlDpAoVKKIv04HRA17cT/kyt88PoOJk+MuqhVUaSFFD7DT67wgTvuxcms/+hi5DgSpwPQDUE3COYAbI7DZgZZDsBnALoDSNVPdCI0j9jCSKwvTq7w+W8esYWRGLUk5QJiDSVWHQMDAwMLPsktPUZE+ZhYdSQ54PWTZwyiMoTz+MP7j4hS9/rJM6ziFBdElIJRBwy4A/DmAlwJZxSMglEwrAAAKpVt+q4n2JMAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Corona Admin</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-crown</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-crown').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAxElEQVR4nGNgGAWjYBQMMGDEJqgRMO0/rSy8sSELxU4WXAqN3Iyobvm5XecwxJiobguJYOg7oM8LZywSBcjSjW4pMr9o2x+SzBr6UTCyHEBsgiMlYeJU+ejRGwyxkBkwlgROAx89eoOkjjAYvFFwpMMHaz1BLsBlHt4QoJYj8JlDMLUc6fBhtKnYglI7hsx4AWevyZBA4ZNiOQMDkWkAnyGUWE60A4g1jBz1JOUCYg0lxbEkZ0NChpMaUgPeJBsFo2DAAQAiaThchGVlQwAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Escudo Rol</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-shield-role</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-shield-role').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwElEQVR4nO2VzRGDIBCFIWMRnmCogiYowBosyBoowCa2CkdPdkFOmyGG3wTMZb8TI+B7s/sAxgiCIAoBa1yP//JSUakE27fjNaenNbn3ZwNgjZNKRDfu29HExKNUfNTLm5hUoklbhtwCXxjHJ8zN8hCswJ18GPDLfy07gt9btCEokDPxrWgotNkMhEidjlqyBjBwo174NXylRxGscbF1wRDqaeX+peMbqRHHVqUq1vUmPGF2sSBX0+stIAiCIP7OE4RMV+/7xSH+AAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Llave</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-key</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-key').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAiklEQVR4nGNgGAWjYBSMAgrBi5NZ/ynRz0ippRLm0xjR+ZQ4iCjLcfkanxxVHUCJPDpgosw5dAbE+o7m0TCsANFZZkGTEcnBmlB3jqD5LKQYqKkmRbTa67eeEaVuwHMBSSGADkILj8HZq/utyDJjwENg1AED7gCKEiG5CQ8ZDK0QILZwGQWjYEgBABR2MhaKZGnWAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Bloqueado</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-lock</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-lock').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAiUlEQVR4nGNgGAWjYLiCqFVR/4lRx0grS5eFLWNE51PTLqyW4/I1PjmqOoAceSbaOIfOgNjgpXk0jIJRQA4gunSy6bEhOQUfKTlC0HwWUgyUk5MjWu2jR4+IUjfgBRFJIYAOjuTvgLNtJnqQZcaAh8CoAwbcARQlQnITHjIYWiFAbOEyCkbBkAIAfpwrIfYcBIEAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Desbloqueado</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-unlock</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-unlock').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAsklEQVR4nGNgGAWjYBSMglFAJDi5wuc/LdUTbSghg4lRQ1WHyEkK/afEYkZyHQGzGBk8ev6OZPOI1vDiZBbcQrOAFQwMDAwMNrXb4PJHmr0YGBgYGE5tiGBgYGBgkDCfRpTZLMQ64OH9Ryh8ZMth/CPNXhjqCAEmklQzMDCEFh6jSJ5iB6zut6JIHh2QlQhhCRBbGiA1IQ54LiALULMcINtiStSQbTkt1Y+CUTAKRsGAAQAvJGIAqU19rwAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Visibilidad</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-eye</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-eye').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+  </table>
+  </div>
+
+  <h2>ℹ UI / Información</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Icono</th><th>Nombre</th><th>Código</th><th></th></tr>
+    
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwUlEQVR4nGNgGAWjYKiDqGkn/lOin5FSC79xcTFwffuGomZZlgXR5hKtEGbxNy4ugmphDiLGIUQ5IGraif/EWIzNIYQcwUQryxkYIKFFKI3gdQAllhPrCIIhQGuAM36I8f0Mh19wdsYBNrxqcaWHAQ+BAXcACyWaCQU7MQBrCFAj9aMDXLlhNBGOOgCnA5ZlWTCiV7PkAnyV0oCHAMHqmNIsSahKJhgClEQFMe2BodEiwuYQGKC0TUgxoLRVPApGAQAE5mhDJQ6jxgAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Información</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-info</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-info').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAl0lEQVR4nGNgGAWjYBSMAgrBpSaN/5ToZ6KWQwbEATDfUxIKjJQ4QE5SCG7xo+fvyDKL7BBA9zW5oTA00wAu35ITCkMvBAj5ktRQGFohQKzvSAkFFlIcgA62ZIpRop2BgYGEggibr3ymv8LrGL26GwTNH/A0QFQIUFLWEwqFAQ8Bgg6gtL4npH9whwClvifGnAEPgVEwCgAKhjWOkPFSCwAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Advertencia</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-warning</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-warning').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAW0lEQVR4nGNgGAWjYBSMglEwCugMolZF/Y9aFfV/1PJRy4eO5eQaQlWfk2oYTYKdWENpGueEDKdLgsNlCV1TO7pllFjOSIkjkPnLwpaRbRbZYEALmVEwCoYNAABbeV3QCF6hkwAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Verificado</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-check</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-check').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA2ElEQVR4nO2WsRGDMAxFBZej0ESMwAyMwAyUmYERmIERmMgFDSlyLshZ1rcVwnHxbxH6z5Zsmaio6O6a+nW3/F9ZDZmZnHOHmGFu4bxwoDdmZjXWAyEgEMDUrztiHALRIOqzzIneu6X1SBTAYo5CPHKSduMmflueTVIusT65q+/GLQgh9YPaA2frqwDS6n8CkGMuAqTWHzGXTkMQYJjb6vN6tZgT/UsTXgKQ03gQANoHsVvRKzaULi+BOo6tA0kbyeoOpBzJVHOiu7yIQiBe1jehWdZXcVHRCyizdZR8HL5lAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Pregunta</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-question</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-question').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABDElEQVR4nO2WMRKEIAxFw85ex2YbGu7iDaw9grU38C40NDYeiK2YzSCQQNhxxvFXqDH/EQwI8OiRQPM0+nkavSTHqxfMPQF6lJjKoaiXw3hZNxXfyymODdfVABxD63Yw+kPCNAOkIKzbs7EYhjIHaPgIS+bxc85ykQA4ScrcuuM0yxoIdgVic+sOFczxuAQrAojNa+53B+ipE3FqzXA5ObM0evC/cbpFQ4ewKoCT4ORScwCAd+khAK+VKJX2g6ZvIFcFqjoigLicRg8+GOJxLj6n6q2Y098123H1ElAz4848iH0aLuumci1KmTYfx6nzvOV/gIIgAaiYUlyPNhYBULr8LLgcQKy/r/Ht9QXSNp5/qyooPwAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Configuración</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-settings</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-settings').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAArUlEQVR4nGNgGAWjYCiCkyt8/lPLLEZyLDWP2MKIzqeWg7BaTMjHxKihmeU0dQSpBlLVAeQaRqo+JnIsoSYYcAdgBZTGJVXSwmgaGBSAHuUAwRAgpSQk1XKCDoBVMsTUBQwMDAzyinIML05mkeQQqtaGyJZLmE+jbQ2JS+7Fyaz/MEyMWTRxJSkhQZNsiGwpoZCgWTlArCNoWhAR4wial4SkRAdNwYBaPgoGNQAAVkN63Bya9r4AAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Buscar</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-search</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-search').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAArklEQVR4nO1WwRHAIAjTXgf05RAdyCF8uaH9e6BBpbVX8wYSCaLGbGx8HS6GPJJvnyBM/mJ5Tk1iBMeb5MYAHaDIqZa6GHLyl5WKrc5AWazmJZfTyoUsQMl7wAqY7TtXD7oFktOXsa2DwBZoYU0BWveeqksK0Jp4qu6aFiwnoHcmkDxWwOw5GF7F0i6g8V2PS6070niozSN7oWUlZEHvPCB5Kn9CrUVGQvO7tvEP3JASVPe0BPosAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Recargar</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-refresh</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-refresh').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAlklEQVR4nO2UQRWAIBAFR1PYhBIEMIOBzEAAS9DEFnpWAXeB9zy4c9TDzh/fEwzD+DtD7kUM/uh9zM3b497Y+4iWbAGAPS7dKkxuTd4qCkCfT5FKLxaAthK55SoBqCtRWq4WAF2Jt+VVAiArIVleLQDlEtLlTQKQLqFZ3iwA1xLa5U3E4I/7Z0g9k/D5r9gETMAEDONzTi+AM8cTtnJyAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Filtrar</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-filter</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-filter').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAU0lEQVR4nGNgGAWjYBSMggEGjPgkT67w+Q9jm0dsYWRgYGDYsiDvP24duIFPwiSsdrGQatCchfvJsX8UDF4wmghHwYCD0UQ4CgYcjCbCUTAKRgEAs6YoBYO+X5oAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Lista</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-list</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-list').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA10lEQVR4nGNgGAWjYBQMMGDEJ3lyhc9/allkHrEFq10shDS2z3xIseWV6fI45ZhIMejNN/LFcAGCIYBuILrhPZLKDCXP7+LUI8JFBQfADHnzDcGu4FdGcQQDAwNDx8e7GOoIAZKigBaALAcg+54YcYod8OYbIk7ffGPAGucMDBBxZHXEJEay0wAl6kh2ADYAS3AV/MpwNjlgwBMhxeUAAz/+wohm5QA2eWTLh3c5gAxwZUliAeVpgIAYzdMAsWK4AElRQEwCxCWGCxAMAXyNiVEwCkYBNQAACZ1Vcgm4A6gAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Mapa</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-map</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-map').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+  </table>
+  </div>
+
+  <h2>👥 Social</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Icono</th><th>Nombre</th><th>Código</th><th></th></tr>
+    
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAi0lEQVR4nGNgGAWjgEKwZUHef0r0M1LbUp+ESSSZyURNy4mRp9gB1AZDywHEBi8p0UCSA4hNYKQkxKEVBYPCAYSCl9RygGJAaUk4CgYcUJRgkOOf3MRHdjZET3zkJkayHIDLMnIcMbSq4wGtjEj1GbHqiXIAuQmMGH0EHUBpUUtI/9CrDUfBKKA2AADhlkQ13vkAJQAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Jugador</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-player</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-player').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAtElEQVR4nGNgGAWjgEgQ4Kj7H5v4lgV5WMVxqUcHjORYvGH/ZUZsFvskTGLEpR6X+UykWs7AQLqv8YUGXgfQA+B0AC5Xp8Q7YlU/Z+F+vBbhMg+nA3DFGy6LcDmMkHmDNwoYGHC72idhElZxXOrx5QKiAa3KgVEw4ICoxIEcn8gJCjn+kRMmLvXYAMFsiJ6YYHz0xAfj41JPlgMGtC4Y0KKY2pbjM3dwF8UjwgGjYBSMglEAAO56Y/VUOJ0aAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Grupo</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-group</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-group').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAdElEQVR4nGNgGAWjYBSMdMCIS8Iob9V/alt2blIYhn0s+DRoaMhRzfIbNx5hFWeimg1kglEHDC0H9HmxMPR5sZAlRhUH0AIQ50woKNr2h2wxXGDAQ2DUAaMOwJsLcFUgAwKipp2gevU8avkoGAWjgIGBgQEAFrAdbwxczBsAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Chat</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-chat</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-chat').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAlUlEQVR4nGNgGAWjYBSMgpEOGHFJvDiZ9Z+BgYHh4f1HFFsiryjHwMDAwCBhPg3DPhZcmh7ef8TQPvMhw4wOWwYGBgaGjIrDJFuMrLcyXR6rGpwOgAGYxaQ4hBS1BB1AikPICS2iHYDPIZREE8kOwOYQciyGASaydaI5ZMAcQCkYdcCoA0YdgLcgwlWBjIJRMAqGFQAAWSUw+m0OG4sAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Correo</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-mail</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-mail').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+  </table>
+  </div>
+
+  <h2>✨ Decorativos</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Icono</th><th>Nombre</th><th>Código</th><th></th></tr>
+    
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABBElEQVR4nO1X2w2EIBDEy9UhsQqbsABLtACbsAoijXhfXrh1YV8QP875ghiccQaW1bkH/45OumBbpuMcj/MqXg/x0pJj86YCcmRWESIHcrCIeGsW+aH/jvcQ2YKwPSN2ICXH5lI3qkQAyf3QX4Slz1UCSkfOD73blumAxJgItQAKHDLsI9BNWMpxD5FFxsVFEUauJUxPSC5CMoKW5M4BB+DXW8k5dwUZQWsHyAiwSsdBKry0qVFlVDWTuEI5gR7DnGVnsamJaoWIE5WpFFPFaZzXbg/xRwhHVNXL6IwOCoHPTQLgi+Fc2ieqGhLKWomIKhFYumNzP2BtzUUOQLIa/wUPbscHsa2GNgSb7f4AAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Estrella</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-star</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-star').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAArUlEQVR4nO2VwQ2AIAxFq3EEhnEMhmBAxnAIR2AHPJkYaCltIGrSdzK2/H5aCACGYfyFw/s8I3/RiuwxVmul+QAAq6Y4FpfmNw30tu/Ok+Y/2XoWYjjnqu+UkliHHEFv8TOEjP1XG+DayRXh4qV+ZYA6raMo9VUjGMk3DcwaA6ZLdoAywV01Kk7pde0UuxnYaceKc91kDUgfIYyWieYhHFGc01E/RiNNGIZhvMoFTQhPe0xteTIAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Corazón</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-heart</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-heart').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA3klEQVR4nO3XsRHCMAwFUIUytYfJLIyQgRghszCM67TQcQeRZf0v+WisLgX8dwmxPiJz5gTn/ni+Ip+/ZYRHEEskfC3lc33WKse+wd9H3YHfcBGRtRTqTsAALTyCgABWOItwAzzhDMIFQMJRRBfAhCMIExAJ9yKagIxwD0IFZIb3EBfAiHALcQEc+7actQ4BaMe1+ghGIFq7ovkjzERYi8p8DTMQvS3ZPYgiCM+Kdh3FDMLbD9zLCEEg5QRaxx4E2ozgQmIhmFpGVTINwXZCupSKfLdhJjxlov8L5vx93jPGogkD2P9DAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Diamante</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-diamond</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-diamond').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAWklEQVR4nGNgGAWjYBSMglEwCoY6eHEy6///EwH/ydXPRE3H0B1Q6nuqgJMrfAbOAQNq+YA6AmYpOj2gltPFEZeaNP4TQ486gi5gQC3H5YgBAQNq+SgYBdQAAO4NWVcVuPyWAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Fuego</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-fire</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-fire').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAeUlEQVR4nGNgGAWjYBRQCbw4mfX/5Aqf/0POciZqO4bugNKgH/AQGHAHUASokfKHbghQK98PeAgwkqvxxcksDN8/vP+IwTxiC0lmspDrgIf3H8HZ8opyZFlOFTDkCyKKwGg5MCTrf3Qw9KKA2kE/9EJgwBLeKBi2AACsSksWAg0fogAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Rayo</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-lightning</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-lightning').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAZUlEQVR4nGNgGAWjYKQDRmIVnlzh8/961zOyLEk4dw6nPSykGqYhJ0eS+huPHuGVZyLVAdQGow4YdcCoAwbcASQXRIQKFpqBkyt8/r84mfWf2uYOeBSMOmDUAaMOGHXAKBgFAw4A36YSntgDt5YAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Bandera</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-flag</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-flag').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAn0lEQVR4nGNgGAWjYKQDRmIVGuWt+k+q4ecmhRE0n4UUAzU05IhWe+PGI6LUMZHiAFqAUQcMuANISoQMDAwMfV6EtRRt+0M7B5BiOE0cMOxCYMAT4agDRh1AsQOWZVkQXaVT3QHLsiwYo6ad+E+JI8h2AMxyBgYGBkocQZYDkC2HAXIdQbIDsFlOiSOIVgwznJi24blJYRSnjVEwCugGAF14PA0COF1HAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Marcador</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-bookmark</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-bookmark').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAvElEQVR4nGNgGAWjYBSMdMBIrMIFTUb/STU8oe4cQfOJcsDJFT7/r996xqCpJkW05TD15hFb8NrBRIzlhAzBBcwjtjCeXOGDN+QIOoDWgGIHyFs0DJwD5C0aGB6eaKDIEWQ7ANlyShxBtgPQLX94gjwHDP5syMDAQNAQSvSxkGLg9VvPGBgYGBg83C1wqtmx8wQpRhJfFCODFyezcBYuEubTSDKT6DRAiqHIgCppgJZgwB0wCkbBKBgFAw4A4URD6Xc6UYUAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Trofeo</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-trophy</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-trophy').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA2klEQVR4nGNgGAWjYBQMdfDiZNb/Abd8QB1BKWAkpOBSkwbFvtOru4HTHhZiDOASESHb8m9v3uCVZyLbZCqBwe2AS00a/ykJfgYGSPThS0d4HaBXd4ORUBwSAt/evMGbCAd3FAwaB5AbDcToI+gAfPFHDCCkn6gQICcxEkp8MECS72DZCV/WhDmU2JAjOXjR8zSXiAhGXFMabRQ5aOSBkyt8KAoBsuLqUpPG/+9qKhjinLfukBz/ZJWEuCwhJ/GR5QBcwU5OdJDlAPOILVh9ikuc6g4YVIDSXAAAmg5XutAFQjEAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Campana</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-bell</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-bell').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA00lEQVR4nO2WMQ7DMAhFScc/+zA5ho/qY+Qwmb2mE5IbBQyhUV3Jfwb/F7AJRFNT/64t5yOSv0QNAVCt9SNmLcV8rjmQjQF0YxnIAmIC2HI+JGOkRHXfRZAeRBfgyhwpifFnmB6ECnA214w1EA3iZT3QY+6JFwG0vnsFQHyupgp4v96TZ27BUxoToO3/3fKzOF+6B5cAaykLTzNpyFjF+dJTHLMFwwHcbYMlTwRo70FUXxnF3ipY48f+G2oQLcyj+0ALQfSjjegKhBXdCcOKbsVTU2/km4DwgZAhlAAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Círculo Rojo</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-circle-red</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-circle-red').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA1UlEQVR4nO2WMRKEMAhFcUuaNDmbRQ6YwrPZ2Ni6FTNZJxAQHbMz+TXkPyFBAIaG/l1pSYcnf/IaYkDYt/0nJs9Zfa46kIwxYDOWgDQgKoC0pIMzjiHCuq0sSAuiCVAzjyGy8WeYFoQIcDaXjCUQCeKjPdBibolnAaS+W4UB2eeqqoD16y156hY8pT4Byv5fLT+J8rl7UAXIc55omnFDRivK555iny3oDuBqGzR5LEB5D7y6ZRRbq6CN7/tvKEGUMI/uAyUEwEsbUQ2E5N0J3fJuxUNDX2p1gNylgA34AAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Círculo Verde</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-circle-green</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-circle-green').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA2klEQVR4nO2WMRKEMAhFcUsamxzGs3gED+QRPIuHsbFJ61bMRCcQkHXMzuTXkP+EBAFoavp3jfN6ePI7ryEiQozxFLNMg/pcdSAZI2IxloA0ICqAcV4PzjiEHrZtZ0FKEEWAnHkIPRt/hSlBiABXc8lYApEgPtoDLeaWeBZA6rtViMg+V1UFrF9vyVO34CnVCZD2/275SZTP3YMswDINHU0zbshoRfncU6yzBdUB3G2DJo8FSO+BVz8ZxdYqaOPr/htKECnMo/tACgHw0kaUAyF5d0K3vFtxU9MX6vCBkOaZxcEAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Círculo Azul</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-circle-blue</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-circle-blue').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA4klEQVR4nO2WwQ2DMAxFTU+cGCFRWIIlGIARGYAlWKJVO0JPvdGTpRTFjo2Lmkr5Zzv/YSfGAFVV/651HjdLfmM19MHB/fb4iBmmRXyuOBCNfXDZWASSgIgA1nncKOO26+H1vJIgOYgsQMq87Xoyfg+Tg2AB9uacMQfCQVykB2rMNfEkANd3rXxw5HMVVUD79Zo8cQvOUpkAcf+Plh+F+dQ9SAIM09LgNKOGjFSYTz3FMltQHMDRNkjySID4Hlj1lVGsrYI0vuy/IQcRw5y6D8QQAD/aiFIgKOtOaJZ1K66qegNs8IGa8BOLWQAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Círculo Dorado</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-circle-gold</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-circle-gold').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAgElEQVR4nGNgGAWjYBSMdMBIrsaoVVH/0cWWhS0j2TwWch3AwMDAICcnB2c/evSILDOYKHEANcCoAwbcAQRTLbbUDgPEJkJ8uYOoXIBsEalqCOWOAY+CAXcAUVGAKxipURBRVBSjO4CconjAo2DUAQPuAIqqY3JT/igYBaNgUAEAZRMgzsQCBUoAAAAASUVORK5CYII=" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Añadir</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-plus</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-plus').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAATklEQVR4nGNgGAWjYBSMglEwCkY6YCSk4ERAwH9KLbHYsAGnPSzEGCAiIkK25W/evMErz0S2yVQCA+4AoqKAUDCOglEwCkbBKBgFQxoAAIGZCdJYPT7fAAAAAElFTkSuQmCC" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Eliminar</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-minus</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-minus').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 12px;width:52px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAuElEQVR4nGNgGAWjYBSMdMBISMHJFT7/KbXEPGILTntYiDGgfeZDsi2vTJfHK89EtslUAqMOGJkOOBEQ8P9EQMB/BgYicwE1LWZgYGCw2LABni1JdsCbb4TViHAxMFTwKzMwMDAw/F+B3WKyHcDAwMDw6NFTnHJyctIMDAwMDB0f7zIwMEDKAVhBRJUQoATALEZ2CF0dgO4QBoaRmg1HHTDqAGRAVDZEblQU9z+EFzbEqB8Fo2DQAwAhFC9WAXcv3wAAAABJRU5ErkJggg==" width="32" height="32" style="image-rendering:pixelated;display:block;border-radius:3px"></td>
+        <td style="padding:6px 14px;font-size:15px">Salida</td>
+        <td style="padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)">axinmenugui:menuicon-exit</td>
+        <td style="padding:6px 10px;width:70px"><button onclick="navigator.clipboard.writeText('axinmenugui:menuicon-exit').then(()=>{this.textContent='✓';this.style.color='var(--green)';setTimeout(()=>{this.textContent='Copiar';this.style.color=''},1500)})" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:4px 10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--stone2);cursor:pointer">Copiar</button></td>
+      </tr>
+  </table>
+  </div>
+
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('modicons')"><div><span class="direction">Anterior</span><span class="label">← Iconos del mod</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('chatfetcher')"><div><span class="direction">Siguiente</span><span class="label">Chat Fetcher →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CHAT FETCHER ═══════════════ -->
+<div class="page" id="page-chatfetcher">
+  <div class="breadcrumb">💬 INTERACTIVO <span class="sep">›</span> Chat Fetcher</div>
+  <h1><span class="h1-icon">💬</span> Chat Fetcher</h1>
+  <p class="page-subtitle">Solicita texto al jugador via chat y úsalo en acciones dinámicas.</p>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body">El Chat Fetcher es una función de <strong>fase 3</strong>. Disponible en versiones avanzadas del mod. <span class="badge badge-v3">v3</span></div></div>
+
+  <h2>⚙ Cómo funciona</h2>
+  <ol>
+    <li>El jugador hace clic en un ítem con <code>"type": "chatFetcher"</code>.</li>
+    <li>El menú se cierra y aparece un mensaje de prompt en el chat.</li>
+    <li>El jugador escribe su respuesta en el chat.</li>
+    <li>Se valida el input contra las condiciones definidas.</li>
+    <li>Si es válido, se ejecutan los click events anidados con el token <code>{input}</code>.</li>
+    <li>Si no es válido, se muestra el <code>conditionFailMessage</code>.</li>
+  </ol>
+  <p>Para cancelar: el jugador escribe <code>cancelar</code> en el chat (palabra fija — configurable en una versión futura).</p>
+
+  <h2>📐 Estructura básica</h2>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"chatFetcher"</span>,
+  <span class="key">"message"</span>: <span class="str">"Escribe algo en el chat:"</span>,
+  <span class="key">"clickEvents"</span>: {
+    <span class="key">"respuesta"</span>: {
+      <span class="key">"type"</span>: <span class="str">"message"</span>,
+      <span class="key">"message"</span>: <span class="str">"Escribiste: {input}"</span>
+    }
+  }
+}</code></pre>
+
+  <h2>✅ Con validación de input</h2>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"chatFetcher"</span>,
+  <span class="key">"message"</span>: <span class="str">"¿Cuántos puntos quieres gastar?"</span>,
+  <span class="key">"conditionFailMessage"</span>: <span class="str">"Introduce un número válido"</span>,
+  <span class="key">"conditions"</span>: {
+    <span class="key">"es-numero"</span>: { <span class="key">"type"</span>: <span class="str">"isInteger"</span>, <span class="key">"value"</span>: <span class="str">"{input}"</span> },
+    <span class="key">"tiene-puntos"</span>: {
+      <span class="key">"type"</span>: <span class="str">"playerDataCompare"</span>,
+      <span class="key">"field"</span>: <span class="str">"puntos"</span>, <span class="key">"operator"</span>: <span class="str">">="</span>, <span class="key">"value"</span>: <span class="str">"{input}"</span>
+    }
+  },
+  <span class="key">"clickEvents"</span>: {
+    <span class="key">"gastar"</span>: {
+      <span class="key">"type"</span>: <span class="str">"savePlayerData"</span>,
+      <span class="key">"saveFormat"</span>: <span class="str">"puntos:{var:puntos}-{input}"</span>
+    },
+    <span class="key">"confirmacion"</span>: {
+      <span class="key">"type"</span>: <span class="str">"message"</span>,
+      <span class="key">"message"</span>: <span class="str">"Gastaste {input} puntos. Te quedan {var:puntos}."</span>
+    }
+  }
+}</code></pre>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('conditions')"><div><span class="direction">Anterior</span><span class="label">← Condiciones</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('playerdata')"><div><span class="direction">Siguiente</span><span class="label">Player Data →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ PLAYER DATA ═══════════════ -->
+<div class="page" id="page-playerdata">
+  <div class="breadcrumb">💬 INTERACTIVO <span class="sep">›</span> Player Data</div>
+  <h1><span class="h1-icon">💾</span> Player Data</h1>
+  <p class="page-subtitle">Guarda, lee y manipula variables por jugador.</p>
+
+  <p>Player Data es un sistema de almacenamiento de variables por jugador. Permite implementar puntos, rangos, contadores de kills, progreso de misiones, o cualquier dato que necesites.</p>
+
+  <h2>⚙ Cómo funciona</h2>
+  <p>Los datos se guardan en <code>ModConfig/AxinMenuGUI/playerdata/{uid}.json</code>, un fichero por jugador:</p>
+  <pre><span class="pre-label">{uid}.json</span><code>{
+  <span class="key">"uid"</span>: <span class="str">"abc123-..."</span>,
+  <span class="key">"playerName"</span>: <span class="str">"Hector"</span>,
+  <span class="key">"fields"</span>: {
+    <span class="key">"puntos"</span>: <span class="num">150</span>,
+    <span class="key">"rango"</span>: <span class="str">"gold"</span>,
+    <span class="key">"kills"</span>: <span class="num">42</span>
+  }
+}</code></pre>
+
+  <h2>💾 Guardar datos</h2>
+  <p>Usa <code>savePlayerData</code> con el campo <code>saveFormat</code>:</p>
+  <pre><code><span class="cmt">// Valor estático</span>
+<span class="key">"saveFormat"</span>: <span class="str">"rango:vip"</span>
+
+<span class="cmt">// Suma</span>
+<span class="key">"saveFormat"</span>: <span class="str">"puntos:{var:puntos}+10"</span>
+
+<span class="cmt">// Resta</span>
+<span class="key">"saveFormat"</span>: <span class="str">"puntos:{var:puntos}-{input}"</span>
+
+<span class="cmt">// Múltiples campos a la vez (separados por coma)</span>
+<span class="key">"saveFormat"</span>: <span class="str">"kills:{var:kills}+1,lastKill:now"</span></code></pre>
+
+  <h2>📖 Leer datos en textos</h2>
+  <p>Usa el token <code>{var:campo}</code> en cualquier texto del menú:</p>
+  <pre><code><span class="key">"name"</span>: <span class="str">"Tus puntos: {var:puntos}"</span>,
+<span class="key">"lore"</span>: [
+  <span class="str">"Rango: {var:rango}"</span>,
+  <span class="str">"Kills: {var:kills}"</span>
+]</code></pre>
+
+  <h2>🔢 Operadores matemáticos</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Operador</th><th>Ejemplo</th><th>Resultado</th></tr>
+    <tr><td><code>+</code></td><td><code>{var:puntos}+10</code></td><td>Suma 10</td></tr>
+    <tr><td><code>-</code></td><td><code>{var:puntos}-5</code></td><td>Resta 5</td></tr>
+    <tr><td><code>*</code></td><td><code>{var:puntos}*2</code></td><td>Multiplica por 2</td></tr>
+    <tr><td><code>/</code></td><td><code>{var:puntos}/2</code></td><td>Divide entre 2</td></tr>
+  </table>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('chatfetcher')"><div><span class="direction">Anterior</span><span class="label">← Chat Fetcher</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('tokens')"><div><span class="direction">Siguiente</span><span class="label">Tokens →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ TOKENS ═══════════════ -->
+<div class="page" id="page-tokens">
+  <div class="breadcrumb">💬 INTERACTIVO <span class="sep">›</span> Tokens / Placeholders</div>
+  <h1><span class="h1-icon">🔗</span> Tokens</h1>
+  <p class="page-subtitle">Valores dinámicos disponibles en textos, mensajes y comandos.</p>
+
+  <p>Los tokens se resuelven en el servidor en el momento del clic. Puedes usarlos en <code>name</code>, <code>lore</code>, <code>message</code>, y en el contenido de <code>commands</code>.</p>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <strong>AxinMenuGUI es un mod de VintageStory, no de Minecraft</strong>
+      <p>VS no tiene dimensiones, mundos paralelos ni PlaceholderAPI. Los tokens disponibles son los que el mod implementa explícitamente. No uses tokens de GUIPlus/Minecraft que no estén en esta lista.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>Token</th><th>Valor</th><th>Estado</th></tr>
+    <tr><td><code>{player}</code></td><td>Nombre del jugador</td><td><span class="badge badge-v1">Implementado</span></td></tr>
+    <tr><td><code>{uid}</code></td><td>UID único del jugador (identificador interno de VS)</td><td><span class="badge badge-v2">v2 — pendiente</span></td></tr>
+    <tr><td><code>{var:campo}</code></td><td>Variable del jugador (Player Data)</td><td><span class="badge badge-v2">v2 — pendiente</span></td></tr>
+    <tr><td><code>{pos}</code></td><td>Posición actual del jugador en coordenadas absolutas VS (<code>x,y,z</code>)</td><td><span class="badge badge-v2">v2 — pendiente</span></td></tr>
+    <tr><td><code>{gamemode}</code></td><td>Modo de juego del jugador: <code>Survival</code>, <code>Creative</code>, <code>Spectator</code>, <code>Guest</code></td><td><span class="badge badge-v2">v2 — pendiente</span></td></tr>
+    <tr><td><code>{scene}</code></td><td>Índice de la escena actual (para usar en el título del menú)</td><td><span class="badge badge-v2">v2 — pendiente</span></td></tr>
+    <tr><td><code>{input}</code></td><td>Texto introducido por el jugador en el ChatFetcher</td><td><span class="badge badge-v3">v3 — pendiente</span></td></tr>
+    <tr><td><code>{claim}</code></td><td>Nombre del claim en el que está el jugador (requiere AxinClaimsRules)</td><td><span class="badge badge-v3">v3 — pendiente</span></td></tr>
+  </table>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <strong>Nota sobre <code>{pos}</code> en VS</strong>
+      <p>En VintageStory las coordenadas son absolutas y el origen del mapa suele estar cerca de <code>512000, Y, 512000</code>. No son coordenadas relativas como en Minecraft. Úsalas con cuidado en textos orientados al jugador.</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <strong>¿Por qué no hay <code>{world}</code>?</strong>
+      <p>VintageStory no tiene dimensiones ni mundos paralelos como Minecraft (Overworld, Nether, End). Un servidor VS es un único mundo. El token <code>{world}</code> no tiene equivalente en VS y ha sido eliminado de esta documentación.</p>
+    </div>
+  </div>
+
+  <h2>Ejemplo — tokens implementados</h2>
+  <pre><code><span class="key">"name"</span>: <span class="str">"Perfil de {player}"</span>,
+<span class="key">"lore"</span>: [
+  <span class="str">"Puntos: {var:puntos}"</span>,
+  <span class="str">"Rango: {var:rango}"</span>
+],
+<span class="key">"message"</span>: <span class="str">"Bienvenido, {player}! Tienes {var:puntos} puntos."</span></code></pre>
+
+  <h2>Ejemplo — token en comando</h2>
+  <pre><code><span class="key">"type"</span>: <span class="str">"consoleCommand"</span>,
+<span class="key">"commands"</span>: [<span class="str">"/player {player} gamemode creative"</span>]</code></pre>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('playerdata')"><div><span class="direction">Anterior</span><span class="label">← Player Data</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('triggers')"><div><span class="direction">Siguiente</span><span class="label">Triggers →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ TRIGGERS ═══════════════ -->
+<div class="page" id="page-triggers">
+  <div class="breadcrumb">🔌 TRIGGERS</div>
+  <h1><span class="h1-icon">⚡</span> Modos de apertura</h1>
+  <p class="page-subtitle">Configura cómo y cuándo se abre cada menú.</p>
+  <p>Un mismo menú puede tener múltiples triggers activos simultáneamente. El admin decide qué menú se abre en cada caso.</p>
+
+  <h2>⚡ Tipos de trigger</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Tipo</th><th>Descripción</th><th>Fase</th></tr>
+    <tr><td><code>command</code></td><td>Comando <code>/alias</code> configurado por menú. Verificado en RUN.</td><td><span class="badge badge-v1">v1</span></td></tr>
+    <tr><td><code>item</code></td><td>Clic en un ítem con código específico</td><td><span class="badge badge-v2">v2</span></td></tr>
+    <tr><td><code>onJoin</code></td><td>Al conectarse el jugador al servidor</td><td><span class="badge badge-v3">v3</span></td></tr>
+    <tr><td><code>hotkey</code></td><td>Tecla configurable (ClientSide)</td><td><span class="badge badge-v3">v3</span></td></tr>
+    <tr><td><code>claimZone</code></td><td>Al entrar en un claim con flag específico</td><td><span class="badge badge-v3">v3</span></td></tr>
+  </table>
+  </div>
+
+  <h2>📐 Configuración</h2>
+  <pre><span class="pre-label">mainmenu.json</span><code>{
+  <span class="key">"id"</span>: <span class="str">"mainmenu"</span>,
+  <span class="key">"commandAlias"</span>: <span class="str">"menu"</span>,        <span class="cmt">// Trigger tipo command (atajo rápido)</span>
+  <span class="key">"openTriggers"</span>: [
+    {
+      <span class="key">"type"</span>: <span class="str">"item"</span>,
+      <span class="key">"itemCode"</span>: <span class="str">"game:feather"</span>    <span class="cmt">// Clic derecho con una pluma</span>
+    },
+    {
+      <span class="key">"type"</span>: <span class="str">"onJoin"</span>              <span class="cmt">// Al conectarse al servidor</span>
+    }
+  ],
+  ...
+}</code></pre>
+
+  <h2>🗺 Trigger por zona (integración AxinClaimsRules)</h2>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body">El trigger <code>claimZone</code> es opcional e integra con AxinClaimsRules. Si no tienes ese mod, simplemente no lo uses.</div></div>
+  <pre><code>{
+  <span class="key">"type"</span>: <span class="str">"claimZone"</span>,
+  <span class="key">"claimFlag"</span>: <span class="str">"axinmenu.mainmenu"</span>   <span class="cmt">// Flag definido en el claim</span>
+}</code></pre>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('tokens')"><div><span class="direction">Anterior</span><span class="label">← Tokens</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('examples')"><div><span class="direction">Siguiente</span><span class="label">Ejemplos →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ EXAMPLES ═══════════════ -->
+<div class="page" id="page-examples">
+  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Ejemplos completos</div>
+  <h1><span class="h1-icon">📦</span> Ejemplos completos</h1>
+  <p class="page-subtitle">Configuraciones listas para usar en tu servidor.</p>
+
+  <h2>🛒 Tienda básica</h2>
+  <pre><span class="pre-label">shop.json</span><code>{
+  <span class="key">"id"</span>: <span class="str">"shop"</span>,
+  <span class="key">"title"</span>: <span class="str">"Tienda del Servidor"</span>,
+  <span class="key">"rows"</span>: <span class="num">3</span>,
+  <span class="key">"commandAlias"</span>: <span class="str">"shop"</span>,
+  <span class="key">"scenes"</span>: {
+    <span class="key">"0"</span>: {
+      <span class="key">"items"</span>: {
+        <span class="key">"espada"</span>: {
+          <span class="key">"slot"</span>: <span class="num">11</span>,
+          <span class="key">"item"</span>: <span class="str">"game:sword-copper"</span>,
+          <span class="key">"name"</span>: <span class="str">"Espada de Cobre"</span>,
+          <span class="key">"lore"</span>: [<span class="str">"Coste: 5 cuarzo"</span>, <span class="str">""</span>, <span class="str">"Clic para comprar"</span>],
+          <span class="key">"conditionFailMessage"</span>: <span class="str">"Necesitas 5 cuarzo"</span>,
+          <span class="key">"clickEvents"</span>: {
+            <span class="key">"compra"</span>: {
+              <span class="key">"type"</span>: <span class="str">"buyItem"</span>,
+              <span class="key">"consume"</span>: <span class="kw">true</span>,
+              <span class="key">"cost"</span>: [{ <span class="key">"item"</span>: <span class="str">"game:quartz"</span>, <span class="key">"amount"</span>: <span class="num">5</span> }],
+              <span class="key">"give"</span>: [{ <span class="key">"item"</span>: <span class="str">"game:sword-copper"</span>, <span class="key">"amount"</span>: <span class="num">1</span> }]
+            },
+            <span class="key">"msg"</span>: { <span class="key">"type"</span>: <span class="str">"message"</span>, <span class="key">"message"</span>: <span class="str">"¡Compra realizada, {player}!"</span> },
+            <span class="key">"cerrar"</span>: { <span class="key">"type"</span>: <span class="str">"closeGui"</span> }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+
+  <h2>🎖 Panel de admin</h2>
+  <pre><span class="pre-label">adminpanel.json</span><code>{
+  <span class="key">"id"</span>: <span class="str">"adminpanel"</span>,
+  <span class="key">"title"</span>: <span class="str">"Panel de Administración"</span>,
+  <span class="key">"rows"</span>: <span class="num">3</span>,
+  <span class="key">"commandAlias"</span>: <span class="str">"adminpanel"</span>,
+  <span class="key">"scenes"</span>: {
+    <span class="key">"0"</span>: {
+      <span class="key">"items"</span>: {
+        <span class="key">"tpspawn"</span>: {
+          <span class="key">"slot"</span>: <span class="num">11</span>,
+          <span class="key">"item"</span>: <span class="str">"game:book-normal"</span>,
+          <span class="key">"name"</span>: <span class="str">"Teleportar al Spawn"</span>,
+          <span class="key">"lore"</span>: [<span class="str">"Solo moderadores y admins"</span>],
+          <span class="key">"hideOnFail"</span>: <span class="kw">true</span>,
+          <span class="key">"conditions"</span>: {
+            <span class="key">"es-mod"</span>: { <span class="key">"type"</span>: <span class="str">"hasPrivilegeLevel"</span>, <span class="key">"minLevel"</span>: <span class="num">200</span> }
+          },
+          <span class="key">"clickEvents"</span>: {
+            <span class="key">"tp"</span>: { <span class="key">"type"</span>: <span class="str">"teleport"</span>, <span class="key">"location"</span>: <span class="str">"512000,150,512000"</span> },
+            <span class="key">"msg"</span>: { <span class="key">"type"</span>: <span class="str">"message"</span>, <span class="key">"message"</span>: <span class="str">"Teletransportado al spawn"</span> }
+          }
+        },
+        <span class="key">"kit-admin"</span>: {
+          <span class="key">"slot"</span>: <span class="num">13</span>,
+          <span class="key">"item"</span>: <span class="str">"game:gem-diamond"</span>,
+          <span class="key">"name"</span>: <span class="str">"Kit Admin (1/día)"</span>,
+          <span class="key">"lore"</span>: [<span class="str">"Solo admins · Cooldown: 24h"</span>],
+          <span class="key">"hideOnFail"</span>: <span class="kw">true</span>,
+          <span class="key">"conditions"</span>: {
+            <span class="key">"es-admin"</span>: { <span class="key">"type"</span>: <span class="str">"hasRole"</span>, <span class="key">"roleCode"</span>: <span class="str">"admin"</span> },
+            <span class="key">"cd"</span>: { <span class="key">"type"</span>: <span class="str">"cooldown"</span>, <span class="key">"id"</span>: <span class="str">"kit-admin"</span>, <span class="key">"durationMs"</span>: <span class="num">86400000</span> }
+          },
+          <span class="key">"conditionFailMessage"</span>: <span class="str">"Ya recogiste el kit hoy"</span>,
+          <span class="key">"clickEvents"</span>: {
+            <span class="key">"cmd"</span>: {
+              <span class="key">"type"</span>: <span class="str">"consoleCommand"</span>,
+              <span class="key">"commands"</span>: [<span class="str">"/give {player} game:gem-diamond 16"</span>]
+            },
+            <span class="key">"msg"</span>: { <span class="key">"type"</span>: <span class="str">"message"</span>, <span class="key">"message"</span>: <span class="str">"Kit recibido, {player}!"</span> }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('triggers')"><div><span class="direction">Anterior</span><span class="label">← Triggers</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('roadmap')"><div><span class="direction">Siguiente</span><span class="label">Roadmap →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ ROADMAP ═══════════════ -->
+<div class="page" id="page-roadmap">
+  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Roadmap</div>
+  <h1><span class="h1-icon">🗺</span> Roadmap</h1>
+  <p class="page-subtitle">Plan de desarrollo por fases del mod.</p>
+
+  <div class="phase-list">
+    <div class="phase-item">
+      <div class="phase-num">1</div>
+      <div class="phase-body">
+        <div class="phase-title">Fase 1 — MVP <span class="badge badge-v1" style="margin-left:8px">v0.1.x</span> <span class="badge badge-wip" style="margin-left:4px">EN CURSO</span></div>
+        <div class="phase-desc">✅ Estructura del proyecto · ✅ Carga de menús JSON · ✅ GUI visual con AddSkillItemGrid · ✅ Click events: message, closeGui, openGui, nextScene, previousScene, back, consoleCommand, playerCommand · ✅ commandAlias con target opcional/requerido · 🔲 Distribución al cliente</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">2</div>
+      <div class="phase-body">
+        <div class="phase-title">Fase 2 — Acciones y condiciones <span class="badge badge-v2" style="margin-left:8px">v0.2.x</span></div>
+        <div class="phase-desc">Click events: buyItem, sellItem (intercambio de ítems con validación de stock), teleport · Condiciones: hasPrivilege, hasItem, hasRole, hasPrivilegeLevel, hideOnFail · Player Data básico · Tokens {player}, {var:campo}, {uid}, {pos}, {gamemode} · Trigger por ítem · Cooldowns</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">3</div>
+      <div class="phase-body">
+        <div class="phase-title">Fase 3 — Avanzado <span class="badge badge-v3" style="margin-left:8px">v0.3.x</span></div>
+        <div class="phase-desc">ChatFetcher · PlayerPicker · Trigger onJoin · Trigger hotkey · Trigger claimZone (integración AxinClaimsRules, opcional) · Sound events · Title events · Condición playerDataCompare</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">4</div>
+      <div class="phase-body">
+        <div class="phase-title">Fase 4 — Editor en juego <span class="badge badge-wip" style="margin-left:8px">v1.0.0</span></div>
+        <div class="phase-desc">Interfaz visual de creación y edición de menús directamente en el juego · Vista previa en tiempo real · Generación automática de JSON</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('examples')"><div><span class="direction">Anterior</span><span class="label">← Ejemplos</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('vs-diff')"><div><span class="direction">Siguiente</span><span class="label">vs GUIPlus →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ VS GUIPLUS ═══════════════ -->
+<div class="page" id="page-vs-diff">
+  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> vs GUIPlus</div>
+  <h1><span class="h1-icon">⚔</span> AxinMenuGUI vs GUIPlus</h1>
+  <p class="page-subtitle">Diferencias y equivalencias entre los dos sistemas.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>GUIPlus (Minecraft)</th><th>AxinMenuGUI (VintageStory)</th><th>Nota</th></tr>
+    <tr><td>YAML</td><td>JSON</td><td>Estándar en VS</td></tr>
+    <tr><td>Inventario Chest/Hopper</td><td><code>GuiDialog</code> con grid configurable (píxeles fijos)</td><td>VS no tiene chest abierto como GUI nativa</td></tr>
+    <tr><td><code>§</code> color codes</td><td>VTML — p.ej. <code>&lt;font color="#FF8C00"&gt;texto&lt;/font&gt;</code></td><td>✅ Verificado. No funciona en <code>Notification</code> pero sí en <code>GuiDialog</code></td></tr>
+    <tr><td>Vault / economy</td><td>Player Data numérico</td><td>No hay economy nativa en VS</td></tr>
+    <tr><td>PlaceholderAPI</td><td>Sistema de tokens <code>{token}</code></td><td>Implementación propia</td></tr>
+    <tr><td>LuckPerms (roles externos)</td><td>Roles nativos VS (<code>hasRole</code>, <code>hasPrivilegeLevel</code>)</td><td>API nativa VS — no hay plugins externos</td></tr>
+    <tr><td><code>setOp: true</code></td><td><code>consoleCommand</code> — ejecuta como servidor</td><td>Sin restricciones de permiso del jugador</td></tr>
+    <tr><td>Skull textures Base64</td><td>Pendiente investigar API skin VS</td><td>No implementado todavía</td></tr>
+    <tr><td>BungeeCord</td><td>No aplica</td><td>VS es standalone</td></tr>
+    <tr><td>In-game editor</td><td>Fase 4</td><td>Primero config 100% por JSON</td></tr>
+    <tr><td>DeluxeMenus Converter</td><td>No aplica</td><td>No existe equivalente</td></tr>
+  </table>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('roadmap')"><div><span class="direction">Anterior</span><span class="label">← Roadmap</span></div></a>
+    <div></div>
+  </div>
+</div>
+
+</main>
+
+<!-- TOC (side right) -->
+<aside id="toc">
+  <div class="toc-title">En esta página</div>
+  <div id="toc-links"></div>
+</aside>
+
+</div><!-- /content-wrap -->
+</div><!-- /layout -->
+
+<script>
+// ── Navigation ──────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    if (l.getAttribute('onclick') && l.getAttribute('onclick').includes("'" + id + "'")) {
+      l.classList.add('active');
+    }
+  });
+  // Modo pantalla completa para el generador (sidebar permanece, todo lo demás se oculta)
+  if (id === 'generator') {
+    document.body.classList.add('gen-mode');
+  } else {
+    document.body.classList.remove('gen-mode');
+  }
+  buildTOC();
+}
+
+// ── TOC builder ──────────────────────────────────────────────
+function buildTOC() {
+  const toc = document.getElementById('toc-links');
+  toc.innerHTML = '';
+  const activePage = document.querySelector('.page.active');
+  if (!activePage) return;
+  const headings = activePage.querySelectorAll('h2, h3');
+  headings.forEach((h, i) => {
+    if (!h.id) h.id = 'toc-h-' + i;
+    const a = document.createElement('a');
+    a.className = 'toc-item';
+    if (h.tagName === 'H3') a.style.paddingLeft = '20px';
+    a.textContent = h.textContent.replace(/[^\w\s\-áéíóúñÁÉÍÓÚÑ]/g,'').trim();
+    a.href = '#' + h.id;
+    a.onclick = (e) => {
+      e.preventDefault();
+      document.getElementById(h.id).scrollIntoView({behavior:'smooth'});
+    };
+    toc.appendChild(a);
+  });
+}
+
+// ── Search (simple) ──────────────────────────────────────────
+function handleSearch(e) {
+  if (e.key !== 'Enter') return;
+  const q = e.target.value.toLowerCase().trim();
+  if (!q) return;
+  const pages = document.querySelectorAll('.page');
+  for (const page of pages) {
+    if (page.textContent.toLowerCase().includes(q)) {
+      const id = page.id.replace('page-','');
+      showPage(id);
+      e.target.value = '';
+      return;
+    }
+  }
+}
+
+// Ctrl+K focus search
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ── Init ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  showPage('home');
+});
+</script>
+</body>
+</html>
