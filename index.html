@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AxinMenuGUI — Documentación v0.6.0</title>
+<title>AxinMenuGUI — Documentación</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
 
@@ -143,14 +143,14 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
 <header id="header">
   <a class="logo" href="#" onclick="showPage('home')">
     <div class="logo-icon">⚔</div>
-    <div><div class="logo-text">AxinMenuGUI</div><div class="logo-sub">for VintageStory</div></div>
+    <div><div class="logo-text">AxinMenuGUI</div><div class="logo-sub">for Vintage Story</div></div>
   </a>
   <div class="header-search">
     <span style="color:var(--stone);font-size:13px">🔍</span>
     <input type="text" placeholder="Buscar en la documentación..." id="searchInput" onkeyup="handleSearch(event)">
     <span class="search-hint">Ctrl K</span>
   </div>
-  <div class="header-badge">M=4 · v0.6.0</div>
+  <div class="header-badge">Vintage Story 1.21.x · Docs</div>
 </header>
 
 <div id="layout">
@@ -176,8 +176,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <div class="nav-section-title">💬 Datos y tokens</div>
     <a class="nav-link" onclick="showPage('playerdata')"><span class="nav-icon">💾</span> Player Data</a>
     <a class="nav-link" onclick="showPage('tokens')"><span class="nav-icon">🔗</span> Tokens / Placeholders</a>
-    <a class="nav-link" onclick="showPage('chatfetcher')"><span class="nav-icon">💬</span> Chat Fetcher</a>
-  </div>
+</div>
   <div class="nav-section">
     <div class="nav-section-title">🔌 Triggers</div>
     <a class="nav-link" onclick="showPage('triggers')"><span class="nav-icon">⚡</span> Modos de apertura</a>
@@ -186,8 +185,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <div class="nav-section-title">📖 Recursos</div>
     <a class="nav-link" onclick="showPage('examples')"><span class="nav-icon">📦</span> Ejemplos completos</a>
     <a class="nav-link" onclick="showPage('roadmap')"><span class="nav-icon">🗺</span> Roadmap</a>
-    <a class="nav-link" onclick="showPage('vs-diff')"><span class="nav-icon">⚔</span> vs GUIPlus (MC)</a>
-  </div>
+</div>
 </nav>
 
 <div id="content-wrap">
@@ -197,29 +195,29 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
 <div class="page active" id="page-home">
   <div class="breadcrumb">AxinMenuGUI</div>
   <h1><span class="h1-icon">⚔</span> AxinMenuGUI</h1>
-  <p class="page-subtitle">Crea menús GUI completamente configurables para tu servidor VintageStory — sin escribir código.</p>
-  <p>AxinMenuGUI es un mod de menús interactivos para <strong>VintageStory</strong> que permite a los administradores construir menús complejos y multipágina mediante ficheros <strong>JSON</strong>. Sin programar, sin reiniciar el servidor.</p>
-  <p>Inspirado en <em>GUIPlus</em> (Minecraft/Spigot), diseñado desde cero para la API de VintageStory y la metodología <strong>AXIN</strong>.</p>
+  <p class="page-subtitle">Crea menús GUI configurables para tu servidor Vintage Story con JSON, escenas, condiciones, tiendas y progresión por jugador.</p>
+  <p>AxinMenuGUI es un mod de menús interactivos para <strong>Vintage Story</strong> que permite crear interfaces complejas mediante ficheros <strong>JSON</strong>, con recarga en caliente usando <code>/amenu reload</code>.</p>
+  <p>Está orientado a administradores y creadores de servidores que quieren montar menús visuales, paneles de administración, tiendas por objetos, recompensas limitadas y progresión basada en estadísticas del jugador.</p>
   <div class="feat-grid">
-    <div class="feat-card"><div class="feat-card-icon">🖼</div><div class="feat-card-title">100% JSON</div><div class="feat-card-desc">Crea y edita menús con ficheros JSON. Recarga en caliente sin reiniciar con <code>/amenu reload</code>.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🎨</div><div class="feat-card-title">14 Temas visuales</div><div class="feat-card-desc">Paneles con colores personalizados: oscuros, pergamino, piedra, noche, cofre, cristal. Un tema por escena.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🖱</div><div class="feat-card-title">Click Events</div><div class="feat-card-desc">Mensajes, comandos, dar/quitar ítems, navegar entre escenas, abrir submenús y más.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">✅</div><div class="feat-card-title">Condiciones</div><div class="feat-card-desc">Muestra u oculta botones según permisos, ítems en inventario, cooldowns y variables.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">📄</div><div class="feat-card-title">Multi-escena</div><div class="feat-card-desc">Menús multipágina con navegación y tema visual diferente en cada escena.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">💾</div><div class="feat-card-title">Player Stats</div><div class="feat-card-desc">Kills, muertes, tiempo de juego, puntos por mob. Ranking de jugadores con caché.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🔗</div><div class="feat-card-title">Tokens dinámicos</div><div class="feat-card-desc"><code>{player}</code>, <code>{stats.deaths}</code>, <code>{ranking.position}</code> y más en cualquier texto del menú.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🖼</div><div class="feat-card-title">58 Iconos propios</div><div class="feat-card-desc">Iconos pixel art 32×32 en el dominio <code>axinmenugui:</code> listos para usar en cualquier botón.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🖼</div><div class="feat-card-title">100% JSON</div><div class="feat-card-desc">Crea y edita menús desde archivos JSON sin tocar código. Recarga los cambios con <code>/amenu reload</code>.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🎨</div><div class="feat-card-title">14 temas visuales</div><div class="feat-card-desc">Paneles Cairo con estilos oscuros, pergamino, piedra, variantes tipo cofre y tema glass. Un tema por escena.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🛒</div><div class="feat-card-title">Tiendas por objetos</div><div class="feat-card-desc">Usa <code>buyItem</code> y <code>sellItem</code> para crear compras y ventas basadas en objetos del inventario.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🏆</div><div class="feat-card-title">Recompensas limitadas</div><div class="feat-card-desc">Limita usos por jugador con <code>maxUses</code> y desbloquea recompensas según logros, kills o progreso.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">✅</div><div class="feat-card-title">Condiciones y progreso</div><div class="feat-card-desc">Muestra u oculta botones según permisos, ítems, roles, cooldowns, estadísticas y datos personalizados.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">📄</div><div class="feat-card-title">Escenas y submenús</div><div class="feat-card-desc">Crea menús multipágina con navegación entre escenas, historial de back y submenús conectados.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">💾</div><div class="feat-card-title">Stats y ranking</div><div class="feat-card-desc">Usa kills, muertes, tiempo de juego, ranking y puntos acumulados directamente en condiciones y textos.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🖼</div><div class="feat-card-title">58 iconos propios</div><div class="feat-card-desc">Incluye iconos pixel art listos para usar con el dominio <code>axinmenugui:</code> en cualquier botón.</div></div>
   </div>
   <hr>
   <h2>📋 Requisitos</h2>
   <div class="table-wrap"><table>
     <tr><th>Requisito</th><th>Valor</th></tr>
-    <tr><td>VintageStory</td><td>1.21.x+</td></tr>
-    <tr><td>Versión actual</td><td>0.6.0</td></tr>
+    <tr><td>Vintage Story</td><td>1.21.x</td></tr>
+    <tr><td>Versión actual del mod</td><td>0.6.3</td></tr>
     <tr><td>Tipo de mod</td><td>Universal (cliente <strong>y</strong> servidor)</td></tr>
-    <tr><td>Dependencias</td><td>Ninguna (mod standalone)</td></tr>
+    <tr><td>Dependencias</td><td>Ninguna</td></tr>
   </table></div>
-  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Distribución al cliente — obligatoria</strong><p>AxinMenuGUI renderiza GUI en el cliente. Debe estar instalado en el cliente además del servidor.</p></div></div>
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Distribución al cliente</strong><p>AxinMenuGUI renderiza la interfaz en el cliente. Para usar sus menús en multijugador, el mod debe estar disponible tanto en servidor como en cliente.</p></div></div>
   <div class="page-nav"><div></div><a class="page-nav-btn" onclick="showPage('quickstart')"><div><span class="direction">Siguiente</span><span class="label">Inicio rápido →</span></div></a></div>
 </div>
 
@@ -230,12 +228,12 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
   <p class="page-subtitle">Instala AxinMenuGUI y crea tu primer menú en minutos.</p>
   <h2>📥 Instalación</h2>
   <ol>
-    <li>Copia <code>AxinMenuGUI_v0.6.0.zip</code> en la carpeta <code>Mods/</code> del servidor.</li>
+    <li>Copia <code>AxinMenuGUI_v0.6.3.zip</code> en la carpeta <code>Mods/</code> del servidor.</li>
     <li>Reinicia el servidor. Se generan los ficheros de configuración y menús de ejemplo.</li>
     <li>Verifica en los logs: <code>[AxinMenuGUI] Alias registrado: /menu → 'ejemplo'</code></li>
     <li>Entra al juego y escribe <code>/menu</code> para ver el menú de ejemplo.</li>
   </ol>
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body">El mod es <strong>Universal</strong>: también debe instalarse en el cliente.</div></div>
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body">El mod es <strong>Universal</strong>: instala la misma versión en cliente y servidor para que la GUI se muestre correctamente.</div></div>
   <h2>📂 Ficheros generados</h2>
   <pre><code>ModConfig/AxinMenuGUI/
 ├── config.json             <span class="cmt"># Configuración global (idioma, killPoints, ranking)</span>
@@ -243,7 +241,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
 │   ├── ejemplo.json        <span class="cmt"># Menú índice con submenús (/menu)</span>
 │   ├── ejemplo_jugador.json
 │   ├── ejemplo_stats.json
-│   ├── ejemplo_temas.json  <span class="cmt"># 13 escenas, un tema por pestaña (/temas)</span>
+│   ├── ejemplo_temas.json  <span class="cmt"># 13 escenas, una por tema (/temas)</span>
 │   └── ...
 └── playerdata/             <span class="cmt"># Stats por jugador (auto-generado)</span>
     └── {uid}.json</code></pre>
@@ -314,6 +312,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
   <h1><span class="h1-icon">⚙</span> Configuración global</h1>
   <p class="page-subtitle">El fichero <code>config.json</code> se genera automáticamente al primer inicio.</p>
   <pre><span class="pre-label">ModConfig/AxinMenuGUI/config.json</span><code>{
+  <span class="key">"DocVersion"</span>: <span class="num">0.2</span>,
   <span class="key">"language"</span>: <span class="str">"en"</span>,
   <span class="key">"rankingSize"</span>: <span class="num">10</span>,
   <span class="key">"rankingField"</span>: <span class="str">"mobKillsHostilePoints"</span>,
@@ -716,7 +715,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
   <span class="key">"maxStackSize"</span>: <span class="num">1</span>,
   <span class="key">"texture"</span>: { <span class="key">"base"</span>: <span class="str">"axinmenugui:item/menuicon-MINOMBRE"</span> }
 }</code></pre>
-  <div class="callout danger"><span class="callout-icon">🚨</span><div class="callout-body"><strong>El campo <code>texture</code> es OBLIGATORIO</strong><p>VintageStory no infiere la textura desde el código del ítem. Sin este campo el slot aparece negro aunque el PNG exista.</p></div></div>
+  <div class="callout danger"><span class="callout-icon">🚨</span><div class="callout-body"><strong>El campo <code>texture</code> es OBLIGATORIO</strong><p>Vintage Story no infiere la textura desde el código del ítem. Sin este campo el slot aparece negro aunque el PNG exista.</p></div></div>
   <ol start="4">
     <li>Reinicia el servidor. Usa el icono con: <code>"item": "axinmenugui:menuicon-MINOMBRE"</code></li>
   </ol>
@@ -782,18 +781,6 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
   <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body">Los tokens se resuelven en el servidor antes de enviar el menú al cliente, por lo que son visibles directamente en el nombre y lore de los botones.</div></div>
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('playerdata')"><div><span class="direction">Anterior</span><span class="label">← Player Data</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('chatfetcher')"><div><span class="direction">Siguiente</span><span class="label">Chat Fetcher →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ CHAT FETCHER ═══════════════ -->
-<div class="page" id="page-chatfetcher">
-  <div class="breadcrumb">💬 DATOS <span class="sep">›</span> Chat Fetcher</div>
-  <h1><span class="h1-icon">💬</span> Chat Fetcher</h1>
-  <p class="page-subtitle">Solicita input al jugador vía chat. <span class="badge badge-wip">Fase 3</span></p>
-  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body">Chat Fetcher está planificado para la Fase 3 y aún no está implementado.</div></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('tokens')"><div><span class="direction">Anterior</span><span class="label">← Tokens</span></div></a>
     <a class="page-nav-btn" onclick="showPage('triggers')"><div><span class="direction">Siguiente</span><span class="label">Triggers →</span></div></a>
   </div>
 </div>
@@ -807,13 +794,13 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <tr><th>Trigger</th><th>Estado</th><th>Descripción</th></tr>
     <tr><td><code>/amenu open &lt;id&gt;</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Comando directo de admin.</td></tr>
     <tr><td><code>commandAlias</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Alias por menú: <code>/menu</code>, <code>/temas</code>, etc.</td></tr>
-    <tr><td>Ítem especial</td><td><span class="badge badge-wip">Fase 2</span></td><td>Clic derecho en un ítem configurado.</td></tr>
+    <tr><td>Ítem especial</td><td><span class="badge badge-wip">Pendiente</span></td><td>Apertura al interactuar con un ítem configurado. Sigue pendiente dentro de Fase 2.</td></tr>
     <tr><td>Hotkey</td><td><span class="badge badge-wip">Fase 3</span></td><td>Tecla configurable (ClientSide).</td></tr>
     <tr><td>onJoin</td><td><span class="badge badge-wip">Fase 3</span></td><td>Al conectarse al servidor.</td></tr>
-    <tr><td>claimZone</td><td><span class="badge badge-wip">Fase 3 (opcional)</span></td><td>Al entrar en una zona con flag.</td></tr>
+    <tr><td>claimZone</td><td><span class="badge badge-wip">Fase 3 (opcional)</span></td><td>Apertura al entrar en una zona o claim configurado.</td></tr>
   </table></div>
   <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('chatfetcher')"><div><span class="direction">Anterior</span><span class="label">← Chat Fetcher</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('tokens')"><div><span class="direction">Anterior</span><span class="label">← Tokens</span></div></a>
     <a class="page-nav-btn" onclick="showPage('examples')"><div><span class="direction">Siguiente</span><span class="label">Ejemplos →</span></div></a>
   </div>
 </div>
@@ -849,66 +836,44 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
 <div class="page" id="page-roadmap">
   <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Roadmap</div>
   <h1><span class="h1-icon">🗺</span> Roadmap</h1>
-  <p class="page-subtitle">Plan de desarrollo por fases del mod.</p>
+  <p class="page-subtitle">Estado funcional resumido para usuarios y administradores.</p>
   <div class="phase-list">
     <div class="phase-item">
       <div class="phase-num">1</div>
       <div class="phase-body">
-        <div class="phase-title">Fase 1 — MVP <span class="badge badge-v1" style="margin-left:8px">v0.1.x</span> <span class="badge badge-wip" style="margin-left:4px">EN CURSO</span></div>
-        <div class="phase-desc">✅ Estructura + modinfo · ✅ Carga menús JSON · ✅ GUI grid posicionado · ✅ Click events: message, closeGui, openGui, nextScene, previousScene, back, consoleCommand, playerCommand · ✅ commandAlias · ✅ 58 iconos personalizados · ✅ 7 menús de ejemplo embebidos · ✅ Repo Git + GitHub Pages · 🔲 Distribución al cliente</div>
+        <div class="phase-title">Fase 1 — MVP <span class="badge badge-v1" style="margin-left:8px">v0.1.x</span> <span class="badge badge-wip" style="margin-left:4px">AÚN ABIERTA</span></div>
+        <div class="phase-desc">Carga de menús JSON, GUI por slots, navegación entre escenas, comandos base, alias, 58 iconos, 7 menús de ejemplo y sistema de temas ya disponibles. La distribución al cliente sigue siendo requisito pendiente de cierre.</div>
       </div>
     </div>
     <div class="phase-item">
       <div class="phase-num">2</div>
       <div class="phase-body">
         <div class="phase-title">Fase 2 — Acciones y condiciones <span class="badge badge-v2" style="margin-left:8px">v0.2.x</span> <span class="badge badge-wip" style="margin-left:4px">EN CURSO</span></div>
-        <div class="phase-desc">✅ giveItem/takeItem/buyItem/sellItem · ✅ setVariable (matemáticas) · ✅ Condiciones: hasPrivilege, hasItem, hasRole, cooldownActive · ✅ hideOnFail · ✅ PlayerStats (kills, tiempo, muertes, ranking) · ✅ 14 temas Cairo (incluido glass y variantes cofre) · ✅ Theme por escena · 🔲 teleport · 🔲 Trigger por ítem</div>
+        <div class="phase-desc">Bloque 2.MEGA completado: tiendas por objetos, venta/compra, variables por jugador, cooldowns, <code>hideOnFail</code>, stats y ranking, <code>slot groups</code>, recompensas limitadas con <code>maxUses</code>, 14 temas visuales y theme por escena. Quedan pendientes <code>teleport</code> y trigger por ítem.</div>
       </div>
     </div>
     <div class="phase-item">
       <div class="phase-num">3</div>
       <div class="phase-body">
         <div class="phase-title">Fase 3 — Avanzado <span class="badge badge-v3" style="margin-left:8px">v0.3.x</span></div>
-        <div class="phase-desc">ChatFetcher · PlayerPicker · Trigger onJoin · Trigger hotkey · Trigger claimZone (integración AxinClaimsRules, opcional) · Sound events · Title events · Condición playerDataCompare</div>
+        <div class="phase-desc">Funciones previstas: apertura con hotkey, onJoin, claimZone opcional, sound events, title events y herramientas avanzadas de interacción.</div>
       </div>
     </div>
     <div class="phase-item">
       <div class="phase-num">4</div>
       <div class="phase-body">
         <div class="phase-title">Fase 4 — Editor en juego <span class="badge badge-wip" style="margin-left:8px">v1.0.0</span></div>
-        <div class="phase-desc">Interfaz visual de creación y edición de menús directamente en el juego · Vista previa en tiempo real · Generación automática de JSON</div>
+        <div class="phase-desc">Editor visual dentro del juego para crear y modificar menús con vista previa en tiempo real.</div>
       </div>
     </div>
   </div>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Estado actual recomendado para usuarios</strong><p>La parte más madura del mod ahora mismo es la creación de menús JSON, escenas, tiendas por objetos, condiciones, stats/ranking, recompensas limitadas y temas visuales.</p></div></div>
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('examples')"><div><span class="direction">Anterior</span><span class="label">← Ejemplos</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('vs-diff')"><div><span class="direction">Siguiente</span><span class="label">vs GUIPlus →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ VS GUIPLUS ═══════════════ -->
-<div class="page" id="page-vs-diff">
-  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> vs GUIPlus</div>
-  <h1><span class="h1-icon">⚔</span> AxinMenuGUI vs GUIPlus</h1>
-  <p class="page-subtitle">Diferencias y equivalencias entre los dos sistemas.</p>
-  <div class="table-wrap"><table>
-    <tr><th>GUIPlus (Minecraft)</th><th>AxinMenuGUI (VintageStory)</th><th>Nota</th></tr>
-    <tr><td>YAML</td><td>JSON</td><td>Estándar en VS</td></tr>
-    <tr><td>Inventario Chest</td><td><code>GuiDialog</code> con grid configurable</td><td>VS no tiene chest como GUI nativa</td></tr>
-    <tr><td>Temas de color limitados</td><td>14 temas Cairo personalizables</td><td>✅ Sistema propio completo</td></tr>
-    <tr><td><code>§</code> color codes</td><td>VTML — <code>&lt;font color="#FF8C00"&gt;texto&lt;/font&gt;</code></td><td>✅ Verificado en GuiDialog</td></tr>
-    <tr><td>Vault / economy</td><td>Player Data numérico + stats</td><td>No hay economy nativa en VS</td></tr>
-    <tr><td>PlaceholderAPI</td><td>Sistema de tokens <code>{token}</code></td><td>18+ tokens incluyendo stats y ranking</td></tr>
-    <tr><td>LuckPerms</td><td>Roles nativos VS (<code>hasRole</code>, <code>hasPrivilegeLevel</code>)</td><td>API nativa VS</td></tr>
-    <tr><td>Skull textures</td><td>58 iconos pixel art propios</td><td>Dominio <code>axinmenugui:</code></td></tr>
-    <tr><td>BungeeCord</td><td>No aplica</td><td>VS es standalone</td></tr>
-    <tr><td>In-game editor</td><td>Fase 4</td><td>Primero config 100% por JSON</td></tr>
-  </table></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('roadmap')"><div><span class="direction">Anterior</span><span class="label">← Roadmap</span></div></a>
     <div></div>
   </div>
 </div>
+
 
 </main>
 
