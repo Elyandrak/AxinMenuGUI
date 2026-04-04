@@ -1,193 +1,409 @@
 {
   "id": "ejemplo_tienda",
-  "title": "Tienda de Ejemplo",
-  "rows": 3,
+  "title": "Tienda",
+  "theme": "parchment",
+  "rows": 4,
   "commandAlias": "",
   "commandAliasTarget": "DISABLED",
-  "permission": "",
+  "permission": "controlserver",
   "openTriggers": [],
   "scenes": {
-
     "0": {
       "delay": 0,
       "items": {
 
         "titulo": {
           "slot": 4,
-          "item": "axinmenugui:menuicon-coin",
+          "item": "axinmenugui:menuicon-shop",
           "amount": 1,
           "name": "<font color='gold'>Tienda de Ejemplo</font>",
           "lore": [
-            "Bienvenido, {player}",
-            "Aquí verás cómo se integrará buyItem en el Bloque 2.1",
-            "Por ahora los botones muestran el mensaje de stub"
+            "Bienvenido, <font color='cyan'>{player}</font>",
+            " ",
+            "<font color='gray'>Usa palos como moneda.</font>",
+            "<font color='gray'>Tus kills: {stats.mobKillsHostilePoints} pts</font>"
           ],
-          "clickEvents": {
-            "msg": {
-              "type": "message",
-              "clickType": "ANY",
-              "message": "<font color='gold'>[Tienda]</font> Bienvenido, <font color='cyan'>{player}</font>"
-            }
-          },
+          "clickEvents": {},
           "conditions": {},
           "conditionFailMessage": ""
         },
 
-        "item_antorcha": {
+        "articulo_1": {
           "slot": 9,
           "item": "game:torch-up",
           "amount": 4,
-          "name": "Antorcha x4",
+          "name": "<font color='yellow'>Antorchas x4</font>",
           "lore": [
-            "Precio futuro: 1 moneda",
-            "<font color='gray'>(buyItem — Bloque 2.1 pendiente)</font>"
+            "<font color='gray'>Coste:</font> <font color='white'>1 palo</font>",
+            " ",
+            "Haz clic para comprar."
           ],
+          "hideOnFail": false,
           "clickEvents": {
+            "comprar": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [ { "item": "game:stick", "amount": 1 } ],
+              "give": [ { "item": "game:torch-up", "amount": 4 } ],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 1 palo.</font>"
+            },
             "msg": {
               "type": "message",
               "clickType": "ANY",
-              "message": "<font color='gray'>[Tienda]</font> buyItem no implementado aún (Bloque 2.1)"
-            },
-            "give": {
-              "type": "giveItem",
-              "clickType": "ANY",
-              "item": "game:torch-up",
-              "amount": 4
+              "message": "<font color='lime'>✓ Compraste 4 antorchas.</font>"
             }
           },
           "conditions": {},
           "conditionFailMessage": ""
         },
 
-        "item_cuerda": {
+        "articulo_2": {
           "slot": 10,
           "item": "game:rope",
           "amount": 2,
-          "name": "Cuerda x2",
+          "name": "<font color='yellow'>Cuerda x2</font>",
           "lore": [
-            "Precio futuro: 2 monedas",
-            "<font color='gray'>(buyItem — Bloque 2.1 pendiente)</font>"
+            "<font color='gray'>Coste:</font> <font color='white'>2 palos</font>",
+            " ",
+            "Haz clic para comprar."
           ],
+          "hideOnFail": false,
           "clickEvents": {
+            "comprar": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [ { "item": "game:stick", "amount": 2 } ],
+              "give": [ { "item": "game:rope", "amount": 2 } ],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+            },
             "msg": {
               "type": "message",
               "clickType": "ANY",
-              "message": "<font color='gray'>[Tienda]</font> buyItem no implementado aún (Bloque 2.1)"
+              "message": "<font color='lime'>✓ Compraste 2 cuerdas.</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "articulo_3": {
+          "slot": 11,
+          "item": "game:flaxfibers",
+          "amount": 8,
+          "name": "<font color='yellow'>Fibra de lino x8</font>",
+          "lore": [
+            "<font color='gray'>Coste:</font> <font color='white'>3 palos</font>",
+            " ",
+            "Haz clic para comprar."
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "comprar": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [ { "item": "game:stick", "amount": 3 } ],
+              "give": [ { "item": "game:flaxfibers", "amount": 8 } ],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 3 palos.</font>"
             },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Compraste 8 fibras de lino.</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "articulo_4": {
+          "slot": 12,
+          "item": "game:charcoal",
+          "amount": 5,
+          "name": "<font color='yellow'>Carbón x5</font>",
+          "lore": [
+            "<font color='gray'>Coste:</font> <font color='white'>4 palos</font>",
+            " ",
+            "Haz clic para comprar."
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "comprar": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [ { "item": "game:stick", "amount": 4 } ],
+              "give": [ { "item": "game:charcoal", "amount": 5 } ],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 4 palos.</font>"
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Compraste 5 carbones.</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "articulo_5": {
+          "slot": 13,
+          "item": "game:flint",
+          "amount": 3,
+          "name": "<font color='yellow'>Pedernal x3</font>",
+          "lore": [
+            "<font color='gray'>Coste:</font> <font color='white'>5 palos</font>",
+            " ",
+            "Haz clic para comprar."
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "comprar": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [ { "item": "game:stick", "amount": 5 } ],
+              "give": [ { "item": "game:flint", "amount": 3 } ],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 5 palos.</font>"
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Compraste 3 pedernales.</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "articulo_6": {
+          "slot": 14,
+          "item": "game:ore-bituminouscoal",
+          "amount": 2,
+          "name": "<font color='yellow'>Carbón bituminoso x2</font>",
+          "lore": [
+            "<font color='gray'>Coste:</font> <font color='white'>6 palos</font>",
+            " ",
+            "Haz clic para comprar."
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "comprar": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [ { "item": "game:stick", "amount": 6 } ],
+              "give": [ { "item": "game:ore-bituminouscoal", "amount": 2 } ],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 6 palos.</font>"
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Compraste 2 carbones bituminosos.</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "separador": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gold'>Recompensa por kills</font>",
+          "lore": [
+            "Las siguientes recompensas son por matar mobs.",
+            "<font color='gray'>Tus puntos actuales: {stats.mobKillsHostilePoints}</font>"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "recompensa_rango_bajo": {
+          "slot": 19,
+          "priority": 1,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='aqua'>Rango Novato</font>",
+          "lore": [
+            "Menos de 50 puntos de kills.",
+            "<font color='gray'>Puntos: {stats.mobKillsHostilePoints}</font>",
+            " ",
+            "Haz clic para recibir 2 antorchas."
+          ],
+          "hideOnFail": false,
+          "maxUses": 1,
+          "maxUsesMessage": "<font color='red'>✗ Ya reclamaste la recompensa de Novato.</font>",
+          "conditions": {
+            "c1": {
+              "type": "playerDataCompare",
+              "field": "stats.mobKillsHostilePoints",
+              "operator": "lt",
+              "compareValue": "50"
+            }
+          },
+          "clickEvents": {
+            "give": {
+              "type": "giveItem",
+              "clickType": "ANY",
+              "item": "game:ore-bituminouscoal",
+              "amount": 2
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Recompensa de Novato reclamada: 2 cabon.</font>"
+            }
+          },
+          "conditionFailMessage": ""
+        },
+
+        "recompensa_rango_medio": {
+          "slot": 20,
+          "priority": 2,
+          "item": "axinmenugui:menuicon-circle-gold",
+          "amount": 1,
+          "name": "<font color='yellow'>Rango Veterano</font>",
+          "lore": [
+            "Entre 50 y 99 puntos de kills.",
+            "<font color='gray'>Puntos: {stats.mobKillsHostilePoints}</font>",
+            " ",
+            "Haz clic para recibir 1 cuerda."
+          ],
+          "hideOnFail": false,
+          "maxUses": 1,
+          "maxUsesMessage": "<font color='red'>✗ Ya reclamaste la recompensa de Veterano.</font>",
+          "conditions": {
+            "c1": {
+              "type": "playerDataCompare",
+              "field": "stats.mobKillsHostilePoints",
+              "operator": "gte",
+              "compareValue": "50"
+            },
+            "c2": {
+              "type": "playerDataCompare",
+              "field": "stats.mobKillsHostilePoints",
+              "operator": "lt",
+              "compareValue": "100"
+            }
+          },
+          "clickEvents": {
             "give": {
               "type": "giveItem",
               "clickType": "ANY",
               "item": "game:rope",
-              "amount": 2
-            }
-          },
-          "conditions": {},
-          "conditionFailMessage": ""
-        },
-
-        "item_lino": {
-          "slot": 11,
-          "item": "game:flaxfibers",
-          "amount": 8,
-          "name": "Fibra de lino x8",
-          "lore": [
-            "Precio futuro: 3 monedas",
-            "<font color='gray'>(buyItem — Bloque 2.1 pendiente)</font>"
-          ],
-          "clickEvents": {
-            "msg": {
-              "type": "message",
-              "clickType": "ANY",
-              "message": "<font color='gray'>[Tienda]</font> buyItem no implementado aún (Bloque 2.1)"
-            },
-            "give": {
-              "type": "giveItem",
-              "clickType": "ANY",
-              "item": "game:flaxfibers",
-              "amount": 8
-            }
-          },
-          "conditions": {},
-          "conditionFailMessage": ""
-        },
-
-        "item_diamante": {
-          "slot": 13,
-          "item": "game:gem-diamond-rough-low",
-          "amount": 1,
-          "name": "<font color='aqua'>Diamante</font>",
-          "lore": [
-            "Solo para administradores",
-            "Precio futuro: 100 monedas",
-            "<font color='gray'>(condición hasPrivilege aplicada)</font>"
-          ],
-          "clickEvents": {
-            "msg": {
-              "type": "message",
-              "clickType": "ANY",
-              "message": "<font color='gray'>[Tienda]</font> buyItem no implementado aún (Bloque 2.1)"
-            },
-            "give": {
-              "type": "giveItem",
-              "clickType": "ANY",
-              "item": "game:gem-diamond-rough-low",
               "amount": 1
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Recompensa de Veterano reclamada: 1 cuerda.</font>"
             }
           },
+          "conditionFailMessage": ""
+        },
+
+        "recompensa_rango_alto": {
+          "slot": 21,
+          "priority": 3,
+          "item": "axinmenugui:menuicon-circle-green",
+          "amount": 1,
+          "name": "<font color='lime'>Rango Élite</font>",
+          "lore": [
+            "100 o más puntos de kills.",
+            "<font color='gray'>Puntos: {stats.mobKillsHostilePoints}</font>",
+            " ",
+            "<font color='gold'>¡Solo puedes reclamar 1 vez!</font>",
+            "Haz clic para recibir 1 hacha de cobre."
+          ],
+          "hideOnFail": false,
+          "maxUses": 1,
+          "maxUsesMessage": "<font color='red'>✗ Ya reclamaste la recompensa Élite.</font>",
           "conditions": {
-            "esadmin": {
-              "type": "hasPrivilege",
-              "privilege": "controlserver",
-              "inverted": false
+            "c1": {
+              "type": "playerDataCompare",
+              "field": "stats.mobKillsHostilePoints",
+              "operator": "gte",
+              "compareValue": "100"
             }
           },
-          "conditionFailMessage": "<font color='red'>✗ Este artículo es solo para administradores.</font>"
+          "clickEvents": {
+            "give": {
+              "type": "giveItem",
+              "clickType": "ANY",
+              "item": "game:axe-felling-copper",
+              "amount": 1
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>✓ Recompensa Élite reclamada: hacha de cobre.</font>"
+            }
+          },
+          "conditionFailMessage": ""
+        },
+
+        "info_palos": {
+          "slot": 26,
+          "item": "game:stick",
+          "amount": 6,
+          "name": "<font color='gray'>Moneda: Palo</font>",
+          "lore": [
+            "Los palos son la moneda de esta tienda.",
+            " ",
+            "<font color='gray'>Se consumen al comprar.</font>"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "info_stats": {
+          "slot": 27,
+          "item": "axinmenugui:menuicon-trophy",
+          "amount": 1,
+          "name": "<font color='gold'>Tus estadísticas</font>",
+          "lore": [
+            "Kills hostiles: <font color='white'>{stats.mobKillsHostile}</font>",
+            "Puntos kills: <font color='white'>{stats.mobKillsHostilePoints}</font>",
+            "Muertes: <font color='white'>{stats.deaths}</font>",
+            "Tiempo: <font color='white'>{stats.timeReal}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Kills: {stats.mobKillsHostile} | Puntos: {stats.mobKillsHostilePoints} | Muertes: {stats.deaths}"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
         },
 
         "volver": {
-          "slot": 16,
+          "slot": 34,
           "item": "axinmenugui:menuicon-back",
           "amount": 1,
-          "name": "← Volver",
+          "name": "<font color='gray'>← Volver</font>",
           "lore": ["Vuelve al menú anterior"],
           "clickEvents": {
-            "back": {
-              "type": "back",
-              "clickType": "ANY"
-            }
+            "back": { "type": "back", "clickType": "ANY" }
           },
           "conditions": {},
           "conditionFailMessage": ""
         },
 
         "cerrar": {
-          "slot": 17,
+          "slot": 35,
           "item": "axinmenugui:menuicon-close",
           "amount": 1,
           "name": "<font color='red'>Cerrar</font>",
           "lore": ["Cierra el menú"],
           "clickEvents": {
-            "close": {
-              "type": "closeGui",
-              "clickType": "ANY"
-            }
-          },
-          "conditions": {},
-          "conditionFailMessage": ""
-        },
-
-        "menu_principal": {
-          "slot": 26,
-          "item": "axinmenugui:menuicon-home",
-          "amount": 1,
-          "name": "Menú principal",
-          "lore": ["Vuelve al menú principal de ejemplo"],
-          "clickEvents": {
-            "open": {
-              "type": "openGui",
-              "clickType": "ANY",
-              "guiId": "ejemplo"
-            }
+            "close": { "type": "closeGui", "clickType": "ANY" }
           },
           "conditions": {},
           "conditionFailMessage": ""
@@ -195,6 +411,5 @@
 
       }
     }
-
   }
 }

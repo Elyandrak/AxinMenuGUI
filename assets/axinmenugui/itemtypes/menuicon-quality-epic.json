@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-quality-epic",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-quality-epic"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-quality-rare",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-quality-rare"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

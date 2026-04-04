@@ -1,6 +1,7 @@
 // AxinMenuGUI — UI
 // Archivo: GuiMenuManager.cs
-// Responsabilidad: gestión del lado cliente — recibe paquetes y abre GUIs.
+// CAMBIO v0.6.5: añadido RegisterMessageType<BlockRightClickPacket> al canal cliente.
+//   BlockClickHandlerClient se inicializa aquí con acceso al channel.
 
 using Vintagestory.API.Client;
 
@@ -12,6 +13,9 @@ namespace AxinMenuGUI
         private GuiMenuDialog?             _activeDialog;
         private IClientNetworkChannel?     _channel;
 
+        // Accesible para que AxinMenuGuiMod pueda inyectar BlockClickHandlerClient
+        public IClientNetworkChannel? Channel => _channel;
+
         public GuiMenuManager(ICoreClientAPI api)
         {
             _api = api;
@@ -22,6 +26,8 @@ namespace AxinMenuGUI
                 .RegisterMessageType<MenuClosePacket>()
                 .RegisterMessageType<SlotClickPacket>()
                 .RegisterMessageType<ExecuteCommandPacket>()
+                .RegisterMessageType<BlockRightClickPacket>()
+                .RegisterMessageType<BlockGuiListPacket>()
                 .SetMessageHandler<MenuOpenPacket>(OnMenuOpenPacket)
                 .SetMessageHandler<MenuClosePacket>(OnMenuClosePacket)
                 .SetMessageHandler<ExecuteCommandPacket>(OnExecuteCommandPacket);
@@ -60,7 +66,6 @@ namespace AxinMenuGUI
         private void OnExecuteCommandPacket(ExecuteCommandPacket packet)
         {
             if (string.IsNullOrWhiteSpace(packet.Command)) return;
-            // Ejecutar como si el jugador escribiera el comando en el chat (con Enter)
             _api.SendChatMessage(packet.Command);
         }
     }

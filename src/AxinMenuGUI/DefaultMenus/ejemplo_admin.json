@@ -1,6 +1,7 @@
 {
   "id": "ejemplo_admin",
   "title": "Panel de Administración",
+  "theme": "dark-red",
   "rows": 3,
   "commandAlias": "",
   "commandAliasTarget": "DISABLED",
@@ -117,6 +118,24 @@
           "conditionFailMessage": ""
         },
 
+        "ir_tests": {
+          "slot": 15,
+          "item": "axinmenugui:menuicon-warning",
+          "amount": 1,
+          "name": "<font color='yellow'>Tests de features</font>",
+          "lore": [
+            "Escena de prueba para verificar:",
+            "setVariable, cooldownActive,",
+            "hideOnFail, hasPrivilegeLevel,",
+            "tokens ranking.*"
+          ],
+          "clickEvents": {
+            "next": { "type": "nextScene", "clickType": "ANY" }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
         "volver": {
           "slot": 16,
           "item": "axinmenugui:menuicon-back",
@@ -124,10 +143,7 @@
           "name": "← Volver",
           "lore": ["Vuelve al menú anterior"],
           "clickEvents": {
-            "back": {
-              "type": "back",
-              "clickType": "ANY"
-            }
+            "back": { "type": "back", "clickType": "ANY" }
           },
           "conditions": {},
           "conditionFailMessage": ""
@@ -140,10 +156,232 @@
           "name": "<font color='red'>Cerrar</font>",
           "lore": ["Cierra el menú"],
           "clickEvents": {
-            "close": {
-              "type": "closeGui",
-              "clickType": "ANY"
+            "close": { "type": "closeGui", "clickType": "ANY" }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+
+      }
+    },
+
+    "1": {
+      "delay": 0,
+      "theme": "dark-blue",
+      "items": {
+
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-warning",
+          "amount": 1,
+          "name": "<font color='yellow'>Tests de Features</font>",
+          "lore": [
+            "Escena de verificación del Bloque 2.MEGA.",
+            " ",
+            "Tu ranking: <font color='white'>{ranking.position}</font>",
+            "Top 3: <font color='white'>{ranking.top3}</font>"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "test_setvariable": {
+          "slot": 9,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "TEST: setVariable +1",
+          "lore": [
+            "Incrementa el campo 'test_contador' en 1.",
+            "Valor actual: <font color='white'>{var:test_contador}</font>",
+            " ",
+            "Clic → add 1 → verifica con /amenu player"
+          ],
+          "clickEvents": {
+            "set": {
+              "type": "setVariable",
+              "clickType": "ANY",
+              "variable": "test_contador",
+              "value": "1",
+              "operation": "add"
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ test_contador incrementado. Valor: {var:test_contador}</font>"
             }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "test_cooldown": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-clock",
+          "amount": 1,
+          "name": "TEST: cooldown 1 minuto",
+          "lore": [
+            "Da 1 palo con cooldown de 1 minuto.",
+            "Segundo clic bloquea 60 segundos.",
+            " ",
+            "Verifica cooldownActive condition."
+          ],
+          "clickEvents": {
+            "give": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [],
+              "give": [ { "item": "game:stick", "amount": 1 } ],
+              "consume": false,
+              "limits": {
+                "perPlayer": {
+                  "maxTotal": 0,
+                  "cooldown": "1m"
+                }
+              },
+              "conditionFailMessage": "<font color='red'>✗ Cooldown activo. Espera 1 minuto.</font>"
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Palo recibido. Próximo uso en 1 minuto.</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "test_hide_admin": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-shield-role",
+          "amount": 1,
+          "name": "<font color='gold'>Solo admin (hideOnFail)</font>",
+          "lore": [
+            "Visible solo si tienes privilegio 'controlserver'.",
+            "hideOnFail: true → desaparece si no cumples.",
+            " ",
+            "Si ves esto, hideOnFail funciona."
+          ],
+          "hideOnFail": true,
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>✓ hideOnFail verificado: eres admin.</font>"
+            }
+          },
+          "conditions": {
+            "c1": {
+              "type": "hasPrivilege",
+              "privilege": "controlserver",
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": ""
+        },
+
+        "test_privilege_level": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-crown",
+          "amount": 1,
+          "name": "hasPrivilegeLevel ≥ 0",
+          "lore": [
+            "Visible si privilegeLevel >= 0.",
+            "hideOnFail: true.",
+            " ",
+            "Debe aparecer para cualquier admin."
+          ],
+          "hideOnFail": true,
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ hasPrivilegeLevel verificado.</font>"
+            }
+          },
+          "conditions": {
+            "c1": {
+              "type": "hasPrivilegeLevel",
+              "minLevel": 0,
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": ""
+        },
+
+        "test_ranking_tokens": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-trophy",
+          "amount": 1,
+          "name": "<font color='gold'>Tokens ranking.*</font>",
+          "lore": [
+            "Tu posición: <font color='white'>{ranking.position}</font>",
+            "Tu valor: <font color='white'>{ranking.value}</font>",
+            " ",
+            "Top 3:",
+            "{ranking.top3}"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Ranking: #{ranking.position} | Puntos: {ranking.value} | {ranking.top3}"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "test_hide_nunca": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-eye",
+          "amount": 1,
+          "name": "<font color='red'>hideOnFail oculto</font>",
+          "lore": [
+            "hideOnFail: true con condición SIEMPRE FALSA.",
+            "No deberías ver este botón.",
+            " ",
+            "Si aparece, hideOnFail está roto."
+          ],
+          "hideOnFail": true,
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "BUG: este botón no debería ser visible."
+            }
+          },
+          "conditions": {
+            "c1": {
+              "type": "hasPrivilege",
+              "privilege": "___never_exists___",
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": ""
+        },
+
+        "volver": {
+          "slot": 16,
+          "item": "axinmenugui:menuicon-back",
+          "amount": 1,
+          "name": "← Volver escena",
+          "lore": ["Vuelve a la escena anterior"],
+          "clickEvents": {
+            "prev": { "type": "previousScene", "clickType": "ANY" }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+
+        "cerrar": {
+          "slot": 17,
+          "item": "axinmenugui:menuicon-close",
+          "amount": 1,
+          "name": "<font color='red'>Cerrar</font>",
+          "lore": ["Cierra el menú"],
+          "clickEvents": {
+            "close": { "type": "closeGui", "clickType": "ANY" }
           },
           "conditions": {},
           "conditionFailMessage": ""

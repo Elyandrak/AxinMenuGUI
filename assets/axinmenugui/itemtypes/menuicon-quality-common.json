@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-quality-common",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-quality-common"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

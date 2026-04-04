@@ -1,15 +1,19 @@
 // AxinMenuGUI — Features/Registry
 // Archivo: MenuRegistry.cs
-// Responsabilidad: cargar, parsear y proveer acceso a los menús definidos en JSON.
-// NO ejecuta eventos. NO renderiza. Solo carga y almacena.
+// v0.6.7: menús embebidos con prioridad inferior al usuario.
 //
-// Menús de ejemplo embebidos en el DLL:
-//   - Si falta algún menú de ejemplo en disco → se extrae automáticamente.
-//   - NUNCA sobreescribe un JSON que ya existe en disco.
+// REGLA: Los ficheros de usuario (no-embebido) se cargan PRIMERO.
+// Los embebidos solo se cargan si su ID no está ya registrado.
+// RegisterAliases en CommandHandler ya respeta el orden de carga:
+// el alias del menú de usuario (cargado primero) se registra,
+// y cuando llega el alias del embebido ya está en _registeredAliases.
+//
+// EXTRACCIÓN: los embebidos solo se extraen si el fichero NO existe en disco.
 
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Vintagestory.API.Server;
@@ -24,113 +28,92 @@ namespace AxinMenuGUI
         private string MenusFolder =>
             Path.Combine(_api.DataBasePath, "ModConfig", "AxinMenuGUI", "menus");
 
-        // Recurso embebido → nombre de archivo destino en disco
+        private static readonly HashSet<string> EmbeddedIds = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "ejemplo", "ejemplo_tienda", "ejemplo_admin",
+            "ejemplo_multitema", "ejemplo_jugador", "ejemplo_stats", "ejemplo_temas"
+        };
+
         private static readonly Dictionary<string, string> EmbeddedMenus = new()
         {
-            ["AxinMenuGUI.DefaultMenus.ejemplo.json"]        = "ejemplo.json",
-            ["AxinMenuGUI.DefaultMenus.ejemplo_tienda.json"] = "ejemplo_tienda.json",
-            ["AxinMenuGUI.DefaultMenus.ejemplo_admin.json"]  = "ejemplo_admin.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo.json"]           = "ejemplo.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo_tienda.json"]    = "ejemplo_tienda.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo_admin.json"]     = "ejemplo_admin.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo_multitema.json"] = "ejemplo_multitema.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo_jugador.json"]   = "ejemplo_jugador.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo_stats.json"]     = "ejemplo_stats.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo_temas.json"]     = "ejemplo_temas.json",
         };
 
         public int Count => _menus.Count;
+        public MenuRegistry(ICoreServerAPI api) { _api = api; }
 
-        public MenuRegistry(ICoreServerAPI api)
-        {
-            _api = api;
-        }
-
-        /// <summary>
-        /// Carga (o recarga) todos los ficheros .json de la carpeta menus/.
-        /// Garantiza que los menús de ejemplo están en disco antes de cargar.
-        /// </summary>
         public void LoadAll()
         {
             _menus.Clear();
-
             Directory.CreateDirectory(MenusFolder);
             ExtractEmbeddedMenus();
 
-            var files = Directory.GetFiles(MenusFolder, "*.json");
+            var all = Directory.GetFiles(MenusFolder, "*.json");
+            // Separar: primero los del usuario, luego los embebidos
+            var userFiles    = all.Where(f => !IsEmbeddedFile(f)).OrderBy(f => f).ToList();
+            var embeddFiles  = all.Where(f =>  IsEmbeddedFile(f)).OrderBy(f => f).ToList();
 
-            int loaded = 0;
-            int failed = 0;
-
-            foreach (var file in files)
-            {
-                try
-                {
-                    var json = File.ReadAllText(file);
-                    var menu = JsonConvert.DeserializeObject<MenuDefinition>(json);
-
-                    if (menu == null || string.IsNullOrWhiteSpace(menu.Id))
-                    {
-                        _api.Logger.Warning(
-                            $"[AxinMenuGUI] {Path.GetFileName(file)}: ignorado (sin 'id' o JSON inválido).");
-                        failed++;
-                        continue;
-                    }
-
-                    if (_menus.ContainsKey(menu.Id))
-                    {
-                        _api.Logger.Warning(
-                            $"[AxinMenuGUI] ID duplicado '{menu.Id}' en {Path.GetFileName(file)}. Ignorado.");
-                        failed++;
-                        continue;
-                    }
-
-                    _menus[menu.Id] = menu;
-                    loaded++;
-                }
-                catch (Exception ex)
-                {
-                    _api.Logger.Error(
-                        $"[AxinMenuGUI] Error al cargar {Path.GetFileName(file)}: {ex.Message}");
-                    failed++;
-                }
-            }
+            int loaded = 0, skipped = 0;
+            foreach (var file in userFiles.Concat(embeddFiles))
+                LoadFile(file, ref loaded, ref skipped);
 
             _api.Logger.Notification(
-                $"[AxinMenuGUI] Menús cargados: {loaded} OK, {failed} con error.");
+                $"[AxinMenuGUI] Menús cargados: {loaded} OK, {skipped} omitidos.");
         }
 
-        /// <summary>
-        /// Extrae los menús embebidos en el DLL al disco.
-        /// Solo escribe si el archivo NO existe — nunca sobreescribe.
-        /// </summary>
-        private void ExtractEmbeddedMenus()
+        private void LoadFile(string file, ref int loaded, ref int skipped)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            foreach (var (resourceName, fileName) in EmbeddedMenus)
+            try
             {
-                var destPath = Path.Combine(MenusFolder, fileName);
-                if (File.Exists(destPath)) continue;
-
-                using var stream = assembly.GetManifestResourceStream(resourceName);
-                if (stream == null)
+                var menu = JsonConvert.DeserializeObject<MenuDefinition>(File.ReadAllText(file));
+                if (menu == null || string.IsNullOrWhiteSpace(menu.Id))
                 {
-                    _api.Logger.Warning(
-                        $"[AxinMenuGUI] Recurso embebido no encontrado: {resourceName}");
-                    continue;
+                    _api.Logger.Warning($"[AxinMenuGUI] {Path.GetFileName(file)}: sin 'id' o inválido.");
+                    skipped++; return;
                 }
-
-                using var reader = new StreamReader(stream);
-                File.WriteAllText(destPath, reader.ReadToEnd());
-
-                _api.Logger.Notification(
-                    $"[AxinMenuGUI] Menú de ejemplo repuesto: menus/{fileName}");
+                if (_menus.ContainsKey(menu.Id))
+                {
+                    // Si es embebido y el usuario tiene ese ID → OK silencioso
+                    if (!EmbeddedIds.Contains(menu.Id))
+                        _api.Logger.Warning($"[AxinMenuGUI] ID duplicado '{menu.Id}'. Ignorado.");
+                    skipped++; return;
+                }
+                _menus[menu.Id] = menu;
+                loaded++;
+            }
+            catch (Exception ex)
+            {
+                _api.Logger.Error($"[AxinMenuGUI] Error cargando {Path.GetFileName(file)}: {ex.Message}");
+                skipped++;
             }
         }
 
-        public MenuDefinition? Get(string id)
+        private void ExtractEmbeddedMenus()
         {
-            _menus.TryGetValue(id, out var menu);
-            return menu;
+            var asm = Assembly.GetExecutingAssembly();
+            foreach (var (res, fileName) in EmbeddedMenus)
+            {
+                var dest = Path.Combine(MenusFolder, fileName);
+                if (File.Exists(dest)) continue; // nunca sobreescribir
+                using var stream = asm.GetManifestResourceStream(res);
+                if (stream == null) continue;
+                using var reader = new StreamReader(stream);
+                File.WriteAllText(dest, reader.ReadToEnd());
+            }
         }
 
+        private static bool IsEmbeddedFile(string path) =>
+            EmbeddedIds.Contains(Path.GetFileNameWithoutExtension(path));
+
+        public MenuDefinition? Get(string id) { _menus.TryGetValue(id, out var m); return m; }
         public IEnumerable<string> GetAllIds() => _menus.Keys;
         public IEnumerable<MenuDefinition> GetAll() => _menus.Values;
-
         public void Dispose() { }
     }
 }

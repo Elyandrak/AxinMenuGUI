@@ -1,15 +1,17 @@
 // AxinMenuGUI — UI
 // Archivo: GuiMenuDialog.cs
 // Responsabilidad: renderizado del GUI en pantalla (ClientSide).
+//   Gestiona la composición del diálogo, slots, tooltips y navegación de escenas.
 //
-// NORMA: AddSkillItemGrid coloca ítems secuencialmente ignorando el slot JSON.
-// SOLUCIÓN: rellenar el grid con N=rows*Cols slots, colocando ítems en su slot
-// exacto y dejando slots vacíos (transparentes) en los demás.
-// Así slot JSON = posición visual real, y AddHoverText queda alineado.
+// SISTEMA DE TEMAS: la lógica de colores y el dibujo Cairo están en GuiThemeRenderer.cs.
+//   Temas disponibles: default | dark-red | dark-blue | dark-green | parchment | stone | night
+//   y variantes cofre (-2), más glass.
+//   Si theme está vacío o ausente → "default" (aspecto estándar de VS).
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cairo;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -18,30 +20,31 @@ namespace AxinMenuGUI
 {
     public class GuiMenuDialog : GuiDialog
     {
-        private static readonly int TitleBarH     = (int)GuiStyle.TitleBarHeight;
-        private static readonly int DialogPadding = (int)GuiStyle.ElementToDialogPadding;
         private const int Cols = 9;
 
         private readonly NetMenu     _menu;
         private int                  _currentScene;
         private readonly Action<int> _onSlotClick;
+        private MenuTheme            _theme;
+        private bool                 _useCustomDraw;
 
-        // slot JSON → (nombre, lore) para ítems con contenido
         private Dictionary<int, (string name, string lore)> _tooltipBySlot = new();
-        // slot JSON → índice en _indexToSlot (para el click handler)
-        private List<int> _indexToSlot = new();
-        private double _slotS, _pad;
-        private int    _gridRows;
+        private List<int>  _indexToSlot = new();
+        private double     _slotS, _pad;
+        private int        _gridRows;
+        private bool       _debugLogSlot      = true;
+        private int        _firstOccupiedSlot  = -1;
 
         public override string ToggleKeyCombinationCode => null;
-        public override bool PrefersUngrabbedMouse => false;
+        public override bool   PrefersUngrabbedMouse    => false;
 
         public GuiMenuDialog(ICoreClientAPI capi, NetMenu menu, int startScene, Action<int> onSlotClick)
             : base(capi)
         {
-            _menu         = menu;
-            _currentScene = startScene;
-            _onSlotClick  = onSlotClick;
+            _menu          = menu;
+            _currentScene  = startScene;
+            _onSlotClick   = onSlotClick;
+            // _theme y _useCustomDraw se calculan en SetupDialog (pueden cambiar por escena)
             SetupDialog();
         }
 
@@ -49,35 +52,39 @@ namespace AxinMenuGUI
         {
             var scene = _menu.Scenes.Find(s => s.Key == _currentScene.ToString());
 
+            // Tema efectivo: la escena puede sobreescribir el tema del menú
+            string effectiveTheme = (scene != null && !string.IsNullOrWhiteSpace(scene.Theme))
+                ? scene.Theme
+                : _menu.Theme;
+            _theme         = MenuThemes.Get(effectiveTheme);
+            _useCustomDraw = !string.IsNullOrWhiteSpace(effectiveTheme)
+                             && effectiveTheme.ToLowerInvariant() != "default";
+
             _pad   = GuiElementItemSlotGridBase.unscaledSlotPadding;
             _slotS = GuiElementPassiveItemSlot.unscaledSlotSize;
 
             int totalSlots = _menu.Rows * Cols;
             _gridRows      = _menu.Rows;
 
-            // Grid completo: un SkillItem por cada slot del grid
-            var skillItems   = new SkillItem[totalSlots];
-            _indexToSlot     = new List<int>();
-            _tooltipBySlot   = new Dictionary<int, (string, string)>();
+            var skillItems = new SkillItem[totalSlots];
+            _indexToSlot   = new List<int>();
+            _tooltipBySlot = new Dictionary<int, (string, string)>();
 
-            // Slot vacío reutilizable (transparente, sin RenderHandler)
             var emptyBlock = capi.World.GetBlock(new AssetLocation("game:air"));
             var emptyStack = new ItemStack(emptyBlock);
 
-            // Rellenar todo el grid con slots vacíos por defecto
             for (int i = 0; i < totalSlots; i++)
             {
                 skillItems[i] = new SkillItem
                 {
-                    Code = new AssetLocation("game:air"),
-                    Name = "",
-                    Data = emptyStack,
-                    RenderHandler = (loc, dt, px, py) => { } // render vacío
+                    Code          = new AssetLocation("game:air"),
+                    Name          = "",
+                    Data          = emptyStack,
+                    RenderHandler = (loc, dt, px, py) => { }
                 };
-                _indexToSlot.Add(-1); // -1 = slot vacío, no clicable
+                _indexToSlot.Add(-1);
             }
 
-            // Colocar ítems reales en su slot exacto
             if (scene != null)
             {
                 foreach (var item in scene.Items)
@@ -86,20 +93,16 @@ namespace AxinMenuGUI
                     if (slotIndex < 0 || slotIndex >= totalSlots) continue;
 
                     var loc = new AssetLocation(item.ItemCode);
-
                     CollectibleObject? col = capi.World.GetItem(loc);
                     if (col == null) col = capi.World.GetBlock(loc);
-
                     if (col == null)
                         foreach (var vi in capi.World.Items)
                             if (vi?.Code?.Path != null && vi.Code.Path.StartsWith(loc.Path))
                             { col = vi; break; }
-
                     if (col == null)
                         foreach (var vb in capi.World.Blocks)
                             if (vb?.Code?.Path != null && vb.Code.Path.StartsWith(loc.Path))
                             { col = vb; break; }
-
                     if (col == null)
                     {
                         capi.Logger.Warning($"[AxinMenuGUI] Ítem no encontrado: '{item.ItemCode}' (slot {slotIndex})");
@@ -107,15 +110,16 @@ namespace AxinMenuGUI
                     }
 
                     ItemStack stack;
-                    if (col is Item vsItem) stack = new ItemStack(vsItem,   Math.Max(1, item.Amount));
+                    if (col is Item vsItem) stack = new ItemStack(vsItem,    Math.Max(1, item.Amount));
                     else                    stack = new ItemStack((Block)col, Math.Max(1, item.Amount));
                     stack.ResolveBlockOrItem(capi.World);
 
                     string name = !string.IsNullOrWhiteSpace(item.Name)
-                        ? item.Name
-                        : col.GetHeldItemName(stack);
+                        ? item.Name : col.GetHeldItemName(stack);
 
                     var captured = stack;
+                    double ss    = _slotS;
+
                     skillItems[slotIndex] = new SkillItem
                     {
                         Code          = col.Code,
@@ -124,58 +128,118 @@ namespace AxinMenuGUI
                         Data          = captured,
                         RenderHandler = (assetLoc, dt, posX, posY) =>
                         {
-                            double size = GuiElementPassiveItemSlot.unscaledSlotSize;
+                            if (_debugLogSlot && slotIndex == _firstOccupiedSlot)
+                            {
+                                capi.Logger.Notification(
+                                    $"[AMG-CAL] slot={slotIndex} vc={slotIndex%Cols} vr={slotIndex/Cols} " +
+                                    $"posX={posX:F2} posY={posY:F2} ss={ss:F2} " +
+                                    $"pad={_pad:F2} slotS={_slotS:F2} " +
+                                    $"cairoGx={(_theme.BorderW+_theme.InnerPad):F2} " +
+                                    $"cairoGy={(_theme.TitleH+_theme.BorderW+_theme.InnerPad):F2}");
+                                _debugLogSlot = false;
+                            }
                             capi.Render.RenderItemstackToGui(
                                 new DummySlot(captured),
-                                posX + size * 0.5,
-                                posY + size * 0.5,
+                                posX + ss * 0.5,
+                                posY + ss * 0.5,
                                 100,
-                                (float)(size * 0.58),
-                                ColorUtil.WhiteArgb
-                            );
+                                (float)(ss * 0.60),
+                                ColorUtil.WhiteArgb);
                         }
                     };
-                    _indexToSlot[slotIndex] = slotIndex; // slot JSON = índice visual
+                    _indexToSlot[slotIndex]   = slotIndex;
                     _tooltipBySlot[slotIndex] = (name, item.Lore);
+                    if (_firstOccupiedSlot < 0) _firstOccupiedSlot = slotIndex;
                 }
             }
 
             double gridW = Cols      * (_slotS + _pad);
             double gridH = _gridRows * (_slotS + _pad);
 
-            ElementBounds dialogBounds = ElementStdBounds
-                .AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
+            GuiComposer composer;
 
-            ElementBounds gridBounds = ElementBounds.Fixed(
-                DialogPadding, TitleBarH + DialogPadding, gridW, gridH);
-
-            ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(DialogPadding);
-            bgBounds.BothSizing = ElementSizing.FitToChildren;
-            bgBounds.WithChildren(gridBounds);
-
-            var composer = capi.Gui
-                .CreateCompo("axinmenugui-" + _menu.Id + "-s" + _currentScene, dialogBounds)
-                .AddShadedDialogBG(bgBounds)
-                .AddDialogTitleBar(_menu.Title, () => TryClose())
-                .AddSkillItemGrid(skillItems.ToList(), Cols, _gridRows, OnSkillItemClick, gridBounds, "skillgrid");
-
-            // HoverText: bounds relativos al gridBounds para alineación exacta
-            foreach (var (slotIdx, (name, lore)) in _tooltipBySlot)
+            if (_useCustomDraw)
             {
-                string text = string.IsNullOrWhiteSpace(lore) ? name : name + "\n" + lore;
-                if (string.IsNullOrWhiteSpace(text)) continue;
+                // ── Tema personalizado ──────────────────────────────────
+                double bw = _theme.BorderW;
+                double ip = _theme.InnerPad;
+                double th = _theme.TitleH;
 
-                int vc = slotIdx % Cols;
-                int vr = slotIdx / Cols;
+                double totalW = gridW + (ip + bw) * 2;
+                double totalH = gridH + th + (ip + bw) * 2;
 
-                // Usamos gridBounds como padre — mismo origen que AddSkillItemGrid
-                ElementBounds slotBounds = gridBounds.FlatCopy().WithFixedOffset(
-                    vc * (_slotS + _pad),
-                    vr * (_slotS + _pad))
-                    .WithFixedSize(_slotS, _slotS);
+                ElementBounds dialogBounds = ElementStdBounds
+                    .AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle)
+                    .WithFixedSize(totalW, totalH);
 
-                composer.AddHoverText(text, CairoFont.WhiteSmallText(), 250, slotBounds,
-                    "hover-" + _menu.Id + "-s" + _currentScene + "-" + slotIdx);
+                ElementBounds bgBounds   = ElementBounds.Fixed(0, 0, totalW, totalH);
+                ElementBounds gridBounds = ElementBounds.Fixed(bw + ip, th + bw + ip, gridW, gridH);
+
+                // Captura de variables para el lambda del DrawBackground
+                var capturedTheme   = _theme;
+                var capturedTitle   = _menu.Title;
+                int capturedCols    = Cols;
+                int capturedRows    = _gridRows;
+                double capturedSlotS = _slotS;
+                double capturedPad   = _pad;
+
+                composer = capi.Gui
+                    .CreateCompo("axinmenugui-" + _menu.Id + "-s" + _currentScene, dialogBounds)
+                    .AddStaticCustomDraw(bgBounds, (ctx, surface, bounds) =>
+                        GuiThemeRenderer.DrawBackground(
+                            ctx, surface, bounds,
+                            capturedTheme, capturedTitle,
+                            capturedCols, capturedRows,
+                            capturedSlotS, capturedPad))
+                    .AddSkillItemGrid(skillItems.ToList(), Cols, _gridRows, OnSkillItemClick, gridBounds, "skillgrid");
+
+                foreach (var (slotIdx, (name, lore)) in _tooltipBySlot)
+                {
+                    string text = string.IsNullOrWhiteSpace(lore) ? name : name + "\n" + lore;
+                    if (string.IsNullOrWhiteSpace(text)) continue;
+                    int vc = slotIdx % Cols;
+                    int vr = slotIdx / Cols;
+                    ElementBounds sb = gridBounds.FlatCopy()
+                        .WithFixedOffset(vc * (_slotS + _pad), vr * (_slotS + _pad))
+                        .WithFixedSize(_slotS, _slotS);
+                    composer.AddHoverText(text, CairoFont.WhiteSmallText(), 250, sb,
+                        "hover-" + _menu.Id + "-s" + _currentScene + "-" + slotIdx);
+                }
+            }
+            else
+            {
+                // ── Tema default — aspecto estándar de VS ───────────────
+                int titleBarH = (int)GuiStyle.TitleBarHeight;
+                int dialogPad = (int)GuiStyle.ElementToDialogPadding;
+
+                ElementBounds dialogBounds = ElementStdBounds
+                    .AutosizedMainDialog.WithAlignment(EnumDialogArea.CenterMiddle);
+
+                ElementBounds gridBounds = ElementBounds.Fixed(
+                    dialogPad, titleBarH + dialogPad, gridW, gridH);
+
+                ElementBounds bgBounds = ElementBounds.Fill.WithFixedPadding(dialogPad);
+                bgBounds.BothSizing = ElementSizing.FitToChildren;
+                bgBounds.WithChildren(gridBounds);
+
+                composer = capi.Gui
+                    .CreateCompo("axinmenugui-" + _menu.Id + "-s" + _currentScene, dialogBounds)
+                    .AddShadedDialogBG(bgBounds)
+                    .AddDialogTitleBar(_menu.Title, () => TryClose())
+                    .AddSkillItemGrid(skillItems.ToList(), Cols, _gridRows, OnSkillItemClick, gridBounds, "skillgrid");
+
+                foreach (var (slotIdx, (name, lore)) in _tooltipBySlot)
+                {
+                    string text = string.IsNullOrWhiteSpace(lore) ? name : name + "\n" + lore;
+                    if (string.IsNullOrWhiteSpace(text)) continue;
+                    int vc = slotIdx % Cols;
+                    int vr = slotIdx / Cols;
+                    ElementBounds sb = gridBounds.FlatCopy()
+                        .WithFixedOffset(vc * (_slotS + _pad), vr * (_slotS + _pad))
+                        .WithFixedSize(_slotS, _slotS);
+                    composer.AddHoverText(text, CairoFont.WhiteSmallText(), 250, sb,
+                        "hover-" + _menu.Id + "-s" + _currentScene + "-" + slotIdx);
+                }
             }
 
             SingleComposer = composer.Compose();
@@ -183,10 +247,9 @@ namespace AxinMenuGUI
 
         private void OnSkillItemClick(int visualIndex)
         {
-            // visualIndex = slot JSON (porque el grid es 1:1 con los slots)
             if (visualIndex < 0 || visualIndex >= _indexToSlot.Count) return;
             int slotJson = _indexToSlot[visualIndex];
-            if (slotJson < 0) return; // slot vacío
+            if (slotJson < 0) return;
             _onSlotClick?.Invoke(slotJson);
         }
 

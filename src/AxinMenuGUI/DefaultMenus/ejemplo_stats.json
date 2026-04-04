@@ -1,0 +1,227 @@
+{
+  "id": "ejemplo_stats",
+  "title": "Estadísticas",
+  "theme": "default",
+  "rows": 3,
+  "commandAlias": "",
+  "commandAliasTarget": "DISABLED",
+  "permission": "",
+  "openTriggers": [],
+  "scenes": {
+    "0": {
+      "delay": 0,
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-trophy",
+          "amount": 1,
+          "name": "<font color='gold'>Estadísticas</font>",
+          "lore": [
+            "Tus datos de combate y tiempo"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "stat_muertes": {
+          "slot": 9,
+          "item": "axinmenugui:menuicon-heart",
+          "amount": 1,
+          "name": "Muertes: {stats.deaths}",
+          "lore": [
+            "<font color='gray'>Placeholder: {stats.deaths}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Has muerto <font color='red'>{stats.deaths}</font> veces."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "stat_kills_total": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "Mobs: {stats.mobKillsAll}",
+          "lore": [
+            "<font color='gray'>Placeholder: {stats.mobKillsAll}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Has eliminado <font color='lime'>{stats.mobKillsAll}</font> mobs."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "stat_kills_hostiles": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-warning",
+          "amount": 1,
+          "name": "Hostiles: {stats.mobKillsHostile}",
+          "lore": [
+            "<font color='gray'>Placeholder: {stats.mobKillsHostile}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Has eliminado <font color='orange'>{stats.mobKillsHostile}</font> mobs hostiles."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "stat_puntos": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-lightning",
+          "amount": 1,
+          "name": "Puntos: {stats.mobKillsHostilePoints}",
+          "lore": [
+            "<font color='gray'>Placeholder: {stats.mobKillsHostilePoints}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Tienes <font color='gold'>{stats.mobKillsHostilePoints}</font> puntos."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "stat_jugadores": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-group",
+          "amount": 1,
+          "name": "PvP: {stats.playerKills}",
+          "lore": [
+            "<font color='gray'>Placeholder: {stats.playerKills}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Has eliminado <font color='red'>{stats.playerKills}</font> jugadores."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "stat_tiempo_real": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-map",
+          "amount": 1,
+          "name": "Tiempo: {stats.timeReal}",
+          "lore": [
+            "<font color='gray'>Placeholder: {stats.timeReal}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Llevas <font color='cyan'>{stats.timeReal}</font> en el servidor."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "stat_tiempo_juego": {
+          "slot": 15,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "Días: {stats.timeGame}",
+          "lore": [
+            "<font color='gray'>Placeholder: {stats.timeGame}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Has vivido <font color='burlywood'>{stats.timeGame}</font>."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "ranking_pos": {
+          "slot": 19,
+          "item": "axinmenugui:menuicon-crown",
+          "amount": 1,
+          "name": "Ranking: #{ranking.position}",
+          "lore": [
+            "<font color='gray'>Placeholder: {ranking.position}</font>",
+            "Valor: {ranking.value} pts"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Posición <font color='gold'>#{ranking.position}</font> con <font color='gold'>{ranking.value}</font> pts."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "ranking_top3": {
+          "slot": 20,
+          "item": "axinmenugui:menuicon-trophy",
+          "amount": 1,
+          "name": "Top 3",
+          "lore": [
+            "<font color='gray'>Placeholder: {ranking.top3}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>[Top 3]</font>\n{ranking.top3}"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "ranking_top": {
+          "slot": 21,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "Ranking completo",
+          "lore": [
+            "<font color='gray'>Placeholder: {ranking.top}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>[Ranking]</font>\n{ranking.top}"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "volver": {
+          "slot": 17,
+          "item": "axinmenugui:menuicon-back",
+          "amount": 1,
+          "name": "← Volver",
+          "lore": [
+            "Vuelve al menú principal"
+          ],
+          "clickEvents": {
+            "back": {
+              "type": "back",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    }
+  }
+}

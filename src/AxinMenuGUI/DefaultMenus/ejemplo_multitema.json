@@ -1,0 +1,1168 @@
+{
+  "id": "ejemplo_multitema",
+  "title": "Multi-tema",
+  "theme": "default",
+  "rows": 3,
+  "commandAlias": "multitema",
+  "commandAliasTarget": "DISABLED",
+  "permission": "",
+  "openTriggers": [],
+  "scenes": {
+    "0": {
+      "delay": 0,
+      "theme": "dark-red",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gold'>🔴 dark-red</font>",
+          "lore": [
+            "theme: dark-red",
+            "Cada escena tiene su propio tema"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_0": {
+          "slot": 0,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 2,
+          "name": "<font color='gold'>dark-red</font>",
+          "lore": [
+            "Escena activa"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_1": {
+          "slot": 1,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>dark-blue</font>",
+          "lore": [
+            "Ir a dark-blue"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_2": {
+          "slot": 2,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>dark-green</font>",
+          "lore": [
+            "Ir a dark-green"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-green"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_3": {
+          "slot": 3,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>parchment</font>",
+          "lore": [
+            "Ir a parchment"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a parchment"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_4": {
+          "slot": 5,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>stone</font>",
+          "lore": [
+            "Ir a stone"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a stone"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_5": {
+          "slot": 6,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>night</font>",
+          "lore": [
+            "Ir a night"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a night"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_6": {
+          "slot": 7,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>glass</font>",
+          "lore": [
+            "Ir a glass"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a glass"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "dark-blue →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "1": {
+      "delay": 0,
+      "theme": "dark-blue",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gold'>🔵 dark-blue</font>",
+          "lore": [
+            "theme: dark-blue",
+            "Cada escena tiene su propio tema"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_0": {
+          "slot": 0,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>dark-red</font>",
+          "lore": [
+            "Ir a dark-red"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_1": {
+          "slot": 1,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 2,
+          "name": "<font color='gold'>dark-blue</font>",
+          "lore": [
+            "Escena activa"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_2": {
+          "slot": 2,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>dark-green</font>",
+          "lore": [
+            "Ir a dark-green"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_3": {
+          "slot": 3,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>parchment</font>",
+          "lore": [
+            "Ir a parchment"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a parchment"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_4": {
+          "slot": 5,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>stone</font>",
+          "lore": [
+            "Ir a stone"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a stone"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_5": {
+          "slot": 6,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>night</font>",
+          "lore": [
+            "Ir a night"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a night"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_6": {
+          "slot": 7,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>glass</font>",
+          "lore": [
+            "Ir a glass"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a glass"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-red",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "dark-green →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "2": {
+      "delay": 0,
+      "theme": "dark-green",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gold'>🟢 dark-green</font>",
+          "lore": [
+            "theme: dark-green",
+            "Cada escena tiene su propio tema"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_0": {
+          "slot": 0,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>dark-red</font>",
+          "lore": [
+            "Ir a dark-red"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-red"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_1": {
+          "slot": 1,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>dark-blue</font>",
+          "lore": [
+            "Ir a dark-blue"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_2": {
+          "slot": 2,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 2,
+          "name": "<font color='gold'>dark-green</font>",
+          "lore": [
+            "Escena activa"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_3": {
+          "slot": 3,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>parchment</font>",
+          "lore": [
+            "Ir a parchment"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_4": {
+          "slot": 5,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>stone</font>",
+          "lore": [
+            "Ir a stone"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a stone"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_5": {
+          "slot": 6,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>night</font>",
+          "lore": [
+            "Ir a night"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a night"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_6": {
+          "slot": 7,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>glass</font>",
+          "lore": [
+            "Ir a glass"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a glass"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-blue",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "parchment →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "3": {
+      "delay": 0,
+      "theme": "parchment",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gold'>📜 parchment</font>",
+          "lore": [
+            "theme: parchment",
+            "Cada escena tiene su propio tema"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_0": {
+          "slot": 0,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>dark-red</font>",
+          "lore": [
+            "Ir a dark-red"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-red"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_1": {
+          "slot": 1,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>dark-blue</font>",
+          "lore": [
+            "Ir a dark-blue"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-blue"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_2": {
+          "slot": 2,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>dark-green</font>",
+          "lore": [
+            "Ir a dark-green"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_3": {
+          "slot": 3,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 2,
+          "name": "<font color='gold'>parchment</font>",
+          "lore": [
+            "Escena activa"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_4": {
+          "slot": 5,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>stone</font>",
+          "lore": [
+            "Ir a stone"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_5": {
+          "slot": 6,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>night</font>",
+          "lore": [
+            "Ir a night"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a night"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_6": {
+          "slot": 7,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>glass</font>",
+          "lore": [
+            "Ir a glass"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a glass"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-green",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "stone →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "4": {
+      "delay": 0,
+      "theme": "stone",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gold'>🪨 stone</font>",
+          "lore": [
+            "theme: stone",
+            "Cada escena tiene su propio tema"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_0": {
+          "slot": 0,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>dark-red</font>",
+          "lore": [
+            "Ir a dark-red"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-red"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_1": {
+          "slot": 1,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>dark-blue</font>",
+          "lore": [
+            "Ir a dark-blue"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-blue"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_2": {
+          "slot": 2,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>dark-green</font>",
+          "lore": [
+            "Ir a dark-green"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-green"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_3": {
+          "slot": 3,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>parchment</font>",
+          "lore": [
+            "Ir a parchment"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_4": {
+          "slot": 5,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 2,
+          "name": "<font color='gold'>stone</font>",
+          "lore": [
+            "Escena activa"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_5": {
+          "slot": 6,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>night</font>",
+          "lore": [
+            "Ir a night"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_6": {
+          "slot": 7,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>glass</font>",
+          "lore": [
+            "Ir a glass"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a glass"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← parchment",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "night →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "5": {
+      "delay": 0,
+      "theme": "night",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gold'>🌙 night</font>",
+          "lore": [
+            "theme: night",
+            "Cada escena tiene su propio tema"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_0": {
+          "slot": 0,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>dark-red</font>",
+          "lore": [
+            "Ir a dark-red"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-red"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_1": {
+          "slot": 1,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>dark-blue</font>",
+          "lore": [
+            "Ir a dark-blue"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-blue"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_2": {
+          "slot": 2,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>dark-green</font>",
+          "lore": [
+            "Ir a dark-green"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-green"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_3": {
+          "slot": 3,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>parchment</font>",
+          "lore": [
+            "Ir a parchment"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a parchment"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_4": {
+          "slot": 5,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>stone</font>",
+          "lore": [
+            "Ir a stone"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_5": {
+          "slot": 6,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 2,
+          "name": "<font color='gold'>night</font>",
+          "lore": [
+            "Escena activa"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_6": {
+          "slot": 7,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>glass</font>",
+          "lore": [
+            "Ir a glass"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← stone",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "glass →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "6": {
+      "delay": 0,
+      "theme": "glass",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gold'>💎 glass</font>",
+          "lore": [
+            "theme: glass",
+            "Cada escena tiene su propio tema"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_0": {
+          "slot": 0,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>dark-red</font>",
+          "lore": [
+            "Ir a dark-red"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-red"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_1": {
+          "slot": 1,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>dark-blue</font>",
+          "lore": [
+            "Ir a dark-blue"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-blue"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_2": {
+          "slot": 2,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>dark-green</font>",
+          "lore": [
+            "Ir a dark-green"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a dark-green"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_3": {
+          "slot": 3,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>parchment</font>",
+          "lore": [
+            "Ir a parchment"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a parchment"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_4": {
+          "slot": 5,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>stone</font>",
+          "lore": [
+            "Ir a stone"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Usa las flechas para navegar a stone"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_5": {
+          "slot": 6,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>night</font>",
+          "lore": [
+            "Ir a night"
+          ],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "tab_6": {
+          "slot": 7,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 2,
+          "name": "<font color='gold'>glass</font>",
+          "lore": [
+            "Escena activa"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← night",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "cerrar": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-close",
+          "amount": 1,
+          "name": "<font color='red'>Cerrar</font>",
+          "lore": [],
+          "clickEvents": {
+            "close": {
+              "type": "closeGui",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    }
+  }
+}

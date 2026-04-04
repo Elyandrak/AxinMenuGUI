@@ -1,0 +1,129 @@
+{
+  "id": "ejemplo_jugador",
+  "title": "Sobre ti",
+  "theme": "default",
+  "rows": 2,
+  "commandAlias": "",
+  "commandAliasTarget": "DISABLED",
+  "permission": "",
+  "openTriggers": [],
+  "scenes": {
+    "0": {
+      "delay": 0,
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-player",
+          "amount": 1,
+          "name": "<font color='gold'>Sobre ti</font>",
+          "lore": [
+            "Jugador: {player}",
+            "UID: {uid}",
+            "Posición: {pos}",
+            "Modo: {gamemode}"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>[AxinMenuGUI]</font> Jugador: {player} | UID: {uid}"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "mi_nombre": {
+          "slot": 9,
+          "item": "game:feather",
+          "amount": 1,
+          "name": "Jugador: {player}",
+          "lore": [
+            "<font color='gray'>Placeholder: {player}</font>",
+            "Tu nombre de jugador"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Tu nombre es: <font color='cyan'>{player}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "mi_pos": {
+          "slot": 10,
+          "item": "game:survivalpack",
+          "amount": 1,
+          "name": "Posición: {pos}",
+          "lore": [
+            "<font color='gray'>Placeholder: {pos}</font>",
+            "Tus coordenadas actuales"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Estás en: <font color='burlywood'>{pos}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "mi_modo": {
+          "slot": 11,
+          "item": "game:key",
+          "amount": 1,
+          "name": "Modo: {gamemode}",
+          "lore": [
+            "<font color='gray'>Placeholder: {gamemode}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Modo de juego: <font color='lime'>{gamemode}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "mi_uid": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-key",
+          "amount": 1,
+          "name": "UID: {uid}",
+          "lore": [
+            "<font color='gray'>Placeholder: {uid}</font>"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "Tu UID: <font color='gray'>{uid}</font>"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "volver": {
+          "slot": 17,
+          "item": "axinmenugui:menuicon-back",
+          "amount": 1,
+          "name": "← Volver",
+          "lore": [
+            "Vuelve al menú principal"
+          ],
+          "clickEvents": {
+            "back": {
+              "type": "back",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-arrows-all",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-arrows-all"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

@@ -1,0 +1,1284 @@
+{
+  "id": "ejemplo_temas",
+  "title": "Temas",
+  "theme": "default",
+  "rows": 3,
+  "commandAlias": "temas",
+  "commandAliasTarget": "DISABLED",
+  "permission": "",
+  "openTriggers": [],
+  "scenes": {
+    "0": {
+      "delay": 0,
+      "theme": "dark-red",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: dark-red</font>",
+          "lore": [
+            "theme: dark-red",
+            "Escena 1 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-warning",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-trophy",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-crown",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-shield-role",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "dark-blue →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "1": {
+      "delay": 0,
+      "theme": "dark-blue",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: dark-blue</font>",
+          "lore": [
+            "theme: dark-blue",
+            "Escena 2 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-search",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-map",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-info",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-lightning",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-red",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "dark-green →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "2": {
+      "delay": 0,
+      "theme": "dark-green",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: dark-green</font>",
+          "lore": [
+            "theme: dark-green",
+            "Escena 3 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-heart",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-check",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-bookmark",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-blue",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "parchment →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "3": {
+      "delay": 0,
+      "theme": "parchment",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: parchment</font>",
+          "lore": [
+            "theme: parchment",
+            "Escena 4 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-mail",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-key",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-bookmark",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-eye",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-green",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "stone →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "4": {
+      "delay": 0,
+      "theme": "stone",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: stone</font>",
+          "lore": [
+            "theme: stone",
+            "Escena 5 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-lock",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-minus",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-filter",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← parchment",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "night →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "5": {
+      "delay": 0,
+      "theme": "night",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: night</font>",
+          "lore": [
+            "theme: night",
+            "Escena 6 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-bell",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-lightning",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-crown",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← stone",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "dark-red-2 →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "6": {
+      "delay": 0,
+      "theme": "dark-red-2",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: dark-red-2</font>",
+          "lore": [
+            "theme: dark-red-2",
+            "Escena 7 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-fire",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-warning",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-trophy",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-crown",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-shield-role",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← night",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "dark-blue-2 →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "7": {
+      "delay": 0,
+      "theme": "dark-blue-2",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: dark-blue-2</font>",
+          "lore": [
+            "theme: dark-blue-2",
+            "Escena 8 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-diamond",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-search",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-map",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-info",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-lightning",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-red-2",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "dark-green-2 →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "8": {
+      "delay": 0,
+      "theme": "dark-green-2",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: dark-green-2</font>",
+          "lore": [
+            "theme: dark-green-2",
+            "Escena 9 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-heart",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-check",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-bookmark",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-gift",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-blue-2",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "parchment-2 →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "9": {
+      "delay": 0,
+      "theme": "parchment-2",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: parchment-2</font>",
+          "lore": [
+            "theme: parchment-2",
+            "Escena 10 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-mail",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-key",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-bookmark",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-eye",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← dark-green-2",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "stone-2 →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "10": {
+      "delay": 0,
+      "theme": "stone-2",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: stone-2</font>",
+          "lore": [
+            "theme: stone-2",
+            "Escena 11 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-lock",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-minus",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-filter",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← parchment-2",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "night-2 →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "11": {
+      "delay": 0,
+      "theme": "night-2",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: night-2</font>",
+          "lore": [
+            "theme: night-2",
+            "Escena 12 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-bell",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-lightning",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-crown",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← stone-2",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "glass →",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "nextScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    },
+    "12": {
+      "delay": 0,
+      "theme": "glass",
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: glass</font>",
+          "lore": [
+            "theme: glass",
+            "Escena 13 de 13"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-circle-blue",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-lightning",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-circle-gold",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-circle-green",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← night-2",
+          "lore": [],
+          "clickEvents": {
+            "nav": {
+              "type": "previousScene",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "cerrar": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-close",
+          "amount": 1,
+          "name": "<font color='red'>Cerrar</font>",
+          "lore": [],
+          "clickEvents": {
+            "close": {
+              "type": "closeGui",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    }
+  }
+}

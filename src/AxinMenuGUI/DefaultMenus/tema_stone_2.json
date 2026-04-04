@@ -1,0 +1,112 @@
+{
+  "id": "tema_stone_2",
+  "title": "Tema: stone-2",
+  "theme": "stone-2",
+  "rows": 3,
+  "commandAlias": "",
+  "commandAliasTarget": "DISABLED",
+  "permission": "",
+  "openTriggers": [],
+  "scenes": {
+    "0": {
+      "delay": 0,
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-star",
+          "amount": 1,
+          "name": "<font color='gold'>Tema: stone-2</font>",
+          "lore": [
+            "theme: stone-2",
+            "Marco estilo cofre (BorderW grueso bicolor)"
+          ],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco0": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-settings",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco1": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-lock",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco2": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-minus",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco3": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "deco4": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-filter",
+          "amount": 1,
+          "name": "<font color='gray'>Decorativo</font>",
+          "lore": [],
+          "clickEvents": {},
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "anterior": {
+          "slot": 18,
+          "item": "axinmenugui:menuicon-arrow-left",
+          "amount": 1,
+          "name": "← parchment-2",
+          "lore": [],
+          "clickEvents": {
+            "open": {
+              "type": "openGui",
+              "clickType": "ANY",
+              "guiId": "tema_parchment_2"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "siguiente": {
+          "slot": 26,
+          "item": "axinmenugui:menuicon-arrow-right",
+          "amount": 1,
+          "name": "night-2 →",
+          "lore": [],
+          "clickEvents": {
+            "open": {
+              "type": "openGui",
+              "clickType": "ANY",
+              "guiId": "tema_night_2"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        }
+      }
+    }
+  }
+}

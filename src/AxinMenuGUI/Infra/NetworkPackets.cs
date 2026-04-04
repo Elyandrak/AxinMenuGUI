@@ -28,6 +28,7 @@ namespace AxinMenuGUI
     {
         [ProtoMember(1)] public string        Key   { get; set; } = "";
         [ProtoMember(2)] public List<NetItem> Items { get; set; } = new();
+        [ProtoMember(3)] public string        Theme { get; set; } = "";
     }
 
     [ProtoContract]
@@ -37,6 +38,7 @@ namespace AxinMenuGUI
         [ProtoMember(2)] public string         Title  { get; set; } = "";
         [ProtoMember(3)] public int            Rows   { get; set; } = 3;
         [ProtoMember(4)] public List<NetScene> Scenes { get; set; } = new();
+        [ProtoMember(5)] public string         Theme  { get; set; } = "default";
     }
 
     [ProtoContract]
@@ -72,12 +74,17 @@ namespace AxinMenuGUI
             {
                 Id    = menu.Id,
                 Title = menu.Title,
-                Rows  = menu.Rows
+                Rows  = menu.Rows,
+                Theme = string.IsNullOrWhiteSpace(menu.Theme) ? "default" : menu.Theme
             };
 
             foreach (var (sceneKey, scene) in menu.Scenes)
             {
-                var netScene = new NetScene { Key = sceneKey };
+                var netScene = new NetScene
+                {
+                    Key   = sceneKey,
+                    Theme = string.IsNullOrWhiteSpace(scene.Theme) ? "" : scene.Theme
+                };
                 foreach (var (itemKey, item) in scene.Items)
                 {
                     netScene.Items.Add(new NetItem

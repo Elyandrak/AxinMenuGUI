@@ -1,10 +1,13 @@
 // AxinMenuGUI — Features/Engine
 // Archivo: MenuEngine.cs
-// Responsabilidad: evaluar condiciones y ejecutar click events.
-// NO renderiza GUI. NO carga JSON. Solo lógica de ejecución.
+// Responsabilidad: apertura de menús, navegación de escenas, evaluación de condiciones
+//   y despacho de click events.
+// NO renderiza GUI. NO carga JSON. NO manipula inventario directamente.
+// La lógica de intercambio de ítems está en ExchangeEngine.cs.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 
@@ -16,12 +19,13 @@ namespace AxinMenuGUI
         private readonly MenuRegistry          _registry;
         private readonly PlayerDataStore       _store;
         private readonly IServerNetworkChannel _channel;
+        private readonly RankingService?       _ranking;
+        private readonly ExchangeEngine        _exchange;
 
         private readonly Dictionary<string, (string menuId, int scene)> _activeScene = new();
         private readonly Dictionary<string, Stack<string>> _menuHistory = new();
 
-        // Debounce: evita doble disparo de AddSkillItemGrid (mousedown + mouseup)
-        // Clave: "{uid}|{menuId}|{scene}|{slot}" → timestamp último disparo
+        // Debounce: AddSkillItemGrid dispara el callback 2 veces (mousedown + mouseup)
         private readonly Dictionary<string, long> _lastClick = new();
         private const long ClickDebounceMs = 250;
 
@@ -29,12 +33,15 @@ namespace AxinMenuGUI
             ICoreServerAPI api,
             MenuRegistry registry,
             PlayerDataStore store,
-            IServerNetworkChannel channel)
+            IServerNetworkChannel channel,
+            RankingService? ranking = null)
         {
             _api      = api;
             _registry = registry;
             _store    = store;
             _channel  = channel;
+            _ranking  = ranking;
+            _exchange = new ExchangeEngine(api, store);
         }
 
         // ═══ APERTURA ════════════════════════════════════════════════
@@ -66,8 +73,10 @@ namespace AxinMenuGUI
 
             _activeScene[player.PlayerUID] = (menuId, 0);
 
-            // Enviar paquete al cliente para abrir el GUI
-            _channel.SendPacket(new MenuOpenPacket { Menu = NetMenuMapper.ToNet(menu), Scene = 0 }, player);
+            // Filtrar ítems con hideOnFail antes de enviar
+            var filteredMenu = FilterHiddenItems(menu, player, 0);
+            var resolvedMenu  = ResolveMenuTexts(filteredMenu, player);
+            _channel.SendPacket(new MenuOpenPacket { Menu = NetMenuMapper.ToNet(resolvedMenu), Scene = 0 }, player);
             return true;
         }
 
@@ -75,24 +84,22 @@ namespace AxinMenuGUI
 
         public void HandleSlotClick(IServerPlayer player, string menuId, int scene, int slotIndex)
         {
-            // Debounce: AddSkillItemGrid dispara el callback 2 veces (mousedown + mouseup).
-            // Descartamos el segundo disparo si llega dentro de ClickDebounceMs ms.
             string debounceKey = $"{player.PlayerUID}|{menuId}|{scene}|{slotIndex}";
             long nowMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            if (_lastClick.TryGetValue(debounceKey, out long lastMs) && nowMs - lastMs < ClickDebounceMs)
+            if (_lastClick.TryGetValue(debounceKey, out long lastMs)
+                && nowMs - lastMs < ClickDebounceMs)
             {
-                _api.Logger.Notification($"[AxinMenuGUI] HandleSlotClick DEBOUNCED slot={slotIndex} (gap={nowMs - lastMs}ms)");
+                _api.Logger.Notification(
+                    $"[AxinMenuGUI] HandleSlotClick DEBOUNCED slot={slotIndex} (gap={nowMs - lastMs}ms)");
                 return;
             }
             _lastClick[debounceKey] = nowMs;
-
-            _api.Logger.Notification($"[AxinMenuGUI-DIAG] HandleSlotClick menuId={menuId} scene={scene} slot={slotIndex}");
 
             var menu = _registry.Get(menuId);
             if (menu == null) return;
             if (!menu.Scenes.TryGetValue(scene.ToString(), out var sceneObj)) return;
 
-            foreach (var (_, item) in sceneObj.Items)
+            foreach (var (itemKey, item) in sceneObj.Items)
             {
                 if (item.Slot != slotIndex) continue;
 
@@ -103,9 +110,95 @@ namespace AxinMenuGUI
                     return;
                 }
 
+                // ── maxUses: check a nivel de ítem (una sola vez por clic) ──
+                if (item.MaxUses > 0)
+                {
+                    var useKey = $"maxuses_{menuId}_{scene}_{itemKey}";
+                    var claim  = _store.GetClaim(player.PlayerUID, useKey);
+                    if (claim.Count >= item.MaxUses)
+                    {
+                        var limitMsg = string.IsNullOrWhiteSpace(item.MaxUsesMessage)
+                            ? "[AxinMenuGUI] Has alcanzado el límite de usos de este botón."
+                            : item.MaxUsesMessage;
+                        player.SendMessage(0, limitMsg, EnumChatType.Notification);
+                        return;
+                    }
+                    // Ejecutar todos los eventos y luego registrar el uso
+                    ExecuteClickEvents(player, item.ClickEvents);
+                    _store.IncrementClaim(player.PlayerUID, useKey);
+                    return;
+                }
+
                 ExecuteClickEvents(player, item.ClickEvents);
                 return;
             }
+        }
+
+        // ═══ hideOnFail — filtrado antes de enviar al cliente ════════
+        // Reglas:
+        //   1. Si hideOnFail=true y condiciones fallan → el ítem no se incluye.
+        //   2. Slot groups: si varios ítems comparten el mismo slot, solo el primero
+        //      cuyas condiciones se cumplan (o sin condiciones) se incluye;
+        //      los demás del mismo slot se descartan aunque pasen sus condiciones.
+        //      Si ninguno del grupo pasa, el slot queda vacío.
+
+        private MenuDefinition FilterHiddenItems(MenuDefinition menu, IServerPlayer player, int scene)
+        {
+            var filtered = new MenuDefinition
+            {
+                Id                 = menu.Id,
+                Title              = menu.Title,
+                Rows               = menu.Rows,
+                Theme              = menu.Theme,
+                CommandAlias       = menu.CommandAlias,
+                CommandAliasTarget = menu.CommandAliasTarget,
+                Permission         = menu.Permission,
+                OpenTriggers       = menu.OpenTriggers,
+                Scenes             = new Dictionary<string, SceneDefinition>()
+            };
+
+            foreach (var (sceneKey, sceneObj) in menu.Scenes)
+            {
+                var filteredScene = new SceneDefinition
+                {
+                    DelayMs = sceneObj.DelayMs,
+                    Theme   = sceneObj.Theme,
+                    Items   = new Dictionary<string, ItemDefinition>()
+                };
+
+                // Slots ya ocupados en esta escena (para slot groups)
+                var occupiedSlots = new System.Collections.Generic.HashSet<int>();
+
+                // Ordenar ítems por priority (menor = primero) para slot groups deterministas.
+                // Los ítems sin priority explícita tienen 0 → orden de inserción JSON como desempate.
+                var orderedItems = sceneObj.Items
+                    .OrderBy(kv => kv.Value.Priority)
+                    .ToList();
+
+                foreach (var (itemKey, item) in orderedItems)
+                {
+                    bool conditionsPass = item.Conditions.Count == 0
+                        || EvaluateConditions(player, item.Conditions);
+
+                    // hideOnFail: ocultar si condiciones fallan
+                    if (item.HideOnFail && !conditionsPass)
+                        continue;
+
+                    // Slot group: si ya hay un ítem en este slot, descartar los siguientes
+                    // (el primero en orden JSON que pasó sus condiciones gana)
+                    if (occupiedSlots.Contains(item.Slot))
+                        continue;
+
+                    // Si las condiciones no pasan pero hideOnFail=false,
+                    // se incluye el ítem (el click será bloqueado en HandleSlotClick)
+                    filteredScene.Items[itemKey] = item;
+                    occupiedSlots.Add(item.Slot);
+                }
+
+                filtered.Scenes[sceneKey] = filteredScene;
+            }
+
+            return filtered;
         }
 
         // ═══ CONDICIONES ══════════════════════════════════════════════
@@ -127,20 +220,42 @@ namespace AxinMenuGUI
         {
             return cond.Type switch
             {
-                "hasPrivilege" => player.HasPrivilege(cond.Privilege),
-                "hasItem"      => HasItemStub(player, cond.ItemCode, cond.Amount),
-                _              => LogUnknownCondition(cond.Type)
+                "hasPrivilege"      => player.HasPrivilege(cond.Privilege),
+                "hasRole"           => player.Role?.Code == cond.RoleCode,
+                "hasPrivilegeLevel" => (player.Role?.PrivilegeLevel ?? -1) >= cond.MinLevel,
+                "hasItem"           => _exchange.HasItem(player, cond.ItemCode, cond.Amount),
+                "playerDataCompare" => PlayerDataCompare(player, cond),
+                "cooldownActive"    => _store.IsCooldownActive(player.PlayerUID, cond.CooldownKey),
+                _                   => LogUnknown(cond.Type)
             };
         }
 
-        private bool HasItemStub(IServerPlayer player, string itemCode, int amount)
+        private bool PlayerDataCompare(IServerPlayer player, ConditionDefinition cond)
         {
-            _api.Logger.Warning(
-                $"[AxinMenuGUI] hasItem '{itemCode}' x{amount} — stub, siempre true. Implementar en Bloque 2.1.");
-            return true;
+            var raw = _store.Get(player.PlayerUID, cond.Field);
+            if (double.TryParse(raw, out double dVal)
+                && double.TryParse(cond.CompareValue, out double dCmp))
+            {
+                return cond.Operator switch
+                {
+                    "eq"  => dVal == dCmp,
+                    "neq" => dVal != dCmp,
+                    "gt"  => dVal >  dCmp,
+                    "gte" => dVal >= dCmp,
+                    "lt"  => dVal <  dCmp,
+                    "lte" => dVal <= dCmp,
+                    _     => false
+                };
+            }
+            return cond.Operator switch
+            {
+                "eq"  => raw == cond.CompareValue,
+                "neq" => raw != cond.CompareValue,
+                _     => false
+            };
         }
 
-        private bool LogUnknownCondition(string type)
+        private bool LogUnknown(string type)
         {
             _api.Logger.Warning($"[AxinMenuGUI] Condición desconocida: '{type}'. Evaluada como true.");
             return true;
@@ -163,7 +278,7 @@ namespace AxinMenuGUI
             {
                 case "message":
                 {
-                    var msg = PlaceholderResolver.Resolve(ev.Message, player, _store, inputValue);
+                    var msg = PlaceholderResolver.Resolve(ev.Message, player, _store, inputValue, _ranking);
                     player.SendMessage(0, msg, EnumChatType.Notification);
                     break;
                 }
@@ -172,12 +287,11 @@ namespace AxinMenuGUI
                 {
                     foreach (var cmd in ev.Commands)
                     {
-                        var resolved = PlaceholderResolver.Resolve(cmd, player, _store, inputValue);
+                        var resolved = PlaceholderResolver.Resolve(cmd, player, _store, inputValue, _ranking);
                         var cmdText  = resolved.TrimStart('/');
                         int spaceIdx = cmdText.IndexOf(' ');
-                        string cmdName = spaceIdx >= 0 ? cmdText.Substring(0, spaceIdx) : cmdText;
-                        string cmdArgs = spaceIdx >= 0 ? cmdText.Substring(spaceIdx + 1) : "";
-
+                        string cmdName = spaceIdx >= 0 ? cmdText[..spaceIdx] : cmdText;
+                        string cmdArgs = spaceIdx >= 0 ? cmdText[(spaceIdx + 1)..] : "";
                         try
                         {
                             _api.ChatCommands.Execute(cmdName, new TextCommandCallingArgs
@@ -193,7 +307,8 @@ namespace AxinMenuGUI
                         }
                         catch (Exception ex)
                         {
-                            _api.Logger.Warning($"[AxinMenuGUI] consoleCommand '{cmdText}' error: {ex.Message}");
+                            _api.Logger.Warning(
+                                $"[AxinMenuGUI] consoleCommand '{cmdText}' error: {ex.Message}");
                         }
                     }
                     break;
@@ -203,12 +318,8 @@ namespace AxinMenuGUI
                 {
                     foreach (var cmd in ev.Commands)
                     {
-                        var resolved = PlaceholderResolver.Resolve(cmd, player, _store, inputValue);
+                        var resolved = PlaceholderResolver.Resolve(cmd, player, _store, inputValue, _ranking);
                         string cmdText = resolved.StartsWith("/") ? resolved : "/" + resolved;
-
-                        _api.Logger.Notification($"[AxinMenuGUI-DIAG] playerCommand enviando al cliente: '{cmdText}' para {player.PlayerName}");
-
-                        // El cliente ejecuta el comando como si el jugador lo escribiera en el chat
                         _channel.SendPacket(new ExecuteCommandPacket { Command = cmdText }, player);
                     }
                     break;
@@ -237,16 +348,29 @@ namespace AxinMenuGUI
                     OpenLastMenu(player);
                     break;
 
+                case "buyItem":
+                    _exchange.ExecuteExchange(player, ev, buy: true);
+                    break;
+
+                case "sellItem":
+                    _exchange.ExecuteExchange(player, ev, buy: false);
+                    break;
+
                 case "giveItem":
-                    player.SendMessage(0, "[AxinMenuGUI] giveItem: pendiente (Bloque 2.1)", EnumChatType.Notification);
+                    _exchange.GiveItem(player, ev.ItemCode, ev.Amount);
                     break;
 
                 case "takeItem":
-                    player.SendMessage(0, "[AxinMenuGUI] takeItem: pendiente (Bloque 2.1)", EnumChatType.Notification);
+                    _exchange.TakeItem(player, ev.ItemCode, ev.Amount);
+                    break;
+
+                case "setVariable":
+                    _exchange.ExecuteSetVariable(player, ev, inputValue, _ranking);
                     break;
 
                 case "teleport":
-                    player.SendMessage(0, "[AxinMenuGUI] teleport: pendiente (Bloque 2.2)", EnumChatType.Notification);
+                    player.SendMessage(0,
+                        "[AxinMenuGUI] teleport: pendiente (Bloque 2.2)", EnumChatType.Notification);
                     break;
 
                 default:
@@ -254,6 +378,62 @@ namespace AxinMenuGUI
                     break;
             }
         }
+
+        // ═══ RESOLUCIÓN DE TEXTOS ANTES DE ENVIAR ════════════════════
+
+        private MenuDefinition ResolveMenuTexts(MenuDefinition menu, IServerPlayer player)
+        {
+            var resolved = new MenuDefinition
+            {
+                Id                 = menu.Id,
+                Title              = PlaceholderResolver.Resolve(menu.Title, player, _store, ranking: _ranking),
+                Rows               = menu.Rows,
+                Theme              = menu.Theme,
+                CommandAlias       = menu.CommandAlias,
+                CommandAliasTarget = menu.CommandAliasTarget,
+                Permission         = menu.Permission,
+                OpenTriggers       = menu.OpenTriggers,
+                Scenes             = new Dictionary<string, SceneDefinition>()
+            };
+
+            foreach (var (sceneKey, sceneObj) in menu.Scenes)
+            {
+                var resolvedScene = new SceneDefinition
+                {
+                    DelayMs = sceneObj.DelayMs,
+                    Theme   = sceneObj.Theme,
+                    Items   = new Dictionary<string, ItemDefinition>()
+                };
+
+                foreach (var (itemKey, item) in sceneObj.Items)
+                {
+                    var resolvedLore = new System.Collections.Generic.List<string>();
+                    foreach (var line in item.Lore)
+                        resolvedLore.Add(PlaceholderResolver.Resolve(line, player, _store, ranking: _ranking));
+
+                    var resolvedItem = new ItemDefinition
+                    {
+                        Slot                 = item.Slot,
+                        ItemCode             = item.ItemCode,
+                        Amount               = item.Amount,
+                        Name                 = PlaceholderResolver.Resolve(item.Name, player, _store, ranking: _ranking),
+                        Lore                 = resolvedLore,
+                        HideOnFail           = item.HideOnFail,
+                        ConditionFailMessage = PlaceholderResolver.Resolve(item.ConditionFailMessage, player, _store, ranking: _ranking),
+                        ClickEvents          = item.ClickEvents,
+                        Conditions           = item.Conditions
+                    };
+
+                    resolvedScene.Items[itemKey] = resolvedItem;
+                }
+
+                resolved.Scenes[sceneKey] = resolvedScene;
+            }
+
+            return resolved;
+        }
+
+        // ═══ NAVEGACIÓN ═══════════════════════════════════════════════
 
         private void NavigateScene(IServerPlayer player, int delta)
         {
@@ -270,7 +450,10 @@ namespace AxinMenuGUI
             }
 
             _activeScene[player.PlayerUID] = (current.menuId, newScene);
-            _channel.SendPacket(new MenuOpenPacket { Menu = NetMenuMapper.ToNet(menu), Scene = newScene }, player);
+            var filtered  = FilterHiddenItems(menu, player, newScene);
+            var resolved  = ResolveMenuTexts(filtered, player);
+            _channel.SendPacket(
+                new MenuOpenPacket { Menu = NetMenuMapper.ToNet(resolved), Scene = newScene }, player);
         }
 
         private void OpenLastMenu(IServerPlayer player)

@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-trait-playstyle",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-trait-playstyle"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

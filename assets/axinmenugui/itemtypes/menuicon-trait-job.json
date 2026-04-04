@@ -1,0 +1,14 @@
+{
+  "code": "menuicon-trait-job",
+  "class": "Item",
+  "maxstacksize": 1,
+  "creativeinventory": {
+    "tabs": []
+  },
+  "texture": {
+    "base": "axinmenugui:item/menuicon-trait-job"
+  },
+  "attributes": {
+    "toolTipWhenCarried": false
+  }
+}

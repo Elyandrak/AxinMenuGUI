@@ -27,11 +27,9 @@ namespace AxinMenuGUI
         [JsonProperty("commandAlias")]
         public string CommandAlias { get; set; } = "";
 
-        /// <summary>OPTIONAL | REQUIRED | DISABLED</summary>
         [JsonProperty("commandAliasTarget")]
         public string CommandAliasTarget { get; set; } = "OPTIONAL";
 
-        /// <summary>Permiso necesario para abrir este menú. Vacío = todos.</summary>
         [JsonProperty("permission")]
         public string Permission { get; set; } = "";
 
@@ -40,16 +38,31 @@ namespace AxinMenuGUI
 
         [JsonProperty("openTriggers")]
         public List<OpenTriggerDefinition> OpenTriggers { get; set; } = new();
+
+        /// <summary>
+        /// Tema visual del menú. Valores válidos: default, dark-red, dark-blue,
+        /// dark-green, parchment, stone, night.
+        /// Si está vacío o ausente, usa "default" (aspecto estándar de VS).
+        /// </summary>
+        [JsonProperty("theme")]
+        public string Theme { get; set; } = "default";
     }
 
     // ═══════════════════════════════════════════════════════════
-    // ESCENA (página dentro de un menú)
+    // ESCENA
     // ═══════════════════════════════════════════════════════════
 
     public class SceneDefinition
     {
         [JsonProperty("delay")]
         public int DelayMs { get; set; } = 0;
+
+        /// <summary>
+        /// Tema visual de esta escena. Sobreescribe el theme del menú.
+        /// Si está vacío o ausente, hereda el theme del menú.
+        /// </summary>
+        [JsonProperty("theme")]
+        public string Theme { get; set; } = "";
 
         [JsonProperty("items")]
         public Dictionary<string, ItemDefinition> Items { get; set; } = new();
@@ -82,8 +95,73 @@ namespace AxinMenuGUI
         [JsonProperty("conditions")]
         public Dictionary<string, ConditionDefinition> Conditions { get; set; } = new();
 
+        /// <summary>
+        /// Si true: el botón no se envía al cliente si falla alguna condición.
+        /// Si false (default): el botón se muestra pero el clic queda bloqueado con conditionFailMessage.
+        /// </summary>
+        [JsonProperty("hideOnFail")]
+        public bool HideOnFail { get; set; } = false;
+
         [JsonProperty("conditionFailMessage")]
         public string ConditionFailMessage { get; set; } = "";
+
+        /// <summary>
+        /// Prioridad para slot groups (varios ítems en el mismo slot).
+        /// Menor número = evaluado primero. Default 0.
+        /// </summary>
+        [JsonProperty("priority")]
+        public int Priority { get; set; } = 0;
+
+        /// <summary>
+        /// Número máximo de veces que este botón puede usarse por jugador. 0 = infinito.
+        /// El check y el incremento ocurren una vez por clic, antes de ejecutar los clickEvents.
+        /// </summary>
+        [JsonProperty("maxUses")]
+        public int MaxUses { get; set; } = 0;
+
+        /// <summary>Mensaje al jugador cuando se alcanza el límite. Vacío = mensaje genérico.</summary>
+        [JsonProperty("maxUsesMessage")]
+        public string MaxUsesMessage { get; set; } = "";
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // ÍTEM DE INTERCAMBIO (buyItem / sellItem)
+    // ═══════════════════════════════════════════════════════════
+
+    public class ItemStackDefinition
+    {
+        [JsonProperty("item")]
+        public string Item { get; set; } = "";
+
+        [JsonProperty("amount")]
+        public int Amount { get; set; } = 1;
+    }
+
+    public class ExchangeLimits
+    {
+        public class PerPlayerLimits
+        {
+            /// <summary>Máximo de veces que el jugador puede hacer esta acción en total. 0 = sin límite.</summary>
+            [JsonProperty("maxTotal")]
+            public int MaxTotal { get; set; } = 0;
+
+            /// <summary>Cooldown entre usos. Formatos: 30m, 12h, 7d, 1mo</summary>
+            [JsonProperty("cooldown")]
+            public string Cooldown { get; set; } = "";
+        }
+
+        public class GlobalLimits
+        {
+            /// <summary>Stock global total. 0 = sin límite.</summary>
+            [JsonProperty("maxTotal")]
+            public int MaxTotal { get; set; } = 0;
+        }
+
+        [JsonProperty("perPlayer")]
+        public PerPlayerLimits PerPlayer { get; set; } = new();
+
+        [JsonProperty("global")]
+        public GlobalLimits Global { get; set; } = new();
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -92,46 +170,63 @@ namespace AxinMenuGUI
 
     public class ClickEventDefinition
     {
-        /// <summary>
-        /// Tipos v1: message | consoleCommand | playerCommand |
-        ///           giveItem | takeItem | teleport |
-        ///           closeGui | openGui | nextScene | previousScene | back
-        /// </summary>
         [JsonProperty("type")]
         public string Type { get; set; } = "";
 
-        /// <summary>ANY | LEFT | RIGHT</summary>
         [JsonProperty("clickType")]
         public string ClickType { get; set; } = "ANY";
 
         [JsonProperty("delay")]
         public int DelayMs { get; set; } = 0;
 
-        // ── Campos por tipo ──────────────────────────────────────
-
-        /// <summary>[message] Texto a enviar al jugador.</summary>
+        // ── message ─────────────────────────────────────────────
         [JsonProperty("message")]
         public string Message { get; set; } = "";
 
-        /// <summary>[consoleCommand | playerCommand] Lista de comandos.</summary>
+        // ── consoleCommand / playerCommand ───────────────────────
         [JsonProperty("commands")]
         public List<string> Commands { get; set; } = new();
 
-        /// <summary>[giveItem | takeItem] Código de ítem VS.</summary>
+        // ── giveItem / takeItem ──────────────────────────────────
         [JsonProperty("item")]
         public string ItemCode { get; set; } = "";
 
-        /// <summary>[giveItem | takeItem] Cantidad.</summary>
         [JsonProperty("amount")]
         public int Amount { get; set; } = 1;
 
-        /// <summary>[teleport] Formato: "x,y,z" o "x,y,z,yaw,pitch"</summary>
+        // ── buyItem / sellItem ───────────────────────────────────
+        [JsonProperty("cost")]
+        public List<ItemStackDefinition> Cost { get; set; } = new();
+
+        [JsonProperty("give")]
+        public List<ItemStackDefinition> Give { get; set; } = new();
+
+        [JsonProperty("consume")]
+        public bool Consume { get; set; } = true;
+
+        [JsonProperty("limits")]
+        public ExchangeLimits Limits { get; set; } = new();
+
+        [JsonProperty("conditionFailMessage")]
+        public string ConditionFailMessage { get; set; } = "";
+
+        // ── teleport ─────────────────────────────────────────────
         [JsonProperty("location")]
         public string Location { get; set; } = "";
 
-        /// <summary>[openGui] ID del menú destino.</summary>
+        // ── openGui ──────────────────────────────────────────────
         [JsonProperty("guiId")]
         public string GuiId { get; set; } = "";
+
+        // ── setVariable ──────────────────────────────────────────
+        [JsonProperty("variable")]
+        public string Variable { get; set; } = "";
+
+        [JsonProperty("value")]
+        public string Value { get; set; } = "";
+
+        [JsonProperty("operation")]
+        public string Operation { get; set; } = "set"; // set | add | subtract | multiply | divide
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -140,30 +235,44 @@ namespace AxinMenuGUI
 
     public class ConditionDefinition
     {
-        /// <summary>
-        /// Tipos v1: hasPrivilege | hasItem
-        /// Tipos v2: playerDataCompare | cooldown | isGameMode
-        /// </summary>
         [JsonProperty("type")]
         public string Type { get; set; } = "";
 
-        /// <summary>Si true, la condición se evalúa al revés.</summary>
         [JsonProperty("inverted")]
         public bool Inverted { get; set; } = false;
 
-        // ── Campos por tipo ──────────────────────────────────────
-
-        /// <summary>[hasPrivilege] Nombre del privilegio VS.</summary>
+        // ── hasPrivilege ─────────────────────────────────────────
         [JsonProperty("privilege")]
         public string Privilege { get; set; } = "";
 
-        /// <summary>[hasItem] Código de ítem VS.</summary>
+        // ── hasRole ──────────────────────────────────────────────
+        [JsonProperty("roleCode")]
+        public string RoleCode { get; set; } = "";
+
+        // ── hasPrivilegeLevel ────────────────────────────────────
+        [JsonProperty("minLevel")]
+        public int MinLevel { get; set; } = 0;
+
+        // ── hasItem ──────────────────────────────────────────────
         [JsonProperty("item")]
         public string ItemCode { get; set; } = "";
 
-        /// <summary>[hasItem] Cantidad mínima requerida.</summary>
         [JsonProperty("amount")]
         public int Amount { get; set; } = 1;
+
+        // ── playerDataCompare ────────────────────────────────────
+        [JsonProperty("field")]
+        public string Field { get; set; } = "";
+
+        [JsonProperty("operator")]
+        public string Operator { get; set; } = "eq"; // eq | neq | gt | gte | lt | lte
+
+        [JsonProperty("compareValue")]
+        public string CompareValue { get; set; } = "";
+
+        // ── cooldownActive ───────────────────────────────────────
+        [JsonProperty("cooldownKey")]
+        public string CooldownKey { get; set; } = "";
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -172,19 +281,15 @@ namespace AxinMenuGUI
 
     public class OpenTriggerDefinition
     {
-        /// <summary>command | item | onJoin | hotkey | claimZone</summary>
         [JsonProperty("type")]
         public string Type { get; set; } = "";
 
-        /// <summary>[item] Código del ítem que abre el menú al hacer clic derecho.</summary>
         [JsonProperty("itemCode")]
         public string ItemCode { get; set; } = "";
 
-        /// <summary>[hotkey] Tecla de apertura (ClientSide).</summary>
         [JsonProperty("hotkey")]
         public string Hotkey { get; set; } = "";
 
-        /// <summary>[claimZone] Flag del claim que dispara la apertura.</summary>
         [JsonProperty("claimFlag")]
         public string ClaimFlag { get; set; } = "";
     }
