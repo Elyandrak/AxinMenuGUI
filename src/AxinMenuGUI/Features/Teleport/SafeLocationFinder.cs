@@ -86,11 +86,17 @@ namespace AxinMenuGUI
         }
 
         /// <summary>
-        /// Comprueba si la posición está dentro de una protección/claim VS vanilla.
-        /// Usa api.World.Claims.Get(Cuboidd area).
+        /// Comprueba si el punto de aterrizaje está dentro de una protección/claim VS vanilla.
+        /// Usa api.World.Claims.Get(BlockPos) — firma real confirmada en VS 1.21.6.
         ///
-        /// LIMITACIÓN: solo detecta claims del sistema vanilla de VS.
-        /// Mods de claims externos (p. ej. LandClaims mod) no son comprobados aquí.
+        /// LIMITACIÓN 1: la API solo acepta un BlockPos (punto exacto), no un área.
+        ///   El parámetro <paramref name="margin"/> queda ignorado; se comprueba únicamente
+        ///   la coordenada de aterrizaje. Para margen real habría que iterar varios puntos,
+        ///   lo que incrementaría coste sin garantías adicionales.
+        ///
+        /// LIMITACIÓN 2: solo detecta claims del sistema vanilla de VS.
+        ///   Mods de claims externos no son comprobados.
+        ///
         /// Si la API lanza excepción, devuelve false (permite la ubicación).
         /// </summary>
         public static bool IsLocationProtected(ICoreServerAPI api, int x, int y, int z, int margin)
@@ -98,14 +104,13 @@ namespace AxinMenuGUI
             if (margin <= 0) return false;
             try
             {
-                double m    = Math.Max(1, margin);
-                var area    = new Cuboidd(x - m, y - m, z - m, x + m, y + m, z + m);
-                var claims  = api.World.Claims.Get(area);
+                // Firma real en VS: IWorldLandClaimAPI.Get(BlockPos pos)
+                var claims = api.World.Claims.Get(new BlockPos(x, y, z));
                 return claims != null && claims.Length > 0;
             }
             catch
             {
-                // API no disponible o retorno inesperado → permitir
+                // API no disponible o retorno inesperado → permitir ubicación
                 return false;
             }
         }
