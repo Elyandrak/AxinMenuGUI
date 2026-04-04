@@ -12,6 +12,51 @@ using Vintagestory.API.Server;
 
 namespace AxinMenuGUI
 {
+    // ═══════════════════════════════════════════════════════════
+    // CONFIGURACIÓN DE RANDOM TP
+    // ═══════════════════════════════════════════════════════════
+
+    public class RandomTeleportConfig
+    {
+        /// <summary>Radio mínimo por defecto desde el spawn (en bloques). Usado si /artp no da args.</summary>
+        [JsonProperty("defaultMin")]
+        public int DefaultMin { get; set; } = 5000;
+
+        /// <summary>Radio máximo por defecto desde el spawn (en bloques). Usado si /artp no da args.</summary>
+        [JsonProperty("defaultMax")]
+        public int DefaultMax { get; set; } = 10000;
+
+        /// <summary>Número máximo de intentos antes de fallar.</summary>
+        [JsonProperty("maxAttempts")]
+        public int MaxAttempts { get; set; } = 40;
+
+        /// <summary>
+        /// Margen en bloques alrededor del candidato que se comprueba contra claims VS vanilla.
+        /// 0 = deshabilitar comprobación de claims.
+        /// </summary>
+        [JsonProperty("claimMargin")]
+        public int ClaimMargin { get; set; } = 128;
+
+        /// <summary>
+        /// Distancia mínima al DefaultSpawnPosition del mundo (proxy de zona de historia).
+        /// 0 = deshabilitar. Ver SafeLocationFinder.IsNearStoryZone para limitaciones.
+        /// </summary>
+        [JsonProperty("storyZoneMargin")]
+        public int StoryZoneMargin { get; set; } = 256;
+
+        /// <summary>Si true, rechaza candidatos cuyo bloque de suelo sea líquido.</summary>
+        [JsonProperty("forbidWater")]
+        public bool ForbidWater { get; set; } = true;
+
+        /// <summary>Si true, exige 2 bloques de aire (pies + cabeza) sobre el suelo.</summary>
+        [JsonProperty("requireTwoAirBlocks")]
+        public bool RequireTwoAirBlocks { get; set; } = true;
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // CONFIGURACIÓN GLOBAL DEL MOD
+    // ═══════════════════════════════════════════════════════════
+
     public class AxinMenuConfig
     {
         // Versión del esquema de config.json.
@@ -79,13 +124,17 @@ namespace AxinMenuGUI
         /// <summary>Campo usado para ordenar el ranking: mobKillsHostilePoints | mobKillsAll | deaths | timeRealSeconds</summary>
         [JsonProperty("rankingField")]
         public string RankingField { get; set; } = "mobKillsHostilePoints";
+
+        /// <summary>Configuración del sistema de teletransporte aleatorio (/artp).</summary>
+        [JsonProperty("randomTeleport")]
+        public RandomTeleportConfig RandomTeleport { get; set; } = new();
     }
 
     public class ConfigManager
     {
         // Versión actual del esquema. Incrementar aquí cuando se añadan campos nuevos.
         // El fichero en disco se migrará automáticamente si su DocVersion es inferior.
-        private const double CONFIG_VERSION = 0.2;
+        private const double CONFIG_VERSION = 0.3;
 
         private readonly ICoreServerAPI _api;
         private AxinMenuConfig _config = new();
@@ -205,11 +254,15 @@ namespace AxinMenuGUI
                     $"[AxinMenuGUI] Migración v0.2: {added} entrada(s) de killPoints añadida(s).");
             }
 
-            // Plantilla para futuras versiones:
-            // if (fromVersion < 0.3)
-            // {
-            //     // Añadir nuevos campos de v0.3 aquí
-            // }
+            if (fromVersion < 0.3)
+            {
+                // v0.2 → v0.3: se añade el bloque randomTeleport.
+                // Newtonsoft.Json ya inicializa RandomTeleport con defaults si no estaba en disco.
+                // La migración solo es necesaria para garantizar que el fichero se guarda
+                // con el nuevo bloque visible.
+                _api.Logger.Notification(
+                    "[AxinMenuGUI] Migración v0.3: bloque 'randomTeleport' añadido con valores por defecto.");
+            }
         }
     }
 }

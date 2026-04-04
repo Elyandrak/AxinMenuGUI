@@ -211,8 +211,23 @@ namespace AxinMenuGUI
         public string ConditionFailMessage { get; set; } = "";
 
         // ── teleport ─────────────────────────────────────────────
+        // { "type": "teleport", "location": "x,y,z" }
         [JsonProperty("location")]
         public string Location { get; set; } = "";
+
+        // ── teleportSaved ─────────────────────────────────────────
+        // { "type": "teleportSaved", "target": "nombre_punto" }
+        [JsonProperty("target")]
+        public string Target { get; set; } = "";
+
+        // ── randomTeleport ────────────────────────────────────────
+        // { "type": "randomTeleport", "radiusMin": 5000, "radiusMax": 10000 }
+        // 0 = usar defaults de config.json → randomTeleport.defaultMin/Max
+        [JsonProperty("radiusMin")]
+        public int RadiusMin { get; set; } = 0;
+
+        [JsonProperty("radiusMax")]
+        public int RadiusMax { get; set; } = 0;
 
         // ── openGui ──────────────────────────────────────────────
         [JsonProperty("guiId")]

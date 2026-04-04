@@ -21,6 +21,8 @@ namespace AxinMenuGUI
         private readonly IServerNetworkChannel _channel;
         private readonly RankingService?       _ranking;
         private readonly ExchangeEngine        _exchange;
+        private readonly AdminTeleportService? _adminTp;
+        private readonly RandomTeleportService? _randomTp;
 
         private readonly Dictionary<string, (string menuId, int scene)> _activeScene = new();
         private readonly Dictionary<string, Stack<string>> _menuHistory = new();
@@ -34,7 +36,9 @@ namespace AxinMenuGUI
             MenuRegistry registry,
             PlayerDataStore store,
             IServerNetworkChannel channel,
-            RankingService? ranking = null)
+            RankingService? ranking = null,
+            AdminTeleportService? adminTp = null,
+            RandomTeleportService? randomTp = null)
         {
             _api      = api;
             _registry = registry;
@@ -42,6 +46,8 @@ namespace AxinMenuGUI
             _channel  = channel;
             _ranking  = ranking;
             _exchange = new ExchangeEngine(api, store);
+            _adminTp  = adminTp;
+            _randomTp = randomTp;
         }
 
         // ═══ APERTURA ════════════════════════════════════════════════
@@ -369,9 +375,59 @@ namespace AxinMenuGUI
                     break;
 
                 case "teleport":
-                    player.SendMessage(0,
-                        "[AxinMenuGUI] teleport: pendiente (Bloque 2.2)", EnumChatType.Notification);
+                {
+                    // { "type": "teleport", "location": "x,y,z" }
+                    if (!TryParseLocation(ev.Location, out double tx, out double ty, out double tz))
+                    {
+                        _api.Logger.Warning(
+                            $"[AxinMenuGUI] teleport: formato inválido '{ev.Location}'. " +
+                            "Use 'x,y,z' con números separados por coma.");
+                        player.SendMessage(0,
+                            "[AxinMenuGUI] Coordenadas de teletransporte inválidas.",
+                            EnumChatType.Notification);
+                        break;
+                    }
+                    AdminTeleportService.TeleportPlayerTo(player, tx, ty, tz);
                     break;
+                }
+
+                case "teleportSaved":
+                {
+                    // { "type": "teleportSaved", "target": "nombre_punto" }
+                    if (_adminTp == null)
+                    {
+                        _api.Logger.Warning("[AxinMenuGUI] teleportSaved: AdminTeleportService no disponible.");
+                        player.SendMessage(0,
+                            "[AxinMenuGUI] Sistema de TP guardados no disponible.",
+                            EnumChatType.Notification);
+                        break;
+                    }
+                    if (string.IsNullOrWhiteSpace(ev.Target))
+                    {
+                        player.SendMessage(0,
+                            "[AxinMenuGUI] teleportSaved: campo 'target' vacío.",
+                            EnumChatType.Notification);
+                        break;
+                    }
+                    _adminTp.TeleportTo(player, ev.Target);
+                    break;
+                }
+
+                case "randomTeleport":
+                {
+                    // { "type": "randomTeleport", "radiusMin": 5000, "radiusMax": 10000 }
+                    // radiusMin/Max = 0 → usar defaults de config.json
+                    if (_randomTp == null)
+                    {
+                        _api.Logger.Warning("[AxinMenuGUI] randomTeleport: RandomTeleportService no disponible.");
+                        player.SendMessage(0,
+                            "[AxinMenuGUI] Sistema de TP aleatorio no disponible.",
+                            EnumChatType.Notification);
+                        break;
+                    }
+                    _randomTp.TeleportRandom(player, ev.RadiusMin, ev.RadiusMax);
+                    break;
+                }
 
                 default:
                     _api.Logger.Warning($"[AxinMenuGUI] Click event desconocido: '{ev.Type}'.");
@@ -466,6 +522,31 @@ namespace AxinMenuGUI
             history.Pop();
             var prev = history.Peek();
             OpenMenu(player, prev, addToHistory: false);
+        }
+
+        // ═══ HELPERS DE TELEPORT ══════════════════════════════════════
+
+        /// <summary>
+        /// Parsea una cadena "x,y,z" en tres doubles con InvariantCulture.
+        /// Acepta espacios alrededor de las comas.
+        /// </summary>
+        private static bool TryParseLocation(
+            string location,
+            out double x, out double y, out double z)
+        {
+            x = y = z = 0;
+            if (string.IsNullOrWhiteSpace(location)) return false;
+
+            var parts = location.Split(',');
+            if (parts.Length != 3) return false;
+
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
+            return double.TryParse(parts[0].Trim(),
+                       System.Globalization.NumberStyles.Any, ci, out x)
+                && double.TryParse(parts[1].Trim(),
+                       System.Globalization.NumberStyles.Any, ci, out y)
+                && double.TryParse(parts[2].Trim(),
+                       System.Globalization.NumberStyles.Any, ci, out z);
         }
     }
 }

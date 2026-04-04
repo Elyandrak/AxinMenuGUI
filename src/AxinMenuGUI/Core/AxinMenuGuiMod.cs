@@ -21,6 +21,8 @@ namespace AxinMenuGUI
         private PlayerDataStore?          _playerData;
         private PlayerStatsTracker?       _statsTracker;
         private RankingService?           _ranking;
+        private AdminTeleportService?     _adminTp;
+        private RandomTeleportService?    _randomTp;
         private CommandHandler?           _commands;
         private BlockClickRegistry?       _blockClickRegistry;
         private BlockClickHandlerServer?  _blockClickServer;
@@ -50,8 +52,14 @@ namespace AxinMenuGUI
             _statsTracker      = new PlayerStatsTracker(api, _playerData, _configManager);
             _ranking           = new RankingService(api, _configManager);
             _registry          = new MenuRegistry(api);
-            _engine            = new MenuEngine(api, _registry, _playerData, _serverChannel, _ranking);
-            _commands          = new CommandHandler(api, _registry, _engine, _playerData, _ranking);
+            _adminTp           = new AdminTeleportService(api);
+            _randomTp          = new RandomTeleportService(api, _configManager);
+            _engine            = new MenuEngine(
+                api, _registry, _playerData, _serverChannel, _ranking,
+                _adminTp, _randomTp);
+            _commands          = new CommandHandler(
+                api, _registry, _engine, _playerData, _ranking,
+                _adminTp, _randomTp);
 
             _blockClickRegistry = new BlockClickRegistry(api);
             _blockClickServer   = new BlockClickHandlerServer(

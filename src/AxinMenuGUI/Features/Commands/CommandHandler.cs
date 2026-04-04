@@ -18,12 +18,14 @@ namespace AxinMenuGUI
 {
     public class CommandHandler
     {
-        private readonly ICoreServerAPI   _api;
-        private readonly MenuRegistry     _registry;
-        private readonly MenuEngine       _engine;
-        private readonly PlayerDataStore  _store;
-        private readonly RankingService   _ranking;
-        private BlockClickHandlerServer?  _blockClick; // inyectado después de construcción
+        private readonly ICoreServerAPI        _api;
+        private readonly MenuRegistry          _registry;
+        private readonly MenuEngine            _engine;
+        private readonly PlayerDataStore       _store;
+        private readonly RankingService        _ranking;
+        private readonly AdminTeleportService? _adminTp;
+        private readonly RandomTeleportService? _randomTp;
+        private BlockClickHandlerServer?       _blockClick; // inyectado después de construcción
 
         private readonly System.Collections.Generic.HashSet<string> _registeredAliases = new();
 
@@ -32,13 +34,17 @@ namespace AxinMenuGUI
             MenuRegistry registry,
             MenuEngine engine,
             PlayerDataStore store,
-            RankingService ranking)
+            RankingService ranking,
+            AdminTeleportService? adminTp = null,
+            RandomTeleportService? randomTp = null)
         {
             _api      = api;
             _registry = registry;
             _engine   = engine;
             _store    = store;
             _ranking  = ranking;
+            _adminTp  = adminTp;
+            _randomTp = randomTp;
 
             Register();
         }
@@ -127,7 +133,62 @@ namespace AxinMenuGUI
                 .EndSubCommand();
                 // ─────────────────────────────────────────────────────
 
-            _api.Logger.Notification("[AxinMenuGUI] Comandos registrados: /amenu");
+            // ── /atp — puntos de TP admin ─────────────────────────────
+            _api.ChatCommands
+                .Create("atp")
+                .WithDescription("AxinMenuGUI — puntos de teletransporte admin")
+                .RequiresPrivilege(Privilege.controlserver)
+
+                .BeginSubCommand("set")
+                    .WithDescription("Guarda tu posición actual como punto TP")
+                    .WithArgs(_api.ChatCommands.Parsers.Word("name"))
+                    .HandleWith(OnAtpSet)
+                .EndSubCommand()
+
+                .BeginSubCommand("setat")
+                    .WithDescription("Guarda un punto TP en coordenadas específicas")
+                    .WithArgs(
+                        _api.ChatCommands.Parsers.Word("name"),
+                        _api.ChatCommands.Parsers.Word("x"),
+                        _api.ChatCommands.Parsers.Word("y"),
+                        _api.ChatCommands.Parsers.Word("z"))
+                    .HandleWith(OnAtpSetAt)
+                .EndSubCommand()
+
+                .BeginSubCommand("go")
+                    .WithDescription("Teletransporta al punto TP guardado")
+                    .WithArgs(_api.ChatCommands.Parsers.Word("name"))
+                    .HandleWith(OnAtpGo)
+                .EndSubCommand()
+
+                .BeginSubCommand("del")
+                    .WithDescription("Elimina un punto TP guardado")
+                    .WithArgs(_api.ChatCommands.Parsers.Word("name"))
+                    .HandleWith(OnAtpDel)
+                .EndSubCommand()
+
+                .BeginSubCommand("list")
+                    .WithDescription("Lista todos los puntos TP guardados")
+                    .HandleWith(OnAtpList)
+                .EndSubCommand()
+
+                .BeginSubCommand("info")
+                    .WithDescription("Muestra detalles de un punto TP guardado")
+                    .WithArgs(_api.ChatCommands.Parsers.Word("name"))
+                    .HandleWith(OnAtpInfo)
+                .EndSubCommand();
+
+            // ── /artp — random TP ─────────────────────────────────────
+            _api.ChatCommands
+                .Create("artp")
+                .WithDescription("AxinMenuGUI — teletransporte aleatorio seguro")
+                .RequiresPrivilege(Privilege.chat)
+                .WithArgs(
+                    _api.ChatCommands.Parsers.OptionalWord("min"),
+                    _api.ChatCommands.Parsers.OptionalWord("max"))
+                .HandleWith(OnArtp);
+
+            _api.Logger.Notification("[AxinMenuGUI] Comandos registrados: /amenu, /atp, /artp");
             RegisterAliases();
         }
 
@@ -396,6 +457,151 @@ namespace AxinMenuGUI
             _blockClick.BeginPendingDelete(player);
             return TextCommandResult.Success(
                 Lang(player, "amenu.click.await-delete"));
+        }
+
+        // ═══ HANDLERS DE /atp ════════════════════════════════════════
+
+        private TextCommandResult OnAtpSet(TextCommandCallingArgs args)
+        {
+            var player = args.Caller.Player as IServerPlayer;
+            if (player == null) return TextCommandResult.Error("Solo jugadores.");
+            if (_adminTp == null) return TextCommandResult.Error("[AxinMenuGUI] AdminTeleportService no disponible.");
+
+            var name = (string)args[0];
+            var pos  = player.Entity.ServerPos;
+            _adminTp.Set(name, pos.X, pos.Y, pos.Z, player.PlayerName);
+            return TextCommandResult.Success(
+                $"[AxinMenuGUI] Punto '{name}' guardado en ({pos.X:F0}, {pos.Y:F0}, {pos.Z:F0}).");
+        }
+
+        private TextCommandResult OnAtpSetAt(TextCommandCallingArgs args)
+        {
+            var player = args.Caller.Player as IServerPlayer;
+            if (player == null) return TextCommandResult.Error("Solo jugadores.");
+            if (_adminTp == null) return TextCommandResult.Error("[AxinMenuGUI] AdminTeleportService no disponible.");
+
+            var name = (string)args[0];
+            var ci   = System.Globalization.CultureInfo.InvariantCulture;
+            if (!double.TryParse((string)args[1], System.Globalization.NumberStyles.Any, ci, out double x)
+             || !double.TryParse((string)args[2], System.Globalization.NumberStyles.Any, ci, out double y)
+             || !double.TryParse((string)args[3], System.Globalization.NumberStyles.Any, ci, out double z))
+                return TextCommandResult.Error("Uso: /atp setat <nombre> <x> <y> <z>");
+
+            _adminTp.Set(name, x, y, z, player.PlayerName);
+            return TextCommandResult.Success(
+                $"[AxinMenuGUI] Punto '{name}' guardado en ({x:F0}, {y:F0}, {z:F0}).");
+        }
+
+        private TextCommandResult OnAtpGo(TextCommandCallingArgs args)
+        {
+            var player = args.Caller.Player as IServerPlayer;
+            if (player == null) return TextCommandResult.Error("Solo jugadores.");
+            if (_adminTp == null) return TextCommandResult.Error("[AxinMenuGUI] AdminTeleportService no disponible.");
+
+            var name = (string)args[0];
+            bool ok  = _adminTp.TeleportTo(player, name);
+            return ok
+                ? TextCommandResult.Success()
+                : TextCommandResult.Error($"[AxinMenuGUI] Punto '{name}' no encontrado. Usa /atp list.");
+        }
+
+        private TextCommandResult OnAtpDel(TextCommandCallingArgs args)
+        {
+            if (_adminTp == null) return TextCommandResult.Error("[AxinMenuGUI] AdminTeleportService no disponible.");
+
+            var name = (string)args[0];
+            bool ok  = _adminTp.Delete(name);
+            return ok
+                ? TextCommandResult.Success($"[AxinMenuGUI] Punto '{name}' eliminado.")
+                : TextCommandResult.Error($"[AxinMenuGUI] Punto '{name}' no encontrado.");
+        }
+
+        private TextCommandResult OnAtpList(TextCommandCallingArgs args)
+        {
+            if (_adminTp == null) return TextCommandResult.Error("[AxinMenuGUI] AdminTeleportService no disponible.");
+
+            var pts = _adminTp.GetAll();
+            if (pts.Count == 0)
+                return TextCommandResult.Success("[AxinMenuGUI] No hay puntos de TP guardados.");
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"<font color='gold'>[AxinMenuGUI]</font> Puntos de TP ({pts.Count}):");
+            foreach (var pt in pts)
+                sb.AppendLine(
+                    $"  • <font color='#e9ddce'>{pt.Name}</font> " +
+                    $"({pt.X:F0}, {pt.Y:F0}, {pt.Z:F0}) — por {pt.CreatedBy}");
+            return TextCommandResult.Success(sb.ToString().TrimEnd());
+        }
+
+        private TextCommandResult OnAtpInfo(TextCommandCallingArgs args)
+        {
+            if (_adminTp == null) return TextCommandResult.Error("[AxinMenuGUI] AdminTeleportService no disponible.");
+
+            var name = (string)args[0];
+            var pt   = _adminTp.Get(name);
+            if (pt == null) return TextCommandResult.Error($"[AxinMenuGUI] Punto '{name}' no encontrado.");
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"<font color='gold'>[AxinMenuGUI]</font> TP Info: {pt.Name}");
+            sb.AppendLine($"  X: {pt.X:F2}  Y: {pt.Y:F2}  Z: {pt.Z:F2}");
+            sb.AppendLine($"  Creado por: {pt.CreatedBy}");
+            sb.AppendLine($"  Fecha UTC:  {pt.CreatedAtUtc}");
+            return TextCommandResult.Success(sb.ToString().TrimEnd());
+        }
+
+        // ═══ HANDLER DE /artp ════════════════════════════════════════
+
+        private TextCommandResult OnArtp(TextCommandCallingArgs args)
+        {
+            var player = args.Caller.Player as IServerPlayer;
+            if (player == null) return TextCommandResult.Error("Solo jugadores.");
+            if (_randomTp == null) return TextCommandResult.Error("[AxinMenuGUI] RandomTeleportService no disponible.");
+
+            // Parsear min y max (aceptan enteros o sufijo k → *1000)
+            var minStr = args[0] as string;
+            var maxStr = args[1] as string;
+            int min = 0, max = 0;
+
+            if (!string.IsNullOrWhiteSpace(minStr))
+            {
+                min = ParseRadiusArg(minStr);
+                if (min < 0)
+                    return TextCommandResult.Error(
+                        $"[AxinMenuGUI] min inválido: '{minStr}'. Usa un entero o sufijo k (ej. 5k).");
+            }
+            if (!string.IsNullOrWhiteSpace(maxStr))
+            {
+                max = ParseRadiusArg(maxStr);
+                if (max < 0)
+                    return TextCommandResult.Error(
+                        $"[AxinMenuGUI] max inválido: '{maxStr}'. Usa un entero o sufijo k (ej. 10k).");
+            }
+
+            // 0 → usar defaults de config (RandomTeleportService los aplica)
+            if (max > 0 && max <= min)
+                return TextCommandResult.Error(
+                    $"[AxinMenuGUI] max ({max}) debe ser mayor que min ({min}).");
+
+            _randomTp.TeleportRandom(player, min, max);
+            return TextCommandResult.Success();
+        }
+
+        // ─── Helpers de parseo ────────────────────────────────────────
+
+        /// <summary>
+        /// Parsea un argumento de radio: entero puro o con sufijo k (× 1000).
+        /// Devuelve -1 si el formato es inválido.
+        /// Ejemplos: "5000" → 5000, "5k" → 5000, "10K" → 10000.
+        /// </summary>
+        private static int ParseRadiusArg(string s)
+        {
+            s = s.Trim().ToLowerInvariant();
+            if (s.EndsWith("k"))
+            {
+                if (int.TryParse(s[..^1], out int km)) return km * 1000;
+                return -1;
+            }
+            return int.TryParse(s, out int v) ? v : -1;
         }
 
         // ─── Localización interna ─────────────────────────────────────
