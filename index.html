@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AxinMenuGUI — Documentación v0.6.0</title>
+<title>AxinMenuGUI — Documentación v0.7.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
 
@@ -150,7 +150,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <input type="text" placeholder="Buscar en la documentación..." id="searchInput" onkeyup="handleSearch(event)">
     <span class="search-hint">Ctrl K</span>
   </div>
-  <div class="header-badge">M=4 · v0.6.0</div>
+  <div class="header-badge">M=4 · v0.7.2</div>
 </header>
 
 <div id="layout">
@@ -209,13 +209,15 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <div class="feat-card"><div class="feat-card-icon">💾</div><div class="feat-card-title">Player Stats</div><div class="feat-card-desc">Kills, muertes, tiempo de juego, puntos por mob. Ranking de jugadores con caché.</div></div>
     <div class="feat-card"><div class="feat-card-icon">🔗</div><div class="feat-card-title">Tokens dinámicos</div><div class="feat-card-desc"><code>{player}</code>, <code>{stats.deaths}</code>, <code>{ranking.position}</code> y más en cualquier texto del menú.</div></div>
     <div class="feat-card"><div class="feat-card-icon">🖼</div><div class="feat-card-title">58 Iconos propios</div><div class="feat-card-desc">Iconos pixel art 32×32 en el dominio <code>axinmenugui:</code> listos para usar en cualquier botón.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🌀</div><div class="feat-card-title">Sistema de Teleport</div><div class="feat-card-desc">Teleport a coordenadas, puntos ATP guardados por nombre y teletransporte aleatorio seguro (<code>/artp</code>) con validación de terreno.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🧱</div><div class="feat-card-title">Block Click Triggers</div><div class="feat-card-desc">Clic derecho en un bloque vinculado abre el menú configurado. Persistencia en <code>menusClick.json</code>.</div></div>
   </div>
   <hr>
   <h2>📋 Requisitos</h2>
   <div class="table-wrap"><table>
     <tr><th>Requisito</th><th>Valor</th></tr>
     <tr><td>VintageStory</td><td>1.21.x+</td></tr>
-    <tr><td>Versión actual</td><td>0.6.0</td></tr>
+    <tr><td>Versión actual</td><td>0.7.2</td></tr>
     <tr><td>Tipo de mod</td><td>Universal (cliente <strong>y</strong> servidor)</td></tr>
     <tr><td>Dependencias</td><td>Ninguna (mod standalone)</td></tr>
   </table></div>
@@ -230,7 +232,7 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
   <p class="page-subtitle">Instala AxinMenuGUI y crea tu primer menú en minutos.</p>
   <h2>📥 Instalación</h2>
   <ol>
-    <li>Copia <code>AxinMenuGUI_v0.6.0.zip</code> en la carpeta <code>Mods/</code> del servidor.</li>
+    <li>Copia <code>AxinMenuGUI_v0.7.2.zip</code> en la carpeta <code>Mods/</code> del servidor.</li>
     <li>Reinicia el servidor. Se generan los ficheros de configuración y menús de ejemplo.</li>
     <li>Verifica en los logs: <code>[AxinMenuGUI] Alias registrado: /menu → 'ejemplo'</code></li>
     <li>Entra al juego y escribe <code>/menu</code> para ver el menú de ejemplo.</li>
@@ -238,12 +240,14 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
   <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body">El mod es <strong>Universal</strong>: también debe instalarse en el cliente.</div></div>
   <h2>📂 Ficheros generados</h2>
   <pre><code>ModConfig/AxinMenuGUI/
-├── config.json             <span class="cmt"># Configuración global (idioma, killPoints, ranking)</span>
+├── config.json             <span class="cmt"># Configuración global (idioma, killPoints, ranking, RTP)</span>
+├── adminteleports.json     <span class="cmt"># Puntos ATP guardados con /atp set (auto-generado)</span>
 ├── menus/                  <span class="cmt"># Tus ficheros JSON de menú</span>
 │   ├── ejemplo.json        <span class="cmt"># Menú índice con submenús (/menu)</span>
 │   ├── ejemplo_jugador.json
 │   ├── ejemplo_stats.json
 │   ├── ejemplo_temas.json  <span class="cmt"># 13 escenas, un tema por pestaña (/temas)</span>
+│   ├── ejemplo_tp.json     <span class="cmt"># Panel de teleport admin (ATP, RTP, waypoints)</span>
 │   └── ...
 └── playerdata/             <span class="cmt"># Stats por jugador (auto-generado)</span>
     └── {uid}.json</code></pre>
@@ -292,6 +296,25 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <tr><td><code>/amenu ranking</code></td><td>chat</td><td>Muestra el ranking público.</td></tr>
     <tr><td><code>/&lt;alias&gt;</code></td><td>chat</td><td>Abre el menú con ese <code>commandAlias</code>.</td></tr>
   </table></div>
+  <h2>⚡ Teleport administrativo (ATP)</h2>
+  <p>Gestiona puntos de teletransporte guardados en el servidor. Todos requieren privilegio <code>controlserver</code>.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Comando</th><th>Descripción</th></tr>
+    <tr><td><code>/atp set &lt;nombre&gt;</code></td><td>Guarda tu posición actual como punto ATP con ese nombre.</td></tr>
+    <tr><td><code>/atp setat &lt;nombre&gt; &lt;x&gt; &lt;y&gt; &lt;z&gt;</code></td><td>Guarda un ATP en coordenadas explícitas.</td></tr>
+    <tr><td><code>/atp go &lt;nombre&gt;</code></td><td>Teleport al punto ATP guardado.</td></tr>
+    <tr><td><code>/atp del &lt;nombre&gt;</code></td><td>Elimina un punto ATP.</td></tr>
+    <tr><td><code>/atp list</code></td><td>Lista todos los puntos ATP guardados.</td></tr>
+    <tr><td><code>/atp info &lt;nombre&gt;</code></td><td>Muestra coordenadas y metadatos del punto ATP.</td></tr>
+  </table></div>
+  <h2>🌀 Teletransporte aleatorio (RTP)</h2>
+  <p>Teletransporta al jugador a una posición aleatoria segura. Requiere privilegio <code>controlserver</code>.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Comando</th><th>Descripción</th></tr>
+    <tr><td><code>/artp</code></td><td>RTP con radio mínimo y máximo definidos en <code>config.json</code>.</td></tr>
+    <tr><td><code>/artp &lt;min&gt; &lt;max&gt;</code></td><td>RTP con radio explícito. Acepta enteros o sufijo <code>k</code> (ej. <code>/artp 5k 10k</code>).</td></tr>
+  </table></div>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Limitaciones del RTP</strong><p>La verificación de claims solo comprueba el punto exacto de aterrizaje (limitación de la API de VintageStory). Las story zones se aproximan por distancia al spawn. Verificado en mundo plano; se recomienda prueba adicional en mundos con relieve.</p></div></div>
   <h2>Output de /amenu player</h2>
   <pre><code>[AxinMenuGUI] Stats: elYandrack
   timeRealSeconds:       77  (1m 17s)
@@ -325,6 +348,15 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <span class="key">"drifter-nightmare"</span>:     <span class="num">14.0</span>,
     <span class="key">"drifter-double-headed"</span>: <span class="num">20.0</span>
     <span class="cmt">// ... 29 mobs en total</span>
+  },
+  <span class="key">"randomTeleport"</span>: {
+    <span class="key">"defaultMin"</span>:          <span class="num">5000</span>,
+    <span class="key">"defaultMax"</span>:          <span class="num">10000</span>,
+    <span class="key">"maxAttempts"</span>:         <span class="num">40</span>,
+    <span class="key">"claimMargin"</span>:         <span class="num">128</span>,
+    <span class="key">"storyZoneMargin"</span>:     <span class="num">256</span>,
+    <span class="key">"forbidWater"</span>:         <span class="kw">true</span>,
+    <span class="key">"requireTwoAirBlocks"</span>: <span class="kw">true</span>
   }
 }</code></pre>
   <div class="table-wrap"><table>
@@ -333,6 +365,18 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <tr><td><code>rankingSize</code></td><td>Número de jugadores en el ranking</td></tr>
     <tr><td><code>rankingField</code></td><td>Campo por el que se ordena: <code>mobKillsHostilePoints</code>, <code>deaths</code>, <code>playerKills</code>…</td></tr>
     <tr><td><code>killPoints</code></td><td>Puntos por tipo de mob hostil. Soporta lookup progresivo: <code>wolf-male-adult</code> → <code>wolf</code>.</td></tr>
+  </table></div>
+  <h2>🌀 Bloque randomTeleport</h2>
+  <p>Configuración del teletransporte aleatorio (<code>/artp</code> y click event <code>randomTeleport</code>).</p>
+  <div class="table-wrap"><table>
+    <tr><th>Campo</th><th>Default</th><th>Descripción</th></tr>
+    <tr><td><code>randomTeleport.defaultMin</code></td><td>5000</td><td>Radio mínimo por defecto al usar <code>/artp</code> sin argumentos.</td></tr>
+    <tr><td><code>randomTeleport.defaultMax</code></td><td>10000</td><td>Radio máximo por defecto al usar <code>/artp</code> sin argumentos.</td></tr>
+    <tr><td><code>randomTeleport.maxAttempts</code></td><td>40</td><td>Intentos máximos antes de cancelar la búsqueda de posición segura.</td></tr>
+    <tr><td><code>randomTeleport.claimMargin</code></td><td>128</td><td>Margen de claims. <em>Limitación de API: solo se comprueba el punto exacto de aterrizaje, no el perímetro.</em></td></tr>
+    <tr><td><code>randomTeleport.storyZoneMargin</code></td><td>256</td><td>Distancia mínima al spawn como proxy de story zones. No equivale a detección real de zonas de historia.</td></tr>
+    <tr><td><code>randomTeleport.forbidWater</code></td><td>true</td><td>Rechaza agua u otros líquidos como suelo de aterrizaje.</td></tr>
+    <tr><td><code>randomTeleport.requireTwoAirBlocks</code></td><td>true</td><td>Exige dos bloques de aire libres (pies y cabeza) en el punto de destino.</td></tr>
   </table></div>
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Anterior</span><span class="label">← Comandos</span></div></a>
@@ -561,7 +605,9 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <tr><td><code>buyItem</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td>Compra: verifica coste + consume + entrega.</td></tr>
     <tr><td><code>sellItem</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td>Venta: verifica ítem + consume + entrega currency.</td></tr>
     <tr><td><code>setVariable</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td>Modifica un field del jugador (set/add/subtract/multiply/divide).</td></tr>
-    <tr><td><code>teleport</code></td><td><span class="badge badge-wip">🔲 stub</span></td><td>Teletransporta al jugador a coordenadas.</td></tr>
+    <tr><td><code>teleport</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Teletransporta al jugador a coordenadas fijas.</td></tr>
+    <tr><td><code>teleportSaved</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Teleport a un punto ATP guardado por nombre.</td></tr>
+    <tr><td><code>randomTeleport</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Teletransporte aleatorio seguro con validación de terreno.</td></tr>
   </table></div>
   <h2>Ejemplos de uso</h2>
   <pre><code><span class="cmt">// message</span>
@@ -580,7 +626,16 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
 <span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"giveItem"</span>, <span class="key">"itemCode"</span>: <span class="str">"game:ingot-iron"</span>, <span class="key">"quantity"</span>: <span class="num">5</span> }
 
 <span class="cmt">// setVariable</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"setVariable"</span>, <span class="key">"field"</span>: <span class="str">"puntos"</span>, <span class="key">"op"</span>: <span class="str">"add"</span>, <span class="key">"value"</span>: <span class="num">10</span> }</code></pre>
+<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"setVariable"</span>, <span class="key">"field"</span>: <span class="str">"puntos"</span>, <span class="key">"op"</span>: <span class="str">"add"</span>, <span class="key">"value"</span>: <span class="num">10</span> }
+
+<span class="cmt">// teleport — coordenadas fijas separadas por coma</span>
+<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"teleport"</span>, <span class="key">"location"</span>: <span class="str">"0,150,0"</span> }
+
+<span class="cmt">// teleportSaved — usa un punto ATP guardado con /atp set</span>
+<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"teleportSaved"</span>, <span class="key">"target"</span>: <span class="str">"spawn"</span> }
+
+<span class="cmt">// randomTeleport — radios explícitos (0,0 usa defaults de config.json)</span>
+<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"randomTeleport"</span>, <span class="key">"radiusMin"</span>: <span class="num">1000</span>, <span class="key">"radiusMax"</span>: <span class="num">5000</span> }</code></pre>
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('themes')"><div><span class="direction">Anterior</span><span class="label">← Temas</span></div></a>
     <a class="page-nav-btn" onclick="showPage('conditions')"><div><span class="direction">Siguiente</span><span class="label">Condiciones →</span></div></a>
@@ -807,7 +862,9 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
     <tr><th>Trigger</th><th>Estado</th><th>Descripción</th></tr>
     <tr><td><code>/amenu open &lt;id&gt;</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Comando directo de admin.</td></tr>
     <tr><td><code>commandAlias</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Alias por menú: <code>/menu</code>, <code>/temas</code>, etc.</td></tr>
-    <tr><td>Ítem especial</td><td><span class="badge badge-wip">Fase 2</span></td><td>Clic derecho en un ítem configurado.</td></tr>
+    <tr><td>Block Click Trigger</td><td><span class="badge badge-done">✅ RUN</span></td><td>Clic derecho en un bloque vinculado. Configuración guardada en <code>menusClick.json</code>.</td></tr>
+    <tr><td>Menús ATP/RTP</td><td><span class="badge badge-done">✅ RUN</span></td><td>Menús con click events de teleport o ATP, accesibles por alias propio.</td></tr>
+    <tr><td>Ítem especial</td><td><span class="badge badge-wip">Fase 2 — pendiente</span></td><td>Clic derecho en un ítem configurado (Bloque 2.7).</td></tr>
     <tr><td>Hotkey</td><td><span class="badge badge-wip">Fase 3</span></td><td>Tecla configurable (ClientSide).</td></tr>
     <tr><td>onJoin</td><td><span class="badge badge-wip">Fase 3</span></td><td>Al conectarse al servidor.</td></tr>
     <tr><td>claimZone</td><td><span class="badge badge-wip">Fase 3 (opcional)</span></td><td>Al entrar en una zona con flag.</td></tr>
@@ -822,23 +879,26 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
 <div class="page" id="page-examples">
   <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Ejemplos</div>
   <h1><span class="h1-icon">📦</span> Menús de ejemplo incluidos</h1>
-  <p class="page-subtitle">7 menús se generan automáticamente al instalar el mod.</p>
+  <p class="page-subtitle">8 menús se generan automáticamente al instalar el mod.</p>
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Los menús de ejemplo se actualizan automáticamente</strong><p>A partir de la v0.7.2, los menús de ejemplo oficiales se sobreescriben en cada recarga del mod para mantenerse al día. Tus menús propios (con IDs distintos) nunca se ven afectados.</p></div></div>
   <div class="table-wrap"><table>
     <tr><th>ID</th><th>Alias</th><th>Descripción</th></tr>
-    <tr><td><code>ejemplo</code></td><td><code>/menu</code></td><td>Índice con 4 submenús navegables (openGui + back)</td></tr>
+    <tr><td><code>ejemplo</code></td><td><code>/menu</code></td><td>Índice con submenús navegables (openGui + back). Incluye acceso al panel TP si eres admin.</td></tr>
     <tr><td><code>ejemplo_jugador</code></td><td>—</td><td>Datos del jugador: nombre, pos, modo, UID</td></tr>
     <tr><td><code>ejemplo_stats</code></td><td>—</td><td>Estadísticas completas + ranking</td></tr>
     <tr><td><code>ejemplo_tienda</code></td><td>—</td><td>Tienda demo con giveItem (solo admins)</td></tr>
     <tr><td><code>ejemplo_admin</code></td><td>—</td><td>Panel admin: reload, list, info, open</td></tr>
     <tr><td><code>ejemplo_temas</code></td><td><code>/temas</code></td><td>13 escenas, 1 por tema visual. Todo en 1 JSON.</td></tr>
     <tr><td><code>ejemplo_multitema</code></td><td><code>/multitema</code></td><td>Demo de theme por escena (7 temas en 1 menú)</td></tr>
+    <tr><td><code>ejemplo_tp</code></td><td>—</td><td>Panel de teleport admin: lista ATP, RTP con distintos radios, waypoints personales (solo admins)</td></tr>
   </table></div>
   <h2>Navegación del menú principal</h2>
   <pre><code>/menu → ejemplo.json (índice)
     ├── Sobre ti     → ejemplo_jugador.json  [← Volver]
     ├── Estadísticas → ejemplo_stats.json    [← Volver]
     ├── Tienda       → ejemplo_tienda.json
-    └── Panel Admin  → ejemplo_admin.json    (oculto si no es admin)</code></pre>
+    ├── Panel Admin  → ejemplo_admin.json    (oculto si no es admin)
+    └── Teleport TP  → ejemplo_tp.json       (oculto si no es admin)</code></pre>
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('triggers')"><div><span class="direction">Anterior</span><span class="label">← Triggers</span></div></a>
     <a class="page-nav-btn" onclick="showPage('roadmap')"><div><span class="direction">Siguiente</span><span class="label">Roadmap →</span></div></a>
@@ -852,23 +912,27 @@ hr{border:none;border-top:1px solid var(--border);margin:32px 0}
   <p class="page-subtitle">Plan de desarrollo por fases del mod.</p>
   <div class="phase-list">
     <div class="phase-item">
-      <div class="phase-num">1</div>
+      <div class="phase-num" style="border-color:var(--green);color:var(--green)">1</div>
       <div class="phase-body">
-        <div class="phase-title">Fase 1 — MVP <span class="badge badge-v1" style="margin-left:8px">v0.1.x</span> <span class="badge badge-wip" style="margin-left:4px">EN CURSO</span></div>
-        <div class="phase-desc">✅ Estructura + modinfo · ✅ Carga menús JSON · ✅ GUI grid posicionado · ✅ Click events: message, closeGui, openGui, nextScene, previousScene, back, consoleCommand, playerCommand · ✅ commandAlias · ✅ 58 iconos personalizados · ✅ 7 menús de ejemplo embebidos · ✅ Repo Git + GitHub Pages · 🔲 Distribución al cliente</div>
+        <div class="phase-title">Fase 1 — MVP <span class="badge badge-done" style="margin-left:8px">✅ CERRADA</span></div>
+        <div class="phase-desc">✅ Estructura + modinfo · ✅ Carga menús JSON · ✅ GUI grid posicionado · ✅ Click events: message, closeGui, openGui, nextScene, previousScene, back, consoleCommand, playerCommand · ✅ commandAlias · ✅ 58 iconos personalizados · ✅ 8 menús de ejemplo embebidos · ✅ Block Click Triggers · ✅ Distribución cliente verificada ingame</div>
       </div>
     </div>
     <div class="phase-item">
-      <div class="phase-num">2</div>
+      <div class="phase-num" style="border-color:var(--amber);color:var(--amber)">2</div>
       <div class="phase-body">
-        <div class="phase-title">Fase 2 — Acciones y condiciones <span class="badge badge-v2" style="margin-left:8px">v0.2.x</span> <span class="badge badge-wip" style="margin-left:4px">EN CURSO</span></div>
-        <div class="phase-desc">✅ giveItem/takeItem/buyItem/sellItem · ✅ setVariable (matemáticas) · ✅ Condiciones: hasPrivilege, hasItem, hasRole, cooldownActive · ✅ hideOnFail · ✅ PlayerStats (kills, tiempo, muertes, ranking) · ✅ 14 temas Cairo (incluido glass y variantes cofre) · ✅ Theme por escena · 🔲 teleport · 🔲 Trigger por ítem</div>
+        <div class="phase-title">Fase 2 — Acciones y condiciones <span class="badge badge-wip" style="margin-left:8px">EN CURSO</span></div>
+        <div class="phase-desc">
+          ✅ giveItem/takeItem/buyItem/sellItem · ✅ setVariable (matemáticas) · ✅ Condiciones: hasPrivilege, hasItem, hasRole, cooldownActive · ✅ hideOnFail · ✅ PlayerStats (kills, tiempo, muertes, ranking) · ✅ 14 temas Cairo (glass y variantes cofre) · ✅ Theme por escena · ✅ Click event <code>teleport</code> (coordenadas) · ✅ ATP: <code>/atp set|setat|go|del|list|info</code> y click event <code>teleportSaved</code> · ✅ RTP: <code>/artp</code> y click event <code>randomTeleport</code> (verificado en mundo plano)
+          <br><br>
+          🔲 <strong>Pendiente:</strong> Trigger por ítem especial (Bloque 2.7) · RTP validado en mundo no plano · Revisión de no-regresión en buyItem dentro de menús TP
+        </div>
       </div>
     </div>
     <div class="phase-item">
       <div class="phase-num">3</div>
       <div class="phase-body">
-        <div class="phase-title">Fase 3 — Avanzado <span class="badge badge-v3" style="margin-left:8px">v0.3.x</span></div>
+        <div class="phase-title">Fase 3 — Avanzado</div>
         <div class="phase-desc">ChatFetcher · PlayerPicker · Trigger onJoin · Trigger hotkey · Trigger claimZone (integración AxinClaimsRules, opcional) · Sound events · Title events · Condición playerDataCompare</div>
       </div>
     </div>
