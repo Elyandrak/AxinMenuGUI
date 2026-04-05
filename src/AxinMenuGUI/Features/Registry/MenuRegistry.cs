@@ -98,11 +98,13 @@ namespace AxinMenuGUI
 
         private void ExtractEmbeddedMenus()
         {
+            // Los menús embebidos oficiales se sobreescriben SIEMPRE en cada carga/reload.
+            // Esto garantiza que los ejemplos estén al día con la versión instalada del mod.
+            // Los menús del usuario (IDs no presentes en EmbeddedIds) nunca se tocan aquí.
             var asm = Assembly.GetExecutingAssembly();
             foreach (var (res, fileName) in EmbeddedMenus)
             {
                 var dest = Path.Combine(MenusFolder, fileName);
-                if (File.Exists(dest)) continue; // nunca sobreescribir
                 using var stream = asm.GetManifestResourceStream(res);
                 if (stream == null) continue;
                 using var reader = new StreamReader(stream);
