@@ -155,6 +155,33 @@
           },
           "conditionFailMessage": "<font color='red'>✗ Solo administradores.</font>"
         },
+        "sub_tp": {
+          "slot": 16,
+          "item": "axinmenugui:menuicon-map",
+          "amount": 1,
+          "name": "<font color='aqua'>Panel TP Admin</font>",
+          "lore": [
+            "Gestión de TP globales, personales y RTP",
+            "Solo administradores",
+            "Clic para abrir"
+          ],
+          "hideOnFail": true,
+          "clickEvents": {
+            "open": {
+              "type": "openGui",
+              "clickType": "ANY",
+              "guiId": "ejemplo_tp"
+            }
+          },
+          "conditions": {
+            "esadmin": {
+              "type": "hasPrivilege",
+              "privilege": "controlserver",
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Solo administradores.</font>"
+        },
         "cerrar": {
           "slot": 17,
           "item": "axinmenugui:menuicon-close",

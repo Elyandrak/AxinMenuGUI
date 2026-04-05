@@ -1,0 +1,578 @@
+{
+  "id": "ejemplo_tp",
+  "title": "TP Admin Global Personal",
+  "theme": "dark-blue",
+  "rows": 5,
+  "commandAlias": "",
+  "commandAliasTarget": "DISABLED",
+  "permission": "controlserver",
+  "openTriggers": [],
+  "scenes": {
+    "0": {
+      "delay": 0,
+      "items": {
+        "titulo": {
+          "slot": 4,
+          "item": "axinmenugui:menuicon-map",
+          "amount": 1,
+          "name": "<font color='gold'>Panel TP Admin</font>",
+          "lore": [
+            "Panel de teleports globales y personales",
+            "GlobalWaitPoint = destino fijado por el administrador",
+            "Todos los jugadores pueden usar esos puntos globales",
+            "PersonalWaitPoint = waypoint propio del jugador",
+            "Puede ofrecerse su creacion o su uso por coste, cooldown o condicion"
+          ],
+          "clickEvents": {
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='gold'>[AxinMenuGUI]</font> TP Admin listo para <font color='cyan'>{player}</font>."
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "atp_list": {
+          "slot": 9,
+          "item": "axinmenugui:menuicon-list",
+          "amount": 1,
+          "name": "Listar ATP",
+          "lore": [
+            "Ejecuta /atp list"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp list"
+              ]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "atp_info_home": {
+          "slot": 10,
+          "item": "axinmenugui:menuicon-info",
+          "amount": 1,
+          "name": "Info GlobalWaitPoint1",
+          "lore": [
+            "Muestra la informacion del GlobalWaitPoint1",
+            "Internamente usa el ATP 'home'",
+            "Lo define el administrador y queda disponible para todos",
+            "Sirve para eventos, hubs o puntos especiales del servidor",
+            "Ejecuta: /atp info home"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp info home"
+              ]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "atp_info_home2": {
+          "slot": 11,
+          "item": "axinmenugui:menuicon-info",
+          "amount": 1,
+          "name": "Info GlobalWaitPoint2",
+          "lore": [
+            "Muestra la informacion del GlobalWaitPoint2",
+            "Internamente usa el ATP 'home2'",
+            "Lo define el administrador y queda disponible para todos",
+            "Sirve para eventos, hubs o puntos especiales del servidor",
+            "Ejecuta: /atp info home2"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp info home2"
+              ]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "atp_del_home": {
+          "slot": 12,
+          "item": "axinmenugui:menuicon-minus",
+          "amount": 1,
+          "name": "Borrar home",
+          "lore": [
+            "Ejecuta /atp del home"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp del home"
+              ]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "atp_del_home2": {
+          "slot": 13,
+          "item": "axinmenugui:menuicon-minus",
+          "amount": 1,
+          "name": "Borrar home2",
+          "lore": [
+            "Ejecuta /atp del home2"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp del home2"
+              ]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "rtp_default": {
+          "slot": 14,
+          "item": "axinmenugui:menuicon-lightning",
+          "amount": 1,
+          "name": "RTP por defecto",
+          "lore": [
+            "Ejecuta /artp"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/artp"
+              ]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "rtp_test": {
+          "slot": 15,
+          "item": "axinmenugui:menuicon-circle-green",
+          "amount": 1,
+          "name": "RTP 100-500",
+          "lore": [
+            "Ejecuta /artp 100 500"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/artp 100 500"
+              ]
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "volver": {
+          "slot": 17,
+          "item": "axinmenugui:menuicon-back",
+          "amount": 1,
+          "name": "Volver",
+          "lore": [
+            "Regresa al menú principal de ejemplo"
+          ],
+          "clickEvents": {
+            "open": {
+              "type": "openGui",
+              "clickType": "ANY",
+              "guiId": "ejemplo"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "shop_set_home": {
+          "slot": 27,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "<font color='gold'>Set GlobalWaitPoint1</font>",
+          "lore": [
+            "Guarda tu posicion actual como GlobalWaitPoint1",
+            "Internamente crea o actualiza el ATP 'home'",
+            "Es un waitpoint global del servidor",
+            "Todos los jugadores podran viajar a este punto",
+            "Sin coste de palos"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp set home"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ GlobalWaitPoint1 guardado sin coste.</font>"
+            }
+          },
+          "conditionFailMessage": ""
+        },
+        "shop_go_home": {
+          "slot": 28,
+          "item": "axinmenugui:menuicon-key",
+          "amount": 1,
+          "name": "<font color='gold'>TP GlobalWaitPoint1 (2 palos)</font>",
+          "lore": [
+            "Viaja al GlobalWaitPoint1 fijado por el administrador",
+            "Internamente usa el ATP 'home'",
+            "Todos los jugadores pueden usar este destino global",
+            "Ideal para eventos, hubs o puntos de servicio",
+            "Coste: 2 palos"
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "buy": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [
+                {
+                  "item": "game:stick",
+                  "amount": 2
+                }
+              ],
+              "give": [],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+            },
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp go home"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Teleport al GlobalWaitPoint1 pagado con 2 palos.</font>"
+            }
+          },
+          "conditions": {
+            "palos": {
+              "type": "hasItem",
+              "item": "game:stick",
+              "amount": 2,
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+        },
+        "shop_set_home2": {
+          "slot": 30,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "<font color='gold'>Set GlobalWaitPoint2</font>",
+          "lore": [
+            "Guarda tu posicion actual como GlobalWaitPoint2",
+            "Internamente crea o actualiza el ATP 'home2'",
+            "Es un waitpoint global del servidor",
+            "Todos los jugadores podran viajar a este punto",
+            "Sin coste de palos"
+          ],
+          "clickEvents": {
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp set home2"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ GlobalWaitPoint2 guardado sin coste.</font>"
+            }
+          },
+          "conditionFailMessage": ""
+        },
+        "shop_go_home2": {
+          "slot": 31,
+          "item": "axinmenugui:menuicon-key",
+          "amount": 1,
+          "name": "<font color='gold'>TP GlobalWaitPoint2 (2 palos)</font>",
+          "lore": [
+            "Viaja al GlobalWaitPoint2 fijado por el administrador",
+            "Internamente usa el ATP 'home2'",
+            "Todos los jugadores pueden usar este destino global",
+            "Ideal para eventos, hubs o puntos de servicio",
+            "Coste: 2 palos"
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "buy": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [
+                {
+                  "item": "game:stick",
+                  "amount": 2
+                }
+              ],
+              "give": [],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+            },
+            "cmd": {
+              "type": "playerCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/atp go home2"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Teleport al GlobalWaitPoint2 pagado con 2 palos.</font>"
+            }
+          },
+          "conditions": {
+            "palos": {
+              "type": "hasItem",
+              "item": "game:stick",
+              "amount": 2,
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+        },
+        "cerrar": {
+          "slot": 44,
+          "item": "axinmenugui:menuicon-close",
+          "amount": 1,
+          "name": "<font color='red'>Cerrar</font>",
+          "lore": [
+            "Cierra este menú"
+          ],
+          "clickEvents": {
+            "close": {
+              "type": "closeGui",
+              "clickType": "ANY"
+            }
+          },
+          "conditions": {},
+          "conditionFailMessage": ""
+        },
+        "game_set_home1": {
+          "slot": 36,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "<font color='gold'>Set PersonalWaitPoint1 (2 palos)</font>",
+          "lore": [
+            "Crea tu PersonalWaitPoint1 en la posicion actual",
+            "No es global: pertenece solo al jugador",
+            "Puede venderse como servicio para que el jugador lo establezca",
+            "Tambien puede combinarse con cooldown o condiciones",
+            "Coste: 2 palos"
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "buy": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [
+                {
+                  "item": "game:stick",
+                  "amount": 2
+                }
+              ],
+              "give": [],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+            },
+            "cmd": {
+              "type": "consoleCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/waypoint add lime home1"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ PersonalWaitPoint1 creado tras pagar 2 palos.</font>"
+            }
+          },
+          "conditions": {
+            "palos": {
+              "type": "hasItem",
+              "item": "game:stick",
+              "amount": 2,
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+        },
+        "game_tp_home1": {
+          "slot": 37,
+          "item": "axinmenugui:menuicon-key",
+          "amount": 1,
+          "name": "<font color='gold'>TP PersonalWaitPoint1 (2 palos)</font>",
+          "lore": [
+            "Te lleva a tu PersonalWaitPoint1",
+            "No usa el TP Global del administrador",
+            "Puede ofrecerse como uso de pago del punto personal",
+            "Tambien puede limitarse por cooldown o condiciones",
+            "Coste: 2 palos"
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "buy": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [
+                {
+                  "item": "game:stick",
+                  "amount": 2
+                }
+              ],
+              "give": [],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+            },
+            "cmd": {
+              "type": "consoleCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/tpwp home1"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Teleport al PersonalWaitPoint1 tras pagar 2 palos.</font>"
+            }
+          },
+          "conditions": {
+            "palos": {
+              "type": "hasItem",
+              "item": "game:stick",
+              "amount": 2,
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+        },
+        "game_set_home2": {
+          "slot": 39,
+          "item": "axinmenugui:menuicon-plus",
+          "amount": 1,
+          "name": "<font color='gold'>Set PersonalWaitPoint2 (2 palos)</font>",
+          "lore": [
+            "Crea tu PersonalWaitPoint2 en la posicion actual",
+            "No es global: pertenece solo al jugador",
+            "Puede venderse como servicio para que el jugador lo establezca",
+            "Tambien puede combinarse con cooldown o condiciones",
+            "Coste: 2 palos"
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "buy": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [
+                {
+                  "item": "game:stick",
+                  "amount": 2
+                }
+              ],
+              "give": [],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+            },
+            "cmd": {
+              "type": "consoleCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/waypoint add cyan home2"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ PersonalWaitPoint2 creado tras pagar 2 palos.</font>"
+            }
+          },
+          "conditions": {
+            "palos": {
+              "type": "hasItem",
+              "item": "game:stick",
+              "amount": 2,
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+        },
+        "game_tp_home2": {
+          "slot": 40,
+          "item": "axinmenugui:menuicon-key",
+          "amount": 1,
+          "name": "<font color='gold'>TP PersonalWaitPoint2 (2 palos)</font>",
+          "lore": [
+            "Te lleva a tu PersonalWaitPoint2",
+            "No usa el TP Global del administrador",
+            "Puede ofrecerse como uso de pago del punto personal",
+            "Tambien puede limitarse por cooldown o condiciones",
+            "Coste: 2 palos"
+          ],
+          "hideOnFail": false,
+          "clickEvents": {
+            "buy": {
+              "type": "buyItem",
+              "clickType": "ANY",
+              "cost": [
+                {
+                  "item": "game:stick",
+                  "amount": 2
+                }
+              ],
+              "give": [],
+              "consume": true,
+              "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+            },
+            "cmd": {
+              "type": "consoleCommand",
+              "clickType": "ANY",
+              "commands": [
+                "/tpwp home2"
+              ]
+            },
+            "msg": {
+              "type": "message",
+              "clickType": "ANY",
+              "message": "<font color='lime'>✓ Teleport al PersonalWaitPoint2 tras pagar 2 palos.</font>"
+            }
+          },
+          "conditions": {
+            "palos": {
+              "type": "hasItem",
+              "item": "game:stick",
+              "amount": 2,
+              "inverted": false
+            }
+          },
+          "conditionFailMessage": "<font color='red'>✗ Necesitas 2 palos.</font>"
+        }
+      }
+    }
+  }
+}

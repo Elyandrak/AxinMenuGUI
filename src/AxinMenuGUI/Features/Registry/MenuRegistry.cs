@@ -31,7 +31,8 @@ namespace AxinMenuGUI
         private static readonly HashSet<string> EmbeddedIds = new(StringComparer.OrdinalIgnoreCase)
         {
             "ejemplo", "ejemplo_tienda", "ejemplo_admin",
-            "ejemplo_multitema", "ejemplo_jugador", "ejemplo_stats", "ejemplo_temas"
+            "ejemplo_multitema", "ejemplo_jugador", "ejemplo_stats", "ejemplo_temas",
+            "ejemplo_tp"
         };
 
         private static readonly Dictionary<string, string> EmbeddedMenus = new()
@@ -43,6 +44,7 @@ namespace AxinMenuGUI
             ["AxinMenuGUI.DefaultMenus.ejemplo_jugador.json"]   = "ejemplo_jugador.json",
             ["AxinMenuGUI.DefaultMenus.ejemplo_stats.json"]     = "ejemplo_stats.json",
             ["AxinMenuGUI.DefaultMenus.ejemplo_temas.json"]     = "ejemplo_temas.json",
+            ["AxinMenuGUI.DefaultMenus.ejemplo_tp.json"]        = "ejemplo_tp.json",
         };
 
         public int Count => _menus.Count;

@@ -60,6 +60,9 @@
     <EmbeddedResource Include="DefaultMenus\ejemplo_temas.json">
       <LogicalName>AxinMenuGUI.DefaultMenus.ejemplo_temas.json</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="DefaultMenus\ejemplo_tp.json">
+      <LogicalName>AxinMenuGUI.DefaultMenus.ejemplo_tp.json</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
