@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXINServerBridge — Documentación</title>
+<link rel="stylesheet" href="assets/wiki.css">
+</head>
+<body>
+
+<header id="header">
+  <a class="logo" href="index.html" title="Wikis AXIN">
+    <div class="logo-icon">A</div>
+    <div><div class="logo-text">AXIN</div><div class="logo-sub">Wikis</div></div>
+  </a>
+  <nav class="mod-switcher" aria-label="Wikis de mods AXIN">
+    <a class="mod-pill" href="index.html"><span class="mod-pill-dot"></span>AxinMenuGui</a>
+    <a class="mod-pill active" href="axinmobileserverbridge.html"><span class="mod-pill-dot"></span>AXINServerBridge</a>
+  </nav>
+  <div class="header-search">
+    <span style="color:var(--stone);font-size:13px">🔍</span>
+    <input type="text" placeholder="Buscar en la documentación..." id="searchInput" onkeyup="handleSearch(event)">
+    <span class="search-hint">Ctrl K</span>
+  </div>
+  <div class="header-badge">Bridge · Mobile Admin</div>
+</header>
+
+<div id="layout">
+<nav id="sidebar">
+  <div class="nav-home"><a href="#" onclick="showPage('home')"><span>🏠</span> Inicio</a></div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">⚙ Comenzar</div>
+    <a class="nav-link" onclick="showPage('quickstart')"><span class="nav-icon">🚀</span> Instalación</a>
+    <a class="nav-link" onclick="showPage('config')"><span class="nav-icon">⚙</span> Configuración</a>
+    <a class="nav-link" onclick="showPage('commands')"><span class="nav-icon">📋</span> Comandos /ams</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">📱 Dashboard web</div>
+    <a class="nav-link" onclick="showPage('connect')"><span class="nav-icon">🔌</span> Conexión y login</a>
+    <a class="nav-link" onclick="showPage('chat')"><span class="nav-icon">💬</span> Pestaña Chat</a>
+    <a class="nav-link" onclick="showPage('admin')"><span class="nav-icon">🛡</span> Pestaña Admin</a>
+    <a class="nav-link" onclick="showPage('shop')"><span class="nav-icon">🏪</span> Pestaña Tienda</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">🔐 Seguridad</div>
+    <a class="nav-link" onclick="showPage('sessions')"><span class="nav-icon">🎟</span> Sesiones y auth</a>
+    <a class="nav-link" onclick="showPage('deployment')"><span class="nav-icon">🌐</span> Exposición segura</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">🔗 Integración</div>
+    <a class="nav-link" onclick="showPage('market-bridge')"><span class="nav-icon">🏪</span> Mercado (AxinMenuGui)</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">📖 Recursos</div>
+    <a class="nav-link" onclick="showPage('resources')"><span class="nav-icon">📦</span> Enlaces y capturas</a>
+    <a class="nav-link" onclick="showPage('roadmap')"><span class="nav-icon">🗺</span> Roadmap</a>
+  </div>
+</nav>
+
+<div id="content-wrap">
+<main id="content">
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div class="page active" id="page-home">
+  <div class="breadcrumb">AXINServerBridge</div>
+  <h1><span class="h1-icon">📱</span> AXINServerBridge</h1>
+  <p class="page-subtitle">Dashboard admin móvil para servidores Vintage Story — consulta y actúa desde cualquier navegador, sin abrir el juego.</p>
+
+  <p><strong>AXINServerBridge</strong> (también llamado <em>AXIN Mobile Server Bridge</em>) expone un endpoint HTTP dentro del servidor de Vintage Story y sirve una PWA instalable como dashboard. El producto es el dashboard; el mod es la plumería.</p>
+
+  <p>Pertenece a la familia de mods <strong>AXIN</strong> y se integra con <a href="index.html">AxinMenuGui</a> cuando ambos están instalados (p.ej. para la pestaña Tienda).</p>
+
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-card-icon">🔌</div><div class="feat-card-title">Endpoint HTTP</div><div class="feat-card-desc">El mod expone un puerto con JSON del estado del servidor y acciones admin. API key y rate-limit configurables.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">📱</div><div class="feat-card-title">PWA instalable</div><div class="feat-card-desc">Dashboard en HTML/JS que se instala como app en Android/iOS/desktop. Funciona offline entre pollings.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🎟</div><div class="feat-card-title">Sesión vinculada ingame</div><div class="feat-card-desc">Código de vinculación generado desde el juego. Tokens con TTL de inactividad y rehidratación tras reinicio.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🔐</div><div class="feat-card-title">Password opt-in</div><div class="feat-card-desc">PBKDF2-SHA256 para cuentas con contraseña. Sin fricción por defecto; el admin decide.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">💬</div><div class="feat-card-title">Chat remoto</div><div class="feat-card-desc">Lee el chat del servidor y envía mensajes desde el móvil bajo tu identidad vinculada.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🛡</div><div class="feat-card-title">Acciones admin</div><div class="feat-card-desc">Kick con motivo visible al jugador, mensajería operativa, métricas básicas del servidor.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🏪</div><div class="feat-card-title">Mercado integrado</div><div class="feat-card-desc">Pestaña Tienda que opera sobre el MarketStore vivo de AxinMenuGui sin tocar JSON a espaldas del mod.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">♻</div><div class="feat-card-title">/ams reload en caliente</div><div class="feat-card-desc">Recarga la configuración del bridge en runtime sin cortar las sesiones abiertas.</div></div>
+  </div>
+
+  <hr>
+
+  <h2>📋 Requisitos</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Requisito</th><th>Valor</th></tr>
+    <tr><td>VintageStory</td><td>1.21.x+</td></tr>
+    <tr><td>Tipo de mod</td><td>Solo servidor (mod C# server-side)</td></tr>
+    <tr><td>Cliente móvil/web</td><td>Cualquier navegador moderno (PWA)</td></tr>
+    <tr><td>Dependencias duras</td><td>Ninguna</td></tr>
+    <tr><td>Integraciones opcionales</td><td><code>AxinMenuGui</code> (pestaña Tienda)</td></tr>
+  </table></div>
+
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>No exponer a Internet sin TLS</strong><p>El endpoint debe usarse en red local o tras un reverse proxy con HTTPS. Ver <a href="#" onclick="showPage('deployment')">Exposición segura</a>.</p></div></div>
+
+  <div class="page-nav">
+    <div></div>
+    <a class="page-nav-btn" onclick="showPage('quickstart')"><div><span class="direction">Siguiente</span><span class="label">Instalación →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ QUICKSTART ═══════════════ -->
+<div class="page" id="page-quickstart">
+  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Instalación</div>
+  <h1><span class="h1-icon">🚀</span> Instalación</h1>
+  <p class="page-subtitle">Cuatro pasos: compilar/desplegar el mod, generar una API key, configurar el puerto y abrir el dashboard.</p>
+
+  <h2>1. Desplegar el mod</h2>
+  <p>Copia el ZIP compilado (<code>AxinServerBridge-x.y.z.zip</code> o <code>AXINMobileServerBridge_v0.x.x.zip</code>) en la carpeta <code>Mods/</code> del servidor y reinicia.</p>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Verificar despliegue real</strong><p>No asumas que un build fue desplegado sólo porque el script diga <em>BUILD COMPLETADO</em>. Comprueba tamaño y fecha del DLL efectivamente copiado en <code>VintagestoryData/Mods/AXINMobileServerBridge/AxinServerBridge.dll</code>.</p></div></div>
+
+  <h2>2. Generar API key</h2>
+  <pre><code><span class="cmt"># Windows</span>
+scripts\gen-apikey.cmd
+
+<span class="cmt"># Linux / macOS</span>
+openssl rand -hex 32</code></pre>
+
+  <h2>3. Configurar</h2>
+  <p>Editar <code>ModConfig/axinbridge.json</code>:</p>
+  <pre><span class="pre-label">axinbridge.json</span><code>{
+  <span class="key">"port"</span>: <span class="num">42421</span>,
+  <span class="key">"listenAddress"</span>: <span class="str">"+"</span>,
+  <span class="key">"apiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
+  <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>,
+  <span class="key">"AccountsAllowPassword"</span>: <span class="kw">false</span>,
+  <span class="key">"SessionMaxInactiveDays"</span>: <span class="num">30</span>
+}</code></pre>
+
+  <p>Reinicia el servidor. En los logs debe aparecer:</p>
+  <pre><code>[AxinBridge] Listening on http://+:42421/
+[AxinBridge] ready.</code></pre>
+
+  <h2>4. Abrir el dashboard</h2>
+  <p>Sirve la carpeta <code>dashboard/</code> por HTTP (localmente, por GitHub Pages, o tras un reverse proxy) y abre la URL en el navegador.</p>
+  <ol>
+    <li>Introduce la URL del bridge: <code>http://[ip-servidor]:42421</code>.</li>
+    <li>Introduce la API key.</li>
+    <li>Vincula sesión con el código que genera el comando ingame.</li>
+    <li>Añade a pantalla de inicio (Chrome Android → menú → <em>Añadir a pantalla inicio</em>).</li>
+  </ol>
+
+  <p class="shot-caption">Página de conexión del dashboard:</p>
+  <img class="shot" src="Imagenes/AXINMobileServerBridgeImages/PAgina conexion.png" alt="Pantalla de conexión del dashboard">
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('home')"><div><span class="direction">Anterior</span><span class="label">← Inicio</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('config')"><div><span class="direction">Siguiente</span><span class="label">Configuración →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CONFIG ═══════════════ -->
+<div class="page" id="page-config">
+  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Configuración</div>
+  <h1><span class="h1-icon">⚙</span> Configuración</h1>
+  <p class="page-subtitle">Campos relevantes de <code>axinbridge.json</code> y cómo recargarlos en caliente.</p>
+
+  <h2>📋 Campos</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+    <tr><td><code>port</code></td><td>int</td><td>Puerto de escucha del endpoint HTTP del bridge. Default <code>42421</code>.</td></tr>
+    <tr><td><code>listenAddress</code></td><td>string</td><td>Interfaz de escucha. <code>"+"</code> = todas; <code>"127.0.0.1"</code> = solo local.</td></tr>
+    <tr><td><code>apiKey</code></td><td>string</td><td>Clave compartida entre dashboard y bridge. Mínimo 32 chars aleatorios.</td></tr>
+    <tr><td><code>rateLimitPerMinute</code></td><td>int</td><td>Tope de peticiones por IP y minuto. Protege contra abusos antes de login.</td></tr>
+    <tr><td><code>AccountsAllowPassword</code></td><td>bool</td><td>Habilita login por contraseña (PBKDF2). <code>false</code> = solo vinculación ingame.</td></tr>
+    <tr><td><code>SessionMaxInactiveDays</code></td><td>int</td><td>TTL de inactividad de una sesión persistida. Default <code>30</code>.</td></tr>
+  </table></div>
+
+  <h2>♻ Recarga en caliente</h2>
+  <p>Usa <code>/ams reload</code> ingame. La config se relee de disco y se aplica sobre la instancia viva sin romper sesiones activas.</p>
+
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Reload ≠ reemplazar referencia</strong><p>El bridge actualiza los campos mutables sobre el objeto compartido. No sustituye la instancia, para que <code>HttpBridgeServer</code> y <code>SessionManager</code> no queden leyendo una config antigua.</p></div></div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('quickstart')"><div><span class="direction">Anterior</span><span class="label">← Instalación</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Siguiente</span><span class="label">Comandos →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ COMMANDS ═══════════════ -->
+<div class="page" id="page-commands">
+  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Comandos /ams</div>
+  <h1><span class="h1-icon">📋</span> Comandos <code>/ams</code></h1>
+  <p class="page-subtitle">Comandos ingame del AXINServerBridge. Registrados en la fase <code>ModsAndConfigReady</code>.</p>
+
+  <h2>📐 Sintaxis general</h2>
+  <p>El comando raíz es <code>/ams</code>. Los subcomandos con argumentos libres usan <code>PopWord()</code> + <code>PopAll()</code> en vez de <code>WithArgs</code> para admitir texto variable.</p>
+
+  <h2>🔧 Subcomandos</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Comando</th><th>Descripción</th></tr>
+    <tr><td><code>/ams link</code></td><td>Genera un código de vinculación de sesión para este jugador. Cópialo en el dashboard.</td></tr>
+    <tr><td><code>/ams reload</code></td><td>Recarga <code>axinbridge.json</code> en caliente sobre la instancia viva.</td></tr>
+    <tr><td><code>/ams web info &lt;action&gt; [args…]</code></td><td>Gestiona la sección <em>Info</em> del dashboard (listar/añadir/borrar).</td></tr>
+    <tr><td><code>/ams web evento &lt;action&gt; [args…]</code></td><td>Gestiona eventos anunciados en la UI del dashboard.</td></tr>
+  </table></div>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Formato <code>add &lt;sección&gt; &lt;texto libre&gt; [| url]</code></strong><p>Al añadir entradas de texto con URL opcional, el separador es <code>|</code>. El handler divide manualmente tras <code>PopAll()</code>.</p></div></div>
+
+  <h2>🚫 Errores y respuesta al jugador</h2>
+  <p>Los comandos responden directamente con <code>player.SendMessage(...)</code>. Los errores runtime de servicios (p.ej. <code>market_query_failed</code>) se loguean con tipo+mensaje+stack, no se colapsan en un <code>internal_error</code> genérico.</p>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('config')"><div><span class="direction">Anterior</span><span class="label">← Configuración</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('connect')"><div><span class="direction">Siguiente</span><span class="label">Conexión y login →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CONNECT ═══════════════ -->
+<div class="page" id="page-connect">
+  <div class="breadcrumb">📱 DASHBOARD <span class="sep">›</span> Conexión y login</div>
+  <h1><span class="h1-icon">🔌</span> Conexión y login</h1>
+  <p class="page-subtitle">Dos capas: API key para hablar con el bridge, y sesión para actuar como un jugador concreto.</p>
+
+  <h2>🔑 API key</h2>
+  <p>La API key autentica al dashboard frente al bridge. Se guarda en <code>localStorage</code> del navegador y se envía en cada request. No identifica al jugador; solo da acceso al servicio.</p>
+
+  <h2>🎟 Vinculación de sesión</h2>
+  <ol>
+    <li>En el juego, ejecuta <code>/ams link</code>. Recibes un código corto.</li>
+    <li>En el dashboard, introduce el código en el formulario de vinculación.</li>
+    <li>El bridge guarda el token de sesión en <code>AuthStore.sessions.json</code> con TTL de inactividad.</li>
+    <li>Al arrancar, <code>SessionManager.Rehydrate()</code> recupera esos tokens del disco.</li>
+  </ol>
+
+  <h2>🔒 Login por contraseña (opcional)</h2>
+  <p>Si <code>AccountsAllowPassword=true</code>, el dashboard expone <code>POST /auth/login</code>:</p>
+  <ul>
+    <li>PBKDF2-SHA256, 100.000 iteraciones, salt 16B, comparación <code>FixedTimeEquals</code>.</li>
+    <li>Rate-limit por IP: 3 fallos = 30 s, 5 = 5 min.</li>
+  </ul>
+
+  <div class="callout danger"><span class="callout-icon">⚠</span><div class="callout-body"><strong>localStorage no es autoridad</strong><p>La UI debe validar la sesión con <code>/auth/me</code> al arrancar y antes de acciones sensibles. Si el backend responde <code>invalid_session</code>, limpia <code>localStorage</code> — no degrades silenciosamente a identidad externa.</p></div></div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Anterior</span><span class="label">← Comandos</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('chat')"><div><span class="direction">Siguiente</span><span class="label">Pestaña Chat →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ CHAT ═══════════════ -->
+<div class="page" id="page-chat">
+  <div class="breadcrumb">📱 DASHBOARD <span class="sep">›</span> Pestaña Chat</div>
+  <h1><span class="h1-icon">💬</span> Pestaña Chat</h1>
+  <p class="page-subtitle">Lee el chat del servidor en tiempo casi-real y envía mensajes bajo tu identidad vinculada.</p>
+
+  <h2>📖 Lectura</h2>
+  <p>El dashboard hace polling al endpoint de chat. El backend sirve una ventana deslizante de mensajes recientes, filtrando ruido interno.</p>
+
+  <h2>✍ Envío</h2>
+  <p>Si la sesión está vinculada, los mensajes salen como el jugador real (p.ej. <code>elYandrack</code>). Sin vinculación válida, la identidad degrada a externa (<code>Externo-AxinMovil</code>) y las acciones admin quedan denegadas.</p>
+
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Hidratar identidad desde el backend</strong><p>El badge de usuario (jugador vs externo, rol, permisos) debe venir de <code>/auth/me</code>, no de <code>localStorage</code>. Evita mostrar acciones admin a un token ya caducado.</p></div></div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('connect')"><div><span class="direction">Anterior</span><span class="label">← Conexión</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('admin')"><div><span class="direction">Siguiente</span><span class="label">Admin →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ ADMIN ═══════════════ -->
+<div class="page" id="page-admin">
+  <div class="breadcrumb">📱 DASHBOARD <span class="sep">›</span> Pestaña Admin</div>
+  <h1><span class="h1-icon">🛡</span> Pestaña Admin</h1>
+  <p class="page-subtitle">Acciones operativas seguras para administradores vinculados.</p>
+
+  <h2>👢 Kick con motivo</h2>
+  <p>Al hacer kick desde el dashboard:</p>
+  <ol>
+    <li>El bridge envía un <code>SendMessage</code> al jugador con el motivo normalizado.</li>
+    <li>Tras un breve retardo por callback, se ejecuta <code>player.Disconnect(reason)</code>.</li>
+    <li>Así el jugador ve el motivo personalizado antes de ser desconectado.</li>
+  </ol>
+
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>No confiar solo en <code>Disconnect(reason)</code></strong><p>En RUN real, el motor no siempre renderiza ese motivo al cliente. Enviar primero un mensaje explícito y luego desconectar es el patrón estable.</p></div></div>
+
+  <h2>📣 Mensajería operativa</h2>
+  <p>Broadcast corto a todos los jugadores conectados desde la UI del dashboard. Útil para avisos de reinicio, mantenimiento y eventos.</p>
+
+  <h2>📊 Métricas</h2>
+  <p>Estado básico del servidor: uptime, jugadores conectados, version, mods cargados. Estas métricas no requieren admin para leer, solo API key y sesión válida (configurable).</p>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('chat')"><div><span class="direction">Anterior</span><span class="label">← Chat</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('shop')"><div><span class="direction">Siguiente</span><span class="label">Tienda →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ SHOP ═══════════════ -->
+<div class="page" id="page-shop">
+  <div class="breadcrumb">📱 DASHBOARD <span class="sep">›</span> Pestaña Tienda</div>
+  <h1><span class="h1-icon">🏪</span> Pestaña Tienda</h1>
+  <p class="page-subtitle">Interfaz web del <strong>Mercado Global</strong> de <a href="index.html">AxinMenuGui</a>: ver ofertas activas, comprar y consultar tus ventas.</p>
+
+  <h2>🔗 Contrato</h2>
+  <p>La tienda web no toca <code>market.json</code> directamente. Depende del mod <code>axinmenugui</code>, resuelve <code>AxinMenuGuiMod</code> con <code>api.ModLoader.GetModSystem&lt;T&gt;()</code> y opera contra <code>MarketStore</code> / <code>BankService</code> vivos en el hilo principal.</p>
+
+  <div class="callout danger"><span class="callout-icon">⚠</span><div class="callout-body"><strong>No escribir <code>market.json</code> a espaldas del MarketStore</strong><p>El MarketStore mantiene el mercado en memoria y solo flushea cuando está dirty. Una escritura externa al JSON quedaría invisible y una operación ingame posterior podría pisarla.</p></div></div>
+
+  <h2>💰 Precio: unidad vs lote</h2>
+  <div class="table-wrap"><table>
+    <tr><th><code>pricePerUnit</code></th><th>Coste total</th><th>Compras parciales</th></tr>
+    <tr><td><code>true</code></td><td><code>price × quantity</code></td><td>Permitidas</td></tr>
+    <tr><td><code>false</code></td><td><code>price</code> (sin multiplicar)</td><td>No — lote completo</td></tr>
+  </table></div>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>PriceText en el listado</strong><p>El texto del precio en el listado siempre formatea <code>price[]</code> con multiplicador 1. La multiplicación por cantidad solo se aplica al calcular el coste total en checkout.</p></div></div>
+
+  <h2>🧯 Errores de dominio</h2>
+  <p>Los fallos del servicio salen como errores específicos con log de alta señal:</p>
+  <ul>
+    <li><code>market_query_failed</code> — fallo al enumerar ofertas.</li>
+    <li><code>market_main_thread_timeout</code> — la consulta no volvió al hilo principal a tiempo.</li>
+  </ul>
+  <p>Nunca se degradan a <code>internal_error</code> HTTP genérico.</p>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('admin')"><div><span class="direction">Anterior</span><span class="label">← Admin</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('sessions')"><div><span class="direction">Siguiente</span><span class="label">Sesiones →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ SESSIONS ═══════════════ -->
+<div class="page" id="page-sessions">
+  <div class="breadcrumb">🔐 SEGURIDAD <span class="sep">›</span> Sesiones y auth</div>
+  <h1><span class="h1-icon">🎟</span> Sesiones y autenticación</h1>
+  <p class="page-subtitle">Dos capas separadas: persistir tokens (siempre) y permitir contraseña (opt-in).</p>
+
+  <h2>📚 Modelo</h2>
+  <ol>
+    <li><strong>Tokens persistidos</strong> (<code>AuthStore.sessions.json</code>): sobreviven a reinicios del servidor. TTL de inactividad = <code>SessionMaxInactiveDays</code> (default 30 días).</li>
+    <li><strong>Password opt-in</strong>: habilitado por <code>AccountsAllowPassword</code>. Permite re-auth sin volver al juego.</li>
+  </ol>
+
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Separar "persistencia de estado" de "persistencia de identidad"</strong><p>Persistir el token es barato y cubre la UX de "no me desloguees al reiniciar". Añadir contraseña es otra capa, opt-in por admin.</p></div></div>
+
+  <h2>🔁 Rehidratación</h2>
+  <p>Al arrancar el bridge, <code>SessionManager.Rehydrate()</code> carga <code>sessions.json</code>, descarta sesiones vencidas y repuebla el diccionario en memoria.</p>
+
+  <h2>🔒 Password</h2>
+  <ul>
+    <li>Hash: PBKDF2-SHA256, 100.000 iteraciones, salt 16B aleatorio.</li>
+    <li>Comparación en tiempo constante (<code>FixedTimeEquals</code>).</li>
+    <li>Rate-limit por IP: 3 fallos = 30 s, 5 = 5 min.</li>
+  </ul>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('shop')"><div><span class="direction">Anterior</span><span class="label">← Tienda</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('deployment')"><div><span class="direction">Siguiente</span><span class="label">Exposición segura →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ DEPLOYMENT ═══════════════ -->
+<div class="page" id="page-deployment">
+  <div class="breadcrumb">🔐 SEGURIDAD <span class="sep">›</span> Exposición segura</div>
+  <h1><span class="h1-icon">🌐</span> Exposición segura</h1>
+  <p class="page-subtitle">Cómo exponer el bridge a Internet sin romper la seguridad.</p>
+
+  <h2>🚫 Qué no hacer</h2>
+  <ul>
+    <li>Publicar directamente <code>http://ip:42421</code> a Internet.</li>
+    <li>Dejar <code>apiKey</code> vacía o derivada de texto corto.</li>
+    <li>Compartir la API key en canales no cifrados.</li>
+  </ul>
+
+  <h2>✅ Qué hacer</h2>
+  <ul>
+    <li>Red local o VPN para acceso personal.</li>
+    <li>Reverse proxy con TLS (Caddy, nginx, Traefik) delante del bridge.</li>
+    <li>Fijar <code>listenAddress</code> a <code>127.0.0.1</code> si hay proxy local — fuerza el tráfico por el proxy.</li>
+    <li>Rotar la API key si sospechas fuga.</li>
+  </ul>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>HTTPS nativo</strong><p>Roadmap: soporte HTTPS embebido con Caddy en versiones posteriores. Hasta entonces, proxy externo es la vía oficial.</p></div></div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('sessions')"><div><span class="direction">Anterior</span><span class="label">← Sesiones</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('market-bridge')"><div><span class="direction">Siguiente</span><span class="label">Mercado →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ MARKET BRIDGE ═══════════════ -->
+<div class="page" id="page-market-bridge">
+  <div class="breadcrumb">🔗 INTEGRACIÓN <span class="sep">›</span> Mercado (AxinMenuGui)</div>
+  <h1><span class="h1-icon">🏪</span> Integración con el Mercado</h1>
+  <p class="page-subtitle">El AXINServerBridge se apoya en <a href="index.html#" onclick="window.location='index.html';return false;">AxinMenuGui</a> para operar el mercado P2P desde la web.</p>
+
+  <h2>📐 Principio</h2>
+  <p>El bridge <strong>no</strong> es dueño del mercado. Actúa como cliente del <code>MarketStore</code> vivo: lee ofertas, prepara transacciones y delega la mutación a la misma API que usa el GUI ingame.</p>
+
+  <h2>🧵 Hilo principal</h2>
+  <p>Toda operación sobre el MarketStore se ejecuta en el main thread del servidor (<code>api.Event.EnqueueMainThreadTask</code> / equivalente). Si el salto de hilo se demora demasiado, el bridge devuelve <code>market_main_thread_timeout</code>.</p>
+
+  <h2>💳 Fuentes de pago</h2>
+  <p>Cuando el comprador no tiene saldo suficiente en el inventario, el sistema encadena fuentes — cada una cubre solo lo que puede:</p>
+  <pre><code>fromInventory = Min(remaining, inventory.CountItem(...))
+fromTreasury  = Min(remaining, treasury.CountItem(...))
+fromBank      = Min(remaining, bank.CountItem(...))</code></pre>
+
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Nunca pasar <code>remaining</code> entero</strong><p>Si pasas el total a una fuente que no tiene suficiente, <code>TakeItem</code> puede devolver <code>false</code> sin tomar nada y la siguiente fuente nunca se consulta.</p></div></div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('deployment')"><div><span class="direction">Anterior</span><span class="label">← Exposición</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('resources')"><div><span class="direction">Siguiente</span><span class="label">Recursos →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ RESOURCES ═══════════════ -->
+<div class="page" id="page-resources">
+  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Enlaces y capturas</div>
+  <h1><span class="h1-icon">📦</span> Enlaces y capturas</h1>
+  <p class="page-subtitle">Atajos al propio dashboard (configurados en tu instalación) y capturas de referencia.</p>
+
+  <h2>🔗 Atajos del dashboard</h2>
+  <p>En <code>wiki/Imagenes/AXINMobileServerBridgeImages/</code> se incluyen accesos directos <code>.url</code> a las vistas reales del dashboard desplegado. Apuntan al servidor concreto — ábrelos desde el explorador, no desde la web:</p>
+  <div class="table-wrap"><table>
+    <tr><th>Archivo</th><th>Vista</th></tr>
+    <tr><td><code>pagina princial.url</code></td><td>Landing del dashboard.</td></tr>
+    <tr><td><code>chat.url</code></td><td>Pestaña de chat remoto.</td></tr>
+    <tr><td><code>admin.url</code></td><td>Pestaña admin (kick, broadcast, métricas).</td></tr>
+    <tr><td><code>Tienda online.url</code></td><td>Pestaña Tienda (mercado integrado con AxinMenuGui).</td></tr>
+    <tr><td><code>tienda in game.url</code></td><td>Enlace a la vista ingame equivalente.</td></tr>
+  </table></div>
+
+  <h2>🖼 Capturas</h2>
+  <img class="shot" src="Imagenes/AXINMobileServerBridgeImages/PAgina conexion.png" alt="Página de conexión del dashboard">
+  <p class="shot-caption">Pantalla de conexión — introducir URL, API key y vincular sesión.</p>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Añadir más capturas</strong><p>Coloca nuevas imágenes en <code>wiki/Imagenes/AXINMobileServerBridgeImages/</code> y referencíalas aquí con <code>&lt;img class="shot" src="..."&gt;</code> + <code>&lt;p class="shot-caption"&gt;</code>. No se requieren cambios de CSS.</p></div></div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('market-bridge')"><div><span class="direction">Anterior</span><span class="label">← Mercado</span></div></a>
+    <a class="page-nav-btn" onclick="showPage('roadmap')"><div><span class="direction">Siguiente</span><span class="label">Roadmap →</span></div></a>
+  </div>
+</div>
+
+<!-- ═══════════════ ROADMAP ═══════════════ -->
+<div class="page" id="page-roadmap">
+  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Roadmap</div>
+  <h1><span class="h1-icon">🗺</span> Roadmap</h1>
+  <p class="page-subtitle">Hitos previstos. Orden aproximado, sujeto a prioridades operativas.</p>
+
+  <div class="phase-list">
+    <div class="phase-item">
+      <div class="phase-num">1</div>
+      <div class="phase-body">
+        <div class="phase-title">Dashboard estable con pestañas Chat / Admin / Tienda</div>
+        <div class="phase-desc">Vinculación ingame, polling de chat, kick con motivo y mercado integrado funcionando de forma fiable.</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">2</div>
+      <div class="phase-body">
+        <div class="phase-title">HTTPS embebido (Caddy)</div>
+        <div class="phase-desc">Opción nativa de TLS para eliminar la obligación de un reverse proxy externo.</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">3</div>
+      <div class="phase-body">
+        <div class="phase-title">Landing AXIN común</div>
+        <div class="phase-desc">Una <code>home.html</code> compartida con selector de wiki por mod. Esta wiki ya queda preparada vía <code>assets/wiki.css</code> y el mod-switcher en la cabecera.</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">4</div>
+      <div class="phase-body">
+        <div class="phase-title">Más acciones admin</div>
+        <div class="phase-desc">Ban temporal, teleport admin, inspector de inventario, whitelist desde la web.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a class="page-nav-btn" onclick="showPage('resources')"><div><span class="direction">Anterior</span><span class="label">← Recursos</span></div></a>
+    <div></div>
+  </div>
+</div>
+
+</main>
+
+<aside id="toc">
+  <div class="toc-title">En esta página</div>
+  <div id="toc-links"></div>
+</aside>
+</div>
+</div>
+
+<script>window.WIKI_DEFAULT_PAGE = "home";</script>
+<script src="assets/wiki.js"></script>
+</body>
+</html>
