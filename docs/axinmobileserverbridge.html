@@ -71,9 +71,11 @@
   <h1><span class="h1-icon">📱</span> AXINServerBridge</h1>
   <p class="page-subtitle">Dashboard admin móvil para servidores Vintage Story — consulta y actúa desde cualquier navegador, sin abrir el juego.</p>
 
-  <p><strong>AXINServerBridge</strong> (también llamado <em>AXIN Mobile Server Bridge</em>) expone un endpoint HTTP dentro del servidor de Vintage Story y sirve una PWA instalable como dashboard. El producto es el dashboard; el mod es la plumería.</p>
+  <p><strong>AXINServerBridge</strong> (también llamado <em>AXIN Mobile Server Bridge</em>) conecta tres piezas reales: la <strong>web HTTPS</strong>, un <strong>relay VPS HTTPS</strong> y el <strong>bridge HTTP</strong> que corre dentro del servidor de Vintage Story. El producto es el dashboard; el mod es la plomería que publica la API del servidor.</p>
 
   <p>Pertenece a la familia de mods <strong>AXIN</strong> y se integra con <a href="index.html">AxinMenuGui</a> cuando ambos están instalados (p.ej. para la pestaña Tienda).</p>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Arquitectura real actual</strong><p><code>web HTTPS</code> → <code>relay VPS HTTPS</code> (<code>https://bridgerelay.axin.es</code>) → <code>bridge HTTP</code> del mod en el servidor del juego. La URL pública normal para la web sigue el patrón <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</p></div></div>
 
   <div class="feat-grid">
     <div class="feat-card"><div class="feat-card-icon">🔌</div><div class="feat-card-title">Endpoint HTTP</div><div class="feat-card-desc">El mod expone un puerto con JSON del estado del servidor y acciones admin. API key y rate-limit configurables.</div></div>
@@ -98,7 +100,7 @@
     <tr><td>Integraciones opcionales</td><td><code>AxinMenuGui</code> (pestaña Tienda)</td></tr>
   </table></div>
 
-  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>No exponer a Internet sin TLS</strong><p>El endpoint debe usarse en red local o tras un reverse proxy con HTTPS. Ver <a href="#" onclick="showPage('deployment')">Exposición segura</a>.</p></div></div>
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>No uses el bridge directo como ruta pública normal</strong><p>La solución activa hoy no es Cloudflare Worker ni acceso HTTP directo al puerto del bridge. La vía pública normal es el relay VPS en <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>. Ver <a href="#" onclick="showPage('deployment')">Exposición segura</a>.</p></div></div>
 
   <div class="page-nav">
     <div></div>
@@ -110,7 +112,7 @@
 <div class="page" id="page-quickstart">
   <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Instalación</div>
   <h1><span class="h1-icon">🚀</span> Instalación</h1>
-  <p class="page-subtitle">Cuatro pasos: compilar/desplegar el mod, generar una API key, configurar el puerto y abrir el dashboard.</p>
+  <p class="page-subtitle">Cuatro pasos: desplegar el mod, configurar el relay actual, abrir el puerto correcto y conectar la PWA al relay público.</p>
 
   <h2>1. Desplegar el mod</h2>
   <p>Copia el ZIP compilado (<code>AxinServerBridge-x.y.z.zip</code> o <code>AXINMobileServerBridge_v0.x.x.zip</code>) en la carpeta <code>Mods/</code> del servidor y reinicia.</p>
@@ -125,27 +127,33 @@ scripts\gen-apikey.cmd
 openssl rand -hex 32</code></pre>
 
   <h2>3. Configurar</h2>
-  <p>Editar <code>ModConfig/axinbridge.json</code>:</p>
-  <pre><span class="pre-label">axinbridge.json</span><code>{
-  <span class="key">"port"</span>: <span class="num">42421</span>,
+  <p>Editar <code>ModConfig/axinbridge/config.json</code> con el bloque recomendado para el escenario actual:</p>
+  <pre><span class="pre-label">axinbridge/config.json</span><code>{
+  <span class="key">"port"</span>: <span class="num">43000</span>,
   <span class="key">"listenAddress"</span>: <span class="str">"+"</span>,
   <span class="key">"apiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
-  <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>,
-  <span class="key">"AccountsAllowPassword"</span>: <span class="kw">false</span>,
-  <span class="key">"SessionMaxInactiveDays"</span>: <span class="num">30</span>
+  <span class="key">"relayEnabled"</span>: <span class="kw">true</span>,
+  <span class="key">"relayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
+  <span class="key">"relaySlug"</span>: <span class="str">"mi-servidor"</span>,
+  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:43000"</span>,
+  <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>
 }</code></pre>
 
-  <p>Reinicia el servidor. En los logs debe aparecer:</p>
-  <pre><code>[AxinBridge] Listening on http://+:42421/
-[AxinBridge] ready.</code></pre>
+  <p><code>port</code> es configurable. Si no lo defines, el valor por defecto sigue siendo <code>42421</code>, pero para despliegue público actual se recomienda <code>43000/TCP</code>. Si el hosting lo permite, evita exponer siempre el puerto por defecto.</p>
 
-  <h2>4. Abrir el dashboard</h2>
-  <p>Sirve la carpeta <code>dashboard/</code> por HTTP (localmente, por GitHub Pages, o tras un reverse proxy) y abre la URL en el navegador.</p>
+  <p>Reinicia el servidor. En los logs debe aparecer una línea del tipo:</p>
+  <pre><code>[AxinBridge] Listening on http://+:43000/</code></pre>
+
+  <p>Con <code>relayEnabled=true</code>, el mod se registra en el relay y mantiene heartbeat automático. Puedes comprobarlo con <code>/ams relay status</code>.</p>
+
+  <h2>4. Abrir el puerto y conectar el dashboard</h2>
   <ol>
-    <li>Introduce la URL del bridge: <code>http://[ip-servidor]:42421</code>.</li>
-    <li>Introduce la API key.</li>
-    <li>Vincula sesión con el código que genera el comando ingame.</li>
-    <li>Añade a pantalla de inicio (Chrome Android → menú → <em>Añadir a pantalla inicio</em>).</li>
+    <li>Abre en el hosting/firewall el puerto configurado del bridge (<code>43000/TCP</code> recomendado, o el que hayas elegido).</li>
+    <li>Si tu firewall permite filtrar por IP origen, permite acceso al puerto del bridge solo desde <code>212.227.153.142</code>.</li>
+    <li>Si tu hosting no permite ese filtro, usar un puerto alto no predeterminado sigue siendo mejor que reutilizar siempre <code>42421</code>.</li>
+    <li>En la PWA introduce la URL pública del relay: <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
+    <li>Deja vacía la API key si entras por relay. La API key directa del bridge no es la vía pública normal en este modo.</li>
+    <li>Vincula sesión con el código que genera el comando ingame y, si quieres, añade la PWA a pantalla de inicio.</li>
   </ol>
 
   <p class="shot-caption">Página de conexión del dashboard:</p>
@@ -161,18 +169,36 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-config">
   <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Configuración</div>
   <h1><span class="h1-icon">⚙</span> Configuración</h1>
-  <p class="page-subtitle">Campos relevantes de <code>axinbridge.json</code> y cómo recargarlos en caliente.</p>
+  <p class="page-subtitle">Campos relevantes de <code>axinbridge/config.json</code> para la arquitectura real actual y cómo recargarlos en caliente.</p>
+
+  <h2>🔧 Bloque recomendado hoy</h2>
+  <pre><span class="pre-label">axinbridge/config.json</span><code>{
+  <span class="key">"port"</span>: <span class="num">43000</span>,
+  <span class="key">"listenAddress"</span>: <span class="str">"+"</span>,
+  <span class="key">"apiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
+  <span class="key">"relayEnabled"</span>: <span class="kw">true</span>,
+  <span class="key">"relayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
+  <span class="key">"relaySlug"</span>: <span class="str">"mi-servidor"</span>,
+  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:43000"</span>,
+  <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>
+}</code></pre>
 
   <h2>📋 Campos</h2>
   <div class="table-wrap"><table>
     <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
-    <tr><td><code>port</code></td><td>int</td><td>Puerto de escucha del endpoint HTTP del bridge. Default <code>42421</code>.</td></tr>
+    <tr><td><code>port</code></td><td>int</td><td>Puerto de escucha del bridge HTTP. Default <code>42421</code>. Recomendado hoy para despliegue público: <code>43000/TCP</code>.</td></tr>
     <tr><td><code>listenAddress</code></td><td>string</td><td>Interfaz de escucha. <code>"+"</code> = todas; <code>"127.0.0.1"</code> = solo local.</td></tr>
-    <tr><td><code>apiKey</code></td><td>string</td><td>Clave compartida entre dashboard y bridge. Mínimo 32 chars aleatorios.</td></tr>
+    <tr><td><code>apiKey</code></td><td>string</td><td>Clave del bridge. Sigue siendo necesaria para modo directo y para la comunicación interna relay → bridge, pero no es la vía pública normal desde la web cuando usas relay.</td></tr>
+    <tr><td><code>relayEnabled</code></td><td>bool</td><td>Activa el registro automático en el relay VPS y el heartbeat periódico.</td></tr>
+    <tr><td><code>relayUrl</code></td><td>string</td><td>URL base del relay. Relay público real actual: <code>https://bridgerelay.axin.es</code>.</td></tr>
+    <tr><td><code>relaySlug</code></td><td>string</td><td>Slug deseado para la URL pública. La URL resultante sigue el patrón <code>/s/&lt;slug&gt;/api</code>.</td></tr>
+    <tr><td><code>publicBridgeUrl</code></td><td>string</td><td>URL HTTP/HTTPS a la que llama el relay. Debe usar el mismo puerto real en el que escucha el bridge.</td></tr>
     <tr><td><code>rateLimitPerMinute</code></td><td>int</td><td>Tope de peticiones por IP y minuto. Protege contra abusos antes de login.</td></tr>
     <tr><td><code>AccountsAllowPassword</code></td><td>bool</td><td>Habilita login por contraseña (PBKDF2). <code>false</code> = solo vinculación ingame.</td></tr>
     <tr><td><code>SessionMaxInactiveDays</code></td><td>int</td><td>TTL de inactividad de una sesión persistida. Default <code>30</code>.</td></tr>
   </table></div>
+
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Mismo puerto en los tres puntos críticos</strong><p>El relay seguirá funcionando si el mod escucha realmente en el puerto configurado, <code>PublicBridgeUrl</code> usa ese mismo puerto y el hosting/firewall lo tiene abierto.</p></div></div>
 
   <h2>♻ Recarga en caliente</h2>
   <p>Usa <code>/ams reload</code> ingame. La config se relee de disco y se aplica sobre la instancia viva sin romper sesiones activas.</p>
@@ -198,7 +224,10 @@ openssl rand -hex 32</code></pre>
   <div class="table-wrap"><table>
     <tr><th>Comando</th><th>Descripción</th></tr>
     <tr><td><code>/ams link</code></td><td>Genera un código de vinculación de sesión para este jugador. Cópialo en el dashboard.</td></tr>
-    <tr><td><code>/ams reload</code></td><td>Recarga <code>axinbridge.json</code> en caliente sobre la instancia viva.</td></tr>
+    <tr><td><code>/ams reload</code></td><td>Recarga <code>axinbridge/config.json</code> en caliente sobre la instancia viva.</td></tr>
+    <tr><td><code>/ams relay status</code></td><td>Muestra el estado del relay, slug asignado, URL efectiva del bridge y URL pública para el dashboard.</td></tr>
+    <tr><td><code>/ams relay register</code></td><td>Lanza un registro manual inmediato en el relay si <code>RelayEnabled=true</code>.</td></tr>
+    <tr><td><code>/ams relay reset</code></td><td>Limpia el estado local del relay y fuerza un registro nuevo.</td></tr>
     <tr><td><code>/ams web info &lt;action&gt; [args…]</code></td><td>Gestiona la sección <em>Info</em> del dashboard (listar/añadir/borrar).</td></tr>
     <tr><td><code>/ams web evento &lt;action&gt; [args…]</code></td><td>Gestiona eventos anunciados en la UI del dashboard.</td></tr>
   </table></div>
@@ -218,10 +247,17 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-connect">
   <div class="breadcrumb">📱 DASHBOARD <span class="sep">›</span> Conexión y login</div>
   <h1><span class="h1-icon">🔌</span> Conexión y login</h1>
-  <p class="page-subtitle">Dos capas: API key para hablar con el bridge, y sesión para actuar como un jugador concreto.</p>
+  <p class="page-subtitle">La ruta pública normal hoy es el relay HTTPS. La sesión del jugador sigue siendo una segunda capa separada.</p>
 
-  <h2>🔑 API key</h2>
-  <p>La API key autentica al dashboard frente al bridge. Se guarda en <code>localStorage</code> del navegador y se envía en cada request. No identifica al jugador; solo da acceso al servicio.</p>
+  <h2>🌐 Modo relay (normal)</h2>
+  <ol>
+    <li>Configura la PWA con <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
+    <li>Deja vacía la API key en la pantalla de conexión si usas relay.</li>
+    <li>La PWA no envía la API key directa del bridge al navegador público; el relay la inyecta server-side hacia el bridge.</li>
+  </ol>
+
+  <h2>🔑 Modo directo (solo despliegues controlados)</h2>
+  <p>Si conectas la web directamente al bridge, usa <code>http://host:puerto</code> y proporciona la API key. Ese modo sigue existiendo, pero no es la vía pública normal cuando el relay está activo.</p>
 
   <h2>🎟 Vinculación de sesión</h2>
   <ol>
@@ -238,7 +274,7 @@ openssl rand -hex 32</code></pre>
     <li>Rate-limit por IP: 3 fallos = 30 s, 5 = 5 min.</li>
   </ul>
 
-  <div class="callout danger"><span class="callout-icon">⚠</span><div class="callout-body"><strong>localStorage no es autoridad</strong><p>La UI debe validar la sesión con <code>/auth/me</code> al arrancar y antes de acciones sensibles. Si el backend responde <code>invalid_session</code>, limpia <code>localStorage</code> — no degrades silenciosamente a identidad externa.</p></div></div>
+  <div class="callout danger"><span class="callout-icon">⚠</span><div class="callout-body"><strong>localStorage no es autoridad</strong><p>La UI debe validar la sesión con <code>/auth/me</code> al arrancar y antes de acciones sensibles. Si el backend responde <code>invalid_session</code>, limpia <code>localStorage</code>. En modo relay, tampoco reintroduzcas la API key directa del bridge como si fuese el acceso público normal.</p></div></div>
 
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Anterior</span><span class="label">← Comandos</span></div></a>
@@ -362,24 +398,28 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-deployment">
   <div class="breadcrumb">🔐 SEGURIDAD <span class="sep">›</span> Exposición segura</div>
   <h1><span class="h1-icon">🌐</span> Exposición segura</h1>
-  <p class="page-subtitle">Cómo exponer el bridge a Internet sin romper la seguridad.</p>
+  <p class="page-subtitle">Arquitectura pública real actual: <code>web HTTPS</code> → <code>relay VPS HTTPS</code> → <code>bridge HTTP</code>.</p>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Estado real actual</strong><p>La solución activa hoy no usa Cloudflare Worker como vía pública. El relay público real es <code>https://bridgerelay.axin.es</code>.</p></div></div>
 
   <h2>🚫 Qué no hacer</h2>
   <ul>
-    <li>Publicar directamente <code>http://ip:42421</code> a Internet.</li>
+    <li>Publicar directamente <code>http://ip:42421</code> o cualquier otro puerto del bridge como ruta pública normal de la web.</li>
     <li>Dejar <code>apiKey</code> vacía o derivada de texto corto.</li>
     <li>Compartir la API key en canales no cifrados.</li>
   </ul>
 
   <h2>✅ Qué hacer</h2>
   <ul>
-    <li>Red local o VPN para acceso personal.</li>
-    <li>Reverse proxy con TLS (Caddy, nginx, Traefik) delante del bridge.</li>
-    <li>Fijar <code>listenAddress</code> a <code>127.0.0.1</code> si hay proxy local — fuerza el tráfico por el proxy.</li>
-    <li>Rotar la API key si sospechas fuga.</li>
+    <li>Usar como URL pública normal del dashboard <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
+    <li>Configurar un puerto del bridge distinto al predeterminado cuando el servidor vaya a exponerse hacia Internet. Valor recomendado hoy: <code>43000/TCP</code>.</li>
+    <li>Abrir en el hosting/firewall el puerto real del bridge y hacer que <code>PublicBridgeUrl</code> use exactamente ese mismo puerto.</li>
+    <li>Si el hosting/firewall lo permite, restringir el acceso al puerto del bridge solo a <code>212.227.153.142</code>.</li>
+    <li>Si el hosting no permite filtrar por IP origen, usar un puerto alto no predeterminado sigue siendo mejor que reutilizar siempre <code>42421</code>.</li>
+    <li>Reservar la conexión directa al bridge para despliegues controlados o pruebas concretas.</li>
   </ul>
 
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>HTTPS nativo</strong><p>Roadmap: soporte HTTPS embebido con Caddy en versiones posteriores. Hasta entonces, proxy externo es la vía oficial.</p></div></div>
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Chequeo rápido del relay</strong><p>Si el registro ya está hecho, <code>/ams relay status</code> te mostrará la URL para el dashboard. Si el relay no alcanza al bridge, revisa tres cosas: el puerto configurado, el mismo puerto en <code>PublicBridgeUrl</code> y el firewall del hosting.</p></div></div>
 
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('sessions')"><div><span class="direction">Anterior</span><span class="label">← Sesiones</span></div></a>
@@ -432,7 +472,7 @@ fromBank      = Min(remaining, bank.CountItem(...))</code></pre>
 
   <h2>🖼 Capturas</h2>
   <img class="shot" src="Imagenes/AXINMobileServerBridgeImages/PAgina conexion.png" alt="Página de conexión del dashboard">
-  <p class="shot-caption">Pantalla de conexión — introducir URL, API key y vincular sesión.</p>
+  <p class="shot-caption">Pantalla de conexión — introducir la URL del relay, dejar la API key vacía si usas relay y vincular la sesión.</p>
 
   <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Añadir más capturas</strong><p>Coloca nuevas imágenes en <code>wiki/Imagenes/AXINMobileServerBridgeImages/</code> y referencíalas aquí con <code>&lt;img class="shot" src="..."&gt;</code> + <code>&lt;p class="shot-caption"&gt;</code>. No se requieren cambios de CSS.</p></div></div>
 
@@ -459,8 +499,8 @@ fromBank      = Min(remaining, bank.CountItem(...))</code></pre>
     <div class="phase-item">
       <div class="phase-num">2</div>
       <div class="phase-body">
-        <div class="phase-title">HTTPS embebido (Caddy)</div>
-        <div class="phase-desc">Opción nativa de TLS para eliminar la obligación de un reverse proxy externo.</div>
+        <div class="phase-title">Modo directo HTTPS opcional</div>
+        <div class="phase-desc">Ruta futura para despliegues controlados sin depender siempre del relay público actual.</div>
       </div>
     </div>
     <div class="phase-item">
