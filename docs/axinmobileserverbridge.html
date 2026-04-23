@@ -127,28 +127,28 @@ scripts\gen-apikey.cmd
 openssl rand -hex 32</code></pre>
 
   <h2>3. Configurar</h2>
-  <p>Editar <code>ModConfig/axinbridge/config.json</code> con el bloque recomendado para el escenario actual:</p>
+  <p>Editar <code>ModConfig/axinbridge/config.json</code> con un bloque base como este y sustituyendo <code>TU_PUERTO</code> por el puerto que decida el admin:</p>
   <pre><span class="pre-label">axinbridge/config.json</span><code>{
-  <span class="key">"port"</span>: <span class="num">43000</span>,
+  <span class="key">"port"</span>: <span class="num">TU_PUERTO</span>,
   <span class="key">"listenAddress"</span>: <span class="str">"+"</span>,
   <span class="key">"apiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
   <span class="key">"relayEnabled"</span>: <span class="kw">true</span>,
   <span class="key">"relayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
   <span class="key">"relaySlug"</span>: <span class="str">"mi-servidor"</span>,
-  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:43000"</span>,
+  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
   <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>
 }</code></pre>
 
-  <p><code>port</code> es configurable. Si no lo defines, el valor por defecto sigue siendo <code>42421</code>, pero para despliegue público actual se recomienda <code>43000/TCP</code>. Si el hosting lo permite, evita exponer siempre el puerto por defecto.</p>
+  <p><code>port</code> es configurable. Si no lo defines, el valor por defecto sigue siendo <code>42421</code>. Para despliegue público, se recomienda usar un <strong>puerto TCP alto no predeterminado elegido por el admin</strong>, en vez de exponer siempre <code>42421</code> o publicar un número fijo alternativo como recomendación universal.</p>
 
   <p>Reinicia el servidor. En los logs debe aparecer una línea del tipo:</p>
-  <pre><code>[AxinBridge] Listening on http://+:43000/</code></pre>
+  <pre><code>[AxinBridge] Listening on http://+:TU_PUERTO/</code></pre>
 
   <p>Con <code>relayEnabled=true</code>, el mod se registra en el relay y mantiene heartbeat automático. Puedes comprobarlo con <code>/ams relay status</code>.</p>
 
   <h2>4. Abrir el puerto y conectar el dashboard</h2>
   <ol>
-    <li>Abre en el hosting/firewall el puerto configurado del bridge (<code>43000/TCP</code> recomendado, o el que hayas elegido).</li>
+    <li>Abre en el hosting/firewall el puerto configurado del bridge (<code>TU_PUERTO/TCP</code>).</li>
     <li>Si tu firewall permite filtrar por IP origen, permite acceso al puerto del bridge solo desde <code>212.227.153.142</code>.</li>
     <li>Si tu hosting no permite ese filtro, usar un puerto alto no predeterminado sigue siendo mejor que reutilizar siempre <code>42421</code>.</li>
     <li>En la PWA introduce la URL pública del relay: <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
@@ -173,20 +173,20 @@ openssl rand -hex 32</code></pre>
 
   <h2>🔧 Bloque recomendado hoy</h2>
   <pre><span class="pre-label">axinbridge/config.json</span><code>{
-  <span class="key">"port"</span>: <span class="num">43000</span>,
+  <span class="key">"port"</span>: <span class="num">TU_PUERTO</span>,
   <span class="key">"listenAddress"</span>: <span class="str">"+"</span>,
   <span class="key">"apiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
   <span class="key">"relayEnabled"</span>: <span class="kw">true</span>,
   <span class="key">"relayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
   <span class="key">"relaySlug"</span>: <span class="str">"mi-servidor"</span>,
-  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:43000"</span>,
+  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
   <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>
 }</code></pre>
 
   <h2>📋 Campos</h2>
   <div class="table-wrap"><table>
     <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
-    <tr><td><code>port</code></td><td>int</td><td>Puerto de escucha del bridge HTTP. Default <code>42421</code>. Recomendado hoy para despliegue público: <code>43000/TCP</code>.</td></tr>
+    <tr><td><code>port</code></td><td>int</td><td>Puerto de escucha del bridge HTTP. Default <code>42421</code>. Para exposición pública conviene usar un puerto TCP alto no predeterminado elegido por el admin.</td></tr>
     <tr><td><code>listenAddress</code></td><td>string</td><td>Interfaz de escucha. <code>"+"</code> = todas; <code>"127.0.0.1"</code> = solo local.</td></tr>
     <tr><td><code>apiKey</code></td><td>string</td><td>Clave del bridge. Sigue siendo necesaria para modo directo y para la comunicación interna relay → bridge, pero no es la vía pública normal desde la web cuando usas relay.</td></tr>
     <tr><td><code>relayEnabled</code></td><td>bool</td><td>Activa el registro automático en el relay VPS y el heartbeat periódico.</td></tr>
@@ -412,7 +412,7 @@ openssl rand -hex 32</code></pre>
   <h2>✅ Qué hacer</h2>
   <ul>
     <li>Usar como URL pública normal del dashboard <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
-    <li>Configurar un puerto del bridge distinto al predeterminado cuando el servidor vaya a exponerse hacia Internet. Valor recomendado hoy: <code>43000/TCP</code>.</li>
+    <li>Configurar un puerto del bridge distinto al predeterminado cuando el servidor vaya a exponerse hacia Internet. Mejor un puerto TCP alto no predeterminado elegido por el admin.</li>
     <li>Abrir en el hosting/firewall el puerto real del bridge y hacer que <code>PublicBridgeUrl</code> use exactamente ese mismo puerto.</li>
     <li>Si el hosting/firewall lo permite, restringir el acceso al puerto del bridge solo a <code>212.227.153.142</code>.</li>
     <li>Si el hosting no permite filtrar por IP origen, usar un puerto alto no predeterminado sigue siendo mejor que reutilizar siempre <code>42421</code>.</li>
