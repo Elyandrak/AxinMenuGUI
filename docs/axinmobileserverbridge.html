@@ -71,20 +71,20 @@
   <h1><span class="h1-icon">📱</span> AXINServerBridge</h1>
   <p class="page-subtitle">Dashboard admin móvil para servidores Vintage Story — consulta y actúa desde cualquier navegador, sin abrir el juego.</p>
 
-  <p><strong>AXINServerBridge</strong> (también llamado <em>AXIN Mobile Server Bridge</em>) conecta tres piezas reales: la <strong>web HTTPS</strong>, un <strong>relay VPS HTTPS</strong> y el <strong>bridge HTTP</strong> que corre dentro del servidor de Vintage Story. El producto es el dashboard; el mod es la plomería que publica la API del servidor.</p>
+  <p><strong>AXINServerBridge</strong> (también llamado <em>AXIN Mobile Server Bridge</em>) permite abrir una app web desde el juego y consultar o administrar el servidor desde el móvil. El camino normal es usar el enlace que genera <code>/ams appweb</code>.</p>
 
   <p>Pertenece a la familia de mods <strong>AXIN</strong> y se integra con <a href="index.html">AxinMenuGui</a> cuando ambos están instalados (p.ej. para la pestaña Tienda).</p>
 
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Arquitectura real actual</strong><p><code>web HTTPS</code> → <code>relay VPS HTTPS</code> (<code>https://bridgerelay.axin.es</code>) → <code>bridge HTTP</code> del mod en el servidor del juego. La URL pública normal para la web sigue el patrón <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</p></div></div>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Idea simple</strong><p>La app web necesita una dirección segura. El relay de AXIN (<code>https://bridgerelay.axin.es</code>) hace de puerta segura entre la web y tu servidor. Normalmente no tienes que escribir la API key en la app.</p></div></div>
 
   <div class="feat-grid">
     <div class="feat-card"><div class="feat-card-icon">🔌</div><div class="feat-card-title">Endpoint HTTP</div><div class="feat-card-desc">El mod expone un puerto con JSON del estado del servidor y acciones admin. API key y rate-limit configurables.</div></div>
     <div class="feat-card"><div class="feat-card-icon">📱</div><div class="feat-card-title">PWA instalable</div><div class="feat-card-desc">Dashboard en HTML/JS que se instala como app en Android/iOS/desktop. Funciona offline entre pollings.</div></div>
     <div class="feat-card"><div class="feat-card-icon">🎟</div><div class="feat-card-title">Sesión vinculada ingame</div><div class="feat-card-desc">Código de vinculación generado desde el juego. Tokens con TTL de inactividad y rehidratación tras reinicio.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🔐</div><div class="feat-card-title">Password opt-in</div><div class="feat-card-desc">PBKDF2-SHA256 para cuentas con contraseña. Sin fricción por defecto; el admin decide.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🔐</div><div class="feat-card-title">Contraseña opcional</div><div class="feat-card-desc">Los jugadores pueden volver a entrar sin pedir otro código si el admin activa esta opción.</div></div>
     <div class="feat-card"><div class="feat-card-icon">💬</div><div class="feat-card-title">Chat remoto</div><div class="feat-card-desc">Lee el chat del servidor y envía mensajes desde el móvil bajo tu identidad vinculada.</div></div>
     <div class="feat-card"><div class="feat-card-icon">🛡</div><div class="feat-card-title">Acciones admin</div><div class="feat-card-desc">Kick con motivo visible al jugador, mensajería operativa, métricas básicas del servidor.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🏪</div><div class="feat-card-title">Mercado integrado</div><div class="feat-card-desc">Pestaña Tienda que opera sobre el MarketStore vivo de AxinMenuGui sin tocar JSON a espaldas del mod.</div></div>
+    <div class="feat-card"><div class="feat-card-icon">🏪</div><div class="feat-card-title">Mercado integrado</div><div class="feat-card-desc">Pestaña Tienda para ver ofertas y comprar desde la web cuando AxinMenuGui está instalado.</div></div>
     <div class="feat-card"><div class="feat-card-icon">♻</div><div class="feat-card-title">/ams reload en caliente</div><div class="feat-card-desc">Recarga la configuración del bridge en runtime sin cortar las sesiones abiertas.</div></div>
   </div>
 
@@ -100,7 +100,7 @@
     <tr><td>Integraciones opcionales</td><td><code>AxinMenuGui</code> (pestaña Tienda)</td></tr>
   </table></div>
 
-  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>No uses el bridge directo como ruta pública normal</strong><p>La solución activa hoy no es Cloudflare Worker ni acceso HTTP directo al puerto del bridge. La vía pública normal es el relay VPS en <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>. Ver <a href="#" onclick="showPage('deployment')">Exposición segura</a>.</p></div></div>
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Camino recomendado</strong><p>Para uso normal, configura el relay y usa <code>/ams appweb</code>. La conexión directa al puerto del bridge queda como modo avanzado para pruebas o redes controladas.</p></div></div>
 
   <div class="page-nav">
     <div></div>
@@ -112,48 +112,56 @@
 <div class="page" id="page-quickstart">
   <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Instalación</div>
   <h1><span class="h1-icon">🚀</span> Instalación</h1>
-  <p class="page-subtitle">Cuatro pasos: desplegar el mod, configurar el relay actual, abrir el puerto correcto y conectar la PWA al relay público.</p>
+  <p class="page-subtitle">Ruta recomendada para admins: instalar, rellenar lo mínimo, reiniciar y usar <code>/ams appweb</code>.</p>
 
-  <h2>1. Desplegar el mod</h2>
-  <p>Copia el ZIP compilado (<code>AxinServerBridge-x.y.z.zip</code> o <code>AXINMobileServerBridge_v0.x.x.zip</code>) en la carpeta <code>Mods/</code> del servidor y reinicia.</p>
+  <h2>1. Instalar el mod</h2>
+  <p>Copia el ZIP del mod en la carpeta <code>Mods/</code> del servidor de Vintage Story y arranca el servidor una vez. En ese primer arranque se crea el archivo <code>ModConfig/axinbridge/config.json</code>.</p>
 
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Verificar despliegue real</strong><p>No asumas que un build fue desplegado sólo porque el script diga <em>BUILD COMPLETADO</em>. Comprueba tamaño y fecha del DLL efectivamente copiado en <code>VintagestoryData/Mods/AXINMobileServerBridge/AxinServerBridge.dll</code>.</p></div></div>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Si compilas tú mismo</strong><p>Comprueba que el DLL nuevo se ha copiado realmente en la carpeta de mods. Si el servidor estaba abierto, Windows puede bloquear el archivo antiguo.</p></div></div>
 
-  <h2>2. Generar API key</h2>
+  <h2>2. Crear una clave privada</h2>
+  <p>La clave privada protege el bridge. No la escribas en la app web cuando uses relay; el relay la usará por detrás.</p>
   <pre><code><span class="cmt"># Windows</span>
 scripts\gen-apikey.cmd
 
 <span class="cmt"># Linux / macOS</span>
 openssl rand -hex 32</code></pre>
 
-  <h2>3. Configurar</h2>
-  <p>Editar <code>ModConfig/axinbridge/config.json</code> con un bloque base como este y sustituyendo <code>TU_PUERTO</code> por el puerto que decida el admin:</p>
+  <h2>3. Rellenar la configuración mínima</h2>
+  <p>Edita <code>ModConfig/axinbridge/config.json</code>. Para el camino recomendado con relay, rellena estos campos:</p>
   <pre><span class="pre-label">axinbridge/config.json</span><code>{
-  <span class="key">"port"</span>: <span class="num">TU_PUERTO</span>,
-  <span class="key">"listenAddress"</span>: <span class="str">"+"</span>,
-  <span class="key">"apiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
-  <span class="key">"relayEnabled"</span>: <span class="kw">true</span>,
-  <span class="key">"relayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
-  <span class="key">"relaySlug"</span>: <span class="str">"mi-servidor"</span>,
-  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
-  <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>
+  <span class="key">"Port"</span>: <span class="num">TU_PUERTO</span>,
+  <span class="key">"ListenAddress"</span>: <span class="str">"+"</span>,
+  <span class="key">"ApiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
+  <span class="key">"RelayEnabled"</span>: <span class="kw">true</span>,
+  <span class="key">"RelayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
+  <span class="key">"RelaySlug"</span>: <span class="str">"mi-servidor"</span>,
+  <span class="key">"PublicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
+  <span class="key">"RateLimitPerMinute"</span>: <span class="num">30</span>
 }</code></pre>
 
-  <p><code>port</code> es configurable. Si no lo defines, el valor por defecto sigue siendo <code>42421</code>. Para despliegue público, se recomienda usar un <strong>puerto TCP alto no predeterminado elegido por el admin</strong>, en vez de exponer siempre <code>42421</code> o publicar un número fijo alternativo como recomendación universal.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Campo</th><th>Qué poner</th><th>Por qué existe</th></tr>
+    <tr><td><code>Port</code></td><td>Un puerto TCP abierto en tu hosting, por ejemplo <code>43000</code>.</td><td>Es la puerta local donde escucha el mod.</td></tr>
+    <tr><td><code>ApiKey</code></td><td>La clave larga generada en el paso anterior.</td><td>Evita que cualquiera pueda llamar al bridge.</td></tr>
+    <tr><td><code>RelaySlug</code></td><td>Un nombre corto sin espacios, por ejemplo <code>mi-servidor</code>.</td><td>Forma parte del enlace público de la app.</td></tr>
+    <tr><td><code>PublicBridgeUrl</code></td><td>La dirección pública de tu servidor más el puerto, por ejemplo <code>http://123.45.67.89:43000</code>.</td><td>Es la dirección que usa el relay para llegar a tu servidor.</td></tr>
+  </table></div>
+
+  <p>Si ves más campos relacionados con el relay o con la URL final de la app, no los rellenes a mano: los escribe el mod cuando arranca y se registra.</p>
 
   <p>Reinicia el servidor. En los logs debe aparecer una línea del tipo:</p>
   <pre><code>[AxinBridge] Listening on http://+:TU_PUERTO/</code></pre>
 
-  <p>Con <code>relayEnabled=true</code>, el mod se registra en el relay y mantiene heartbeat automático. Puedes comprobarlo con <code>/ams relay status</code>.</p>
+  <p>Con <code>RelayEnabled=true</code>, el mod intentará registrarse solo en el relay. Puedes comprobar el estado con <code>/ams relay status</code>.</p>
 
-  <h2>4. Abrir el puerto y conectar el dashboard</h2>
+  <h2>4. Abrir la app</h2>
   <ol>
-    <li>Abre en el hosting/firewall el puerto configurado del bridge (<code>TU_PUERTO/TCP</code>).</li>
-    <li>Si tu firewall permite filtrar por IP origen, permite acceso al puerto del bridge solo desde <code>212.227.153.142</code>.</li>
-    <li>Si tu hosting no permite ese filtro, usar un puerto alto no predeterminado sigue siendo mejor que reutilizar siempre <code>42421</code>.</li>
-    <li>En la PWA introduce la URL pública del relay: <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
-    <li>Deja vacía la API key si entras por relay. La API key directa del bridge no es la vía pública normal en este modo.</li>
-    <li>Vincula sesión con el código que genera el comando ingame y, si quieres, añade la PWA a pantalla de inicio.</li>
+    <li>Asegúrate de que el puerto configurado está abierto en tu hosting/firewall.</li>
+    <li>Entra al juego como jugador.</li>
+    <li>Ejecuta <code>/ams appweb</code>.</li>
+    <li>Abre el enlace que aparece en el chat.</li>
+    <li>La app debería aparecer con el servidor y el código de vinculación preparados. Si falta la URL, la guía de conexión te dirá qué campo falta.</li>
   </ol>
 
   <p class="shot-caption">Página de conexión del dashboard:</p>
@@ -169,41 +177,49 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-config">
   <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Configuración</div>
   <h1><span class="h1-icon">⚙</span> Configuración</h1>
-  <p class="page-subtitle">Campos relevantes de <code>axinbridge/config.json</code> para la arquitectura real actual y cómo recargarlos en caliente.</p>
+  <p class="page-subtitle">Qué campos debe tocar un admin y qué campos escribe el mod automáticamente.</p>
 
-  <h2>🔧 Bloque recomendado hoy</h2>
+  <h2>🔧 Bloque recomendado</h2>
   <pre><span class="pre-label">axinbridge/config.json</span><code>{
-  <span class="key">"port"</span>: <span class="num">TU_PUERTO</span>,
-  <span class="key">"listenAddress"</span>: <span class="str">"+"</span>,
-  <span class="key">"apiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
-  <span class="key">"relayEnabled"</span>: <span class="kw">true</span>,
-  <span class="key">"relayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
-  <span class="key">"relaySlug"</span>: <span class="str">"mi-servidor"</span>,
-  <span class="key">"publicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
-  <span class="key">"rateLimitPerMinute"</span>: <span class="num">30</span>
+  <span class="key">"Port"</span>: <span class="num">TU_PUERTO</span>,
+  <span class="key">"ListenAddress"</span>: <span class="str">"+"</span>,
+  <span class="key">"ApiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
+  <span class="key">"RelayEnabled"</span>: <span class="kw">true</span>,
+  <span class="key">"RelayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
+  <span class="key">"RelaySlug"</span>: <span class="str">"mi-servidor"</span>,
+  <span class="key">"PublicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
+  <span class="key">"RateLimitPerMinute"</span>: <span class="num">30</span>
 }</code></pre>
 
-  <h2>📋 Campos</h2>
+  <h2>📋 Campos para admins</h2>
   <div class="table-wrap"><table>
-    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
-    <tr><td><code>port</code></td><td>int</td><td>Puerto de escucha del bridge HTTP. Default <code>42421</code>. Para exposición pública conviene usar un puerto TCP alto no predeterminado elegido por el admin.</td></tr>
-    <tr><td><code>listenAddress</code></td><td>string</td><td>Interfaz de escucha. <code>"+"</code> = todas; <code>"127.0.0.1"</code> = solo local.</td></tr>
-    <tr><td><code>apiKey</code></td><td>string</td><td>Clave del bridge. Sigue siendo necesaria para modo directo y para la comunicación interna relay → bridge, pero no es la vía pública normal desde la web cuando usas relay.</td></tr>
-    <tr><td><code>relayEnabled</code></td><td>bool</td><td>Activa el registro automático en el relay VPS y el heartbeat periódico.</td></tr>
-    <tr><td><code>relayUrl</code></td><td>string</td><td>URL base del relay. Relay público real actual: <code>https://bridgerelay.axin.es</code>.</td></tr>
-    <tr><td><code>relaySlug</code></td><td>string</td><td>Slug deseado para la URL pública. La URL resultante sigue el patrón <code>/s/&lt;slug&gt;/api</code>.</td></tr>
-    <tr><td><code>publicBridgeUrl</code></td><td>string</td><td>URL HTTP/HTTPS a la que llama el relay. Debe usar el mismo puerto real en el que escucha el bridge.</td></tr>
-    <tr><td><code>rateLimitPerMinute</code></td><td>int</td><td>Tope de peticiones por IP y minuto. Protege contra abusos antes de login.</td></tr>
-    <tr><td><code>AccountsAllowPassword</code></td><td>bool</td><td>Habilita login por contraseña (PBKDF2). <code>false</code> = solo vinculación ingame.</td></tr>
-    <tr><td><code>SessionMaxInactiveDays</code></td><td>int</td><td>TTL de inactividad de una sesión persistida. Default <code>30</code>.</td></tr>
+    <tr><th>Campo</th><th>Obligatorio</th><th>Explicación humana</th></tr>
+    <tr><td><code>Port</code></td><td>Sí</td><td>Puerto por el que el mod escucha. Debe estar abierto en el hosting.</td></tr>
+    <tr><td><code>ListenAddress</code></td><td>Sí para uso externo</td><td>Usa <code>"+"</code> si el bridge debe aceptar conexiones desde fuera del servidor.</td></tr>
+    <tr><td><code>ApiKey</code></td><td>Sí</td><td>Clave privada larga. No se comparte con jugadores ni se escribe en la app cuando usas relay.</td></tr>
+    <tr><td><code>RelayEnabled</code></td><td>Sí en modo recomendado</td><td>Activa la puerta segura de AXIN para que la app web pueda conectar.</td></tr>
+    <tr><td><code>RelayUrl</code></td><td>Sí en modo recomendado</td><td>Debe ser <code>https://bridgerelay.axin.es</code> para el relay público actual.</td></tr>
+    <tr><td><code>RelaySlug</code></td><td>Recomendado</td><td>Nombre corto que aparecerá en la URL pública. Ejemplo: <code>mi-servidor</code>.</td></tr>
+    <tr><td><code>PublicBridgeUrl</code></td><td>Sí para relay</td><td>Dirección pública por la que el relay puede llegar a tu servidor. Debe incluir el mismo puerto que <code>Port</code>.</td></tr>
+    <tr><td><code>RateLimitPerMinute</code></td><td>No</td><td>Límite básico de peticiones por minuto. El valor por defecto suele servir.</td></tr>
+    <tr><td><code>AccountsAllowPassword</code></td><td>No</td><td>Permite que jugadores vinculados creen contraseña para volver a entrar sin pedir otro código.</td></tr>
+    <tr><td><code>SessionMaxInactiveDays</code></td><td>No</td><td>Días que una sesión puede estar sin usarse antes de caducar.</td></tr>
   </table></div>
 
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Mismo puerto en los tres puntos críticos</strong><p>El relay seguirá funcionando si el mod escucha realmente en el puerto configurado, <code>PublicBridgeUrl</code> usa ese mismo puerto y el hosting/firewall lo tiene abierto.</p></div></div>
+  <h2>🤖 Campos que escribe el mod</h2>
+  <p>Estos campos pueden aparecer en el JSON, pero no son tareas normales del admin:</p>
+  <ul>
+    <li><code>ServerApiUrl</code>: URL final que debe usar la app. El mod la calcula cuando puede.</li>
+    <li><code>RelayServerId</code> y <code>RelayOwnerToken</code>: identidad interna del servidor en el relay.</li>
+    <li><code>RelayAssignedSlug</code>: nombre confirmado por el relay. Puede coincidir con <code>RelaySlug</code> o cambiar si el solicitado no está disponible.</li>
+  </ul>
+
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Regla sencilla</strong><p>El puerto debe coincidir en tres sitios: <code>Port</code>, <code>PublicBridgeUrl</code> y el firewall del hosting. Si uno no coincide, el relay no podrá llegar al servidor.</p></div></div>
 
   <h2>♻ Recarga en caliente</h2>
   <p>Usa <code>/ams reload</code> ingame. La config se relee de disco y se aplica sobre la instancia viva sin romper sesiones activas.</p>
 
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Reload ≠ reemplazar referencia</strong><p>El bridge actualiza los campos mutables sobre el objeto compartido. No sustituye la instancia, para que <code>HttpBridgeServer</code> y <code>SessionManager</code> no queden leyendo una config antigua.</p></div></div>
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Algunos cambios requieren reinicio</strong><p>El reload sirve para muchos campos, pero puerto, dirección de escucha y cambios de red deben comprobarse con reinicio si no ves efecto claro.</p></div></div>
 
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('quickstart')"><div><span class="direction">Anterior</span><span class="label">← Instalación</span></div></a>
@@ -215,15 +231,18 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-commands">
   <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Comandos /ams</div>
   <h1><span class="h1-icon">📋</span> Comandos <code>/ams</code></h1>
-  <p class="page-subtitle">Comandos ingame del AXINServerBridge. Registrados en la fase <code>ModsAndConfigReady</code>.</p>
+  <p class="page-subtitle">Comandos ingame del AXINServerBridge. Para la mayoría de jugadores, el importante es <code>/ams appweb</code>.</p>
 
   <h2>📐 Sintaxis general</h2>
-  <p>El comando raíz es <code>/ams</code>. Los subcomandos con argumentos libres usan <code>PopWord()</code> + <code>PopAll()</code> en vez de <code>WithArgs</code> para admitir texto variable.</p>
+  <p>El comando raíz es <code>/ams</code>. Algunos subcomandos son para jugadores y otros requieren permisos de administrador.</p>
 
   <h2>🔧 Subcomandos</h2>
   <div class="table-wrap"><table>
     <tr><th>Comando</th><th>Descripción</th></tr>
-    <tr><td><code>/ams link</code></td><td>Genera un código de vinculación de sesión para este jugador. Cópialo en el dashboard.</td></tr>
+    <tr><td><code>/ams appweb</code></td><td>Genera un enlace clicable a la app web con el código de vinculación preparado. Es el flujo recomendado.</td></tr>
+    <tr><td><code>/ams link</code></td><td>Genera solo un código de vinculación. Útil si quieres abrir la app manualmente.</td></tr>
+    <tr><td><code>/ams register</code></td><td>Permite crear o cambiar contraseña web para volver a entrar sin pedir otro código.</td></tr>
+    <tr><td><code>/ams wiki</code></td><td>Muestra el enlace a esta documentación.</td></tr>
     <tr><td><code>/ams reload</code></td><td>Recarga <code>axinbridge/config.json</code> en caliente sobre la instancia viva.</td></tr>
     <tr><td><code>/ams relay status</code></td><td>Muestra el estado del relay, slug asignado, URL efectiva del bridge y URL pública para el dashboard.</td></tr>
     <tr><td><code>/ams relay register</code></td><td>Lanza un registro manual inmediato en el relay si <code>RelayEnabled=true</code>.</td></tr>
@@ -232,10 +251,10 @@ openssl rand -hex 32</code></pre>
     <tr><td><code>/ams web evento &lt;action&gt; [args…]</code></td><td>Gestiona eventos anunciados en la UI del dashboard.</td></tr>
   </table></div>
 
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Formato <code>add &lt;sección&gt; &lt;texto libre&gt; [| url]</code></strong><p>Al añadir entradas de texto con URL opcional, el separador es <code>|</code>. El handler divide manualmente tras <code>PopAll()</code>.</p></div></div>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Paneles web</strong><p>Los comandos <code>/ams web ...</code> son para admins que quieren editar textos visibles en el dashboard. Si solo quieres conectar la app, no los necesitas.</p></div></div>
 
-  <h2>🚫 Errores y respuesta al jugador</h2>
-  <p>Los comandos responden directamente con <code>player.SendMessage(...)</code>. Los errores runtime de servicios (p.ej. <code>market_query_failed</code>) se loguean con tipo+mensaje+stack, no se colapsan en un <code>internal_error</code> genérico.</p>
+  <h2>🚫 Si algo falla</h2>
+  <p>Usa <code>/ams status</code> y <code>/ams relay status</code>. Si el problema está en la URL pública, normalmente será uno de estos tres puntos: puerto cerrado, <code>PublicBridgeUrl</code> con puerto incorrecto o relay todavía sin registro.</p>
 
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('config')"><div><span class="direction">Anterior</span><span class="label">← Configuración</span></div></a>
@@ -247,14 +266,17 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-connect">
   <div class="breadcrumb">📱 DASHBOARD <span class="sep">›</span> Conexión y login</div>
   <h1><span class="h1-icon">🔌</span> Conexión y login</h1>
-  <p class="page-subtitle">La ruta pública normal hoy es el relay HTTPS. La sesión del jugador sigue siendo una segunda capa separada.</p>
+  <p class="page-subtitle">Distingue dos cosas: conectar la app al servidor y vincular tu jugador dentro de la app.</p>
 
-  <h2>🌐 Modo relay (normal)</h2>
+  <h2>🌐 Camino recomendado: <code>/ams appweb</code></h2>
   <ol>
-    <li>Configura la PWA con <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
-    <li>Deja vacía la API key en la pantalla de conexión si usas relay.</li>
-    <li>La PWA no envía la API key directa del bridge al navegador público; el relay la inyecta server-side hacia el bridge.</li>
+    <li>Entra al servidor de Vintage Story.</li>
+    <li>Ejecuta <code>/ams appweb</code>.</li>
+    <li>Abre el enlace del chat.</li>
+    <li>La app recibe el código de vinculación y, si el mod ya conoce la URL pública, también recibe la URL del servidor.</li>
   </ol>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Qué pasa por dentro, en simple</strong><p>La app necesita una URL pública para hablar con tu servidor. Con relay, esa URL tiene forma <code>https://bridgerelay.axin.es/s/&lt;nombre&gt;/api</code>. Si el relay aún no ha terminado de registrar el servidor, el enlace puede incluir solo el código y la app pedirá completar la URL.</p></div></div>
 
   <h2>🔑 Modo directo (solo despliegues controlados)</h2>
   <p>Si conectas la web directamente al bridge, usa <code>http://host:puerto</code> y proporciona la API key. Ese modo sigue existiendo, pero no es la vía pública normal cuando el relay está activo.</p>
@@ -263,15 +285,15 @@ openssl rand -hex 32</code></pre>
   <ol>
     <li>En el juego, ejecuta <code>/ams link</code>. Recibes un código corto.</li>
     <li>En el dashboard, introduce el código en el formulario de vinculación.</li>
-    <li>El bridge guarda el token de sesión en <code>AuthStore.sessions.json</code> con TTL de inactividad.</li>
-    <li>Al arrancar, <code>SessionManager.Rehydrate()</code> recupera esos tokens del disco.</li>
+    <li>La sesión queda guardada para no tener que repetir el proceso cada vez que se reinicia el servidor.</li>
   </ol>
 
   <h2>🔒 Login por contraseña (opcional)</h2>
-  <p>Si <code>AccountsAllowPassword=true</code>, el dashboard expone <code>POST /auth/login</code>:</p>
+  <p>Si el admin deja activadas las contraseñas, un jugador vinculado puede crear una contraseña para volver a entrar sin pedir otro código en el juego.</p>
   <ul>
-    <li>PBKDF2-SHA256, 100.000 iteraciones, salt 16B, comparación <code>FixedTimeEquals</code>.</li>
-    <li>Rate-limit por IP: 3 fallos = 30 s, 5 = 5 min.</li>
+    <li>La contraseña no sustituye al primer vínculo ingame.</li>
+    <li>Si olvidas la contraseña, vuelve a vincular desde el juego.</li>
+    <li>Los detalles técnicos de hash y rate-limit quedan en la documentación técnica.</li>
   </ul>
 
   <div class="callout danger"><span class="callout-icon">⚠</span><div class="callout-body"><strong>localStorage no es autoridad</strong><p>La UI debe validar la sesión con <code>/auth/me</code> al arrancar y antes de acciones sensibles. Si el backend responde <code>invalid_session</code>, limpia <code>localStorage</code>. En modo relay, tampoco reintroduzcas la API key directa del bridge como si fuese el acceso público normal.</p></div></div>
@@ -398,20 +420,32 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-deployment">
   <div class="breadcrumb">🔐 SEGURIDAD <span class="sep">›</span> Exposición segura</div>
   <h1><span class="h1-icon">🌐</span> Exposición segura</h1>
-  <p class="page-subtitle">Arquitectura pública real actual: <code>web HTTPS</code> → <code>relay VPS HTTPS</code> → <code>bridge HTTP</code>.</p>
+  <p class="page-subtitle">Cómo publicar el bridge sin obligar a la app web a conectar directamente por HTTP.</p>
 
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Estado real actual</strong><p>La solución activa hoy no usa Cloudflare Worker como vía pública. El relay público real es <code>https://bridgerelay.axin.es</code>.</p></div></div>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Estado real actual</strong><p>AXIN dispone de dominio <code>axin.es</code> y VPS en IONOS. El dominio principal se reserva para una futura web general del ecosistema; el relay usa subdominio propio: <code>bridgerelay.axin.es</code>.</p></div></div>
+
+  <h2>🧭 Explicación sin jerga</h2>
+  <p>La app web está en HTTPS. Muchos servidores de Vintage Story solo pueden exponer el mod por HTTP. El relay es una puerta intermedia segura: la app habla con el relay por HTTPS y el relay habla con tu servidor por la dirección que pusiste en <code>PublicBridgeUrl</code>.</p>
+
+  <div class="table-wrap"><table>
+    <tr><th>Nombre en la guía</th><th>Qué significa</th><th>Quién lo usa</th></tr>
+    <tr><td>URL de la app</td><td>La web que abre el jugador/admin.</td><td>El usuario.</td></tr>
+    <tr><td>URL pública del dashboard</td><td><code>https://bridgerelay.axin.es/s/&lt;nombre&gt;/api</code>.</td><td>La app web.</td></tr>
+    <tr><td><code>PublicBridgeUrl</code></td><td>Dirección de tu servidor para que el relay pueda llegar al mod.</td><td>El relay.</td></tr>
+    <tr><td><code>ServerApiUrl</code></td><td>URL final que el mod calcula para la app.</td><td>El mod y <code>/ams appweb</code>.</td></tr>
+  </table></div>
 
   <h2>🚫 Qué no hacer</h2>
   <ul>
-    <li>Publicar directamente <code>http://ip:42421</code> o cualquier otro puerto del bridge como ruta pública normal de la web.</li>
-    <li>Dejar <code>apiKey</code> vacía o derivada de texto corto.</li>
+    <li>Decir a los usuarios que usen directamente <code>http://ip:puerto</code> como ruta normal de la app pública.</li>
+    <li>Dejar <code>ApiKey</code> vacía o derivada de texto corto.</li>
     <li>Compartir la API key en canales no cifrados.</li>
+    <li>Confundir <code>PublicBridgeUrl</code> con la URL que debe escribir el usuario en la app.</li>
   </ul>
 
   <h2>✅ Qué hacer</h2>
   <ul>
-    <li>Usar como URL pública normal del dashboard <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
+    <li>Usar como URL normal de la app <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
     <li>Configurar un puerto del bridge distinto al predeterminado cuando el servidor vaya a exponerse hacia Internet. Mejor un puerto TCP alto no predeterminado elegido por el admin.</li>
     <li>Abrir en el hosting/firewall el puerto real del bridge y hacer que <code>PublicBridgeUrl</code> use exactamente ese mismo puerto.</li>
     <li>Si el hosting/firewall lo permite, restringir el acceso al puerto del bridge solo a <code>212.227.153.142</code>.</li>
@@ -419,7 +453,7 @@ openssl rand -hex 32</code></pre>
     <li>Reservar la conexión directa al bridge para despliegues controlados o pruebas concretas.</li>
   </ul>
 
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Chequeo rápido del relay</strong><p>Si el registro ya está hecho, <code>/ams relay status</code> te mostrará la URL para el dashboard. Si el relay no alcanza al bridge, revisa tres cosas: el puerto configurado, el mismo puerto en <code>PublicBridgeUrl</code> y el firewall del hosting.</p></div></div>
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Chequeo rápido del relay</strong><p>Si el registro ya está hecho, <code>/ams relay status</code> te mostrará la URL para el dashboard. Si el relay no alcanza al bridge, revisa tres cosas: que el puerto está abierto, que <code>PublicBridgeUrl</code> usa ese mismo puerto y que el servidor responde desde fuera.</p></div></div>
 
   <div class="page-nav">
     <a class="page-nav-btn" onclick="showPage('sessions')"><div><span class="direction">Anterior</span><span class="label">← Sesiones</span></div></a>
@@ -506,8 +540,8 @@ fromBank      = Min(remaining, bank.CountItem(...))</code></pre>
     <div class="phase-item">
       <div class="phase-num">3</div>
       <div class="phase-body">
-        <div class="phase-title">Landing AXIN común</div>
-        <div class="phase-desc">Una <code>home.html</code> compartida con selector de wiki por mod. Esta wiki ya queda preparada vía <code>assets/wiki.css</code> y el mod-switcher en la cabecera.</div>
+        <div class="phase-title">Portal principal AXIN</div>
+        <div class="phase-desc"><code>axin.es</code> queda reservado para una web principal del ecosistema AXIN. Los servicios concretos deben vivir en subdominios, por ejemplo <code>bridgerelay.axin.es</code>.</div>
       </div>
     </div>
     <div class="phase-item">
