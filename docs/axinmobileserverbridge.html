@@ -13,15 +13,16 @@
     <div class="logo-icon">A</div>
     <div><div class="logo-text">AXIN</div><div class="logo-sub">Wikis</div></div>
   </a>
-  <nav class="mod-switcher" aria-label="Wikis de mods AXIN">
-    <a class="mod-pill" href="index.html"><span class="mod-pill-dot"></span>AxinMenuGui</a>
-    <a class="mod-pill active" href="axinmobileserverbridge.html"><span class="mod-pill-dot"></span>AXINServerBridge</a>
-  </nav>
   <div class="header-search">
     <span style="color:var(--stone);font-size:13px">🔍</span>
     <input type="text" placeholder="Buscar en la documentación..." id="searchInput" onkeyup="handleSearch(event)">
     <span class="search-hint">Ctrl K</span>
   </div>
+  <nav class="mod-switcher" aria-label="Wikis y mods AXIN">
+    <a class="mod-pill" href="axin-mods-vintagestory.html"><span class="mod-pill-dot"></span>AXIN Mods Vintagestory</a>
+    <a class="mod-pill" href="index.html"><span class="mod-pill-dot"></span>AxinMenuGui Wiki</a>
+    <a class="mod-pill active" href="axinmobileserverbridge.html"><span class="mod-pill-dot"></span>AXINMobileServerBridge Wiki</a>
+  </nav>
   <div class="header-badge">Bridge · Mobile Admin</div>
 </header>
 
@@ -114,10 +115,14 @@
   <h1><span class="h1-icon">🚀</span> Instalación</h1>
   <p class="page-subtitle">Ruta recomendada para admins: instalar, rellenar lo mínimo, reiniciar y usar <code>/ams appweb</code>.</p>
 
-  <h2>1. Instalar el mod</h2>
-  <p>Copia el ZIP del mod en la carpeta <code>Mods/</code> del servidor de Vintage Story y arranca el servidor una vez. En ese primer arranque se crea el archivo <code>ModConfig/axinbridge/config.json</code>.</p>
+  <h2>1. Descargar e instalar el mod</h2>
+  <ol>
+    <li>Descarga la última versión del mod compatible con tu Vintage Story desde la página oficial de mods (ModDB de VS).</li>
+    <li>Copia el ZIP descargado, sin descomprimir, en la carpeta <code>Mods/</code> de tu servidor.</li>
+    <li>Arranca el servidor una vez. En ese primer arranque se crea el archivo <code>ModConfig/axinbridge/config.json</code> que vas a editar en el siguiente paso.</li>
+  </ol>
 
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Si compilas tú mismo</strong><p>Comprueba que el DLL nuevo se ha copiado realmente en la carpeta de mods. Si el servidor estaba abierto, Windows puede bloquear el archivo antiguo.</p></div></div>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>No necesitas compilar nada</strong><p>El mod ya viene compilado dentro del ZIP. Solo el equipo de desarrollo compila desde el código fuente; un admin de servidor normal no tiene que hacerlo.</p></div></div>
 
   <h2>2. Crear una clave privada</h2>
   <p>La clave privada protege el bridge. No la escribas en la app web cuando uses relay; el relay la usará por detrás.</p>
@@ -130,28 +135,46 @@ openssl rand -hex 32</code></pre>
   <h2>3. Rellenar la configuración mínima</h2>
   <p>Edita <code>ModConfig/axinbridge/config.json</code>. Para el camino recomendado con relay, rellena estos campos:</p>
   <pre><span class="pre-label">axinbridge/config.json</span><code>{
-  <span class="key">"Port"</span>: <span class="num">TU_PUERTO</span>,
+  <span class="key">"Port"</span>: <span class="num">42421</span>,
   <span class="key">"ListenAddress"</span>: <span class="str">"+"</span>,
   <span class="key">"ApiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
   <span class="key">"RelayEnabled"</span>: <span class="kw">true</span>,
   <span class="key">"RelayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
   <span class="key">"RelaySlug"</span>: <span class="str">"mi-servidor"</span>,
-  <span class="key">"PublicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
+  <span class="key">"PublicBridgeUrl"</span>: <span class="str">"http://TU_IP_PUBLICA:42421"</span>,
   <span class="key">"RateLimitPerMinute"</span>: <span class="num">30</span>
 }</code></pre>
 
   <div class="table-wrap"><table>
-    <tr><th>Campo</th><th>Qué poner</th><th>Por qué existe</th></tr>
-    <tr><td><code>Port</code></td><td>Un puerto TCP abierto en tu hosting, por ejemplo <code>43000</code>.</td><td>Es la puerta local donde escucha el mod.</td></tr>
-    <tr><td><code>ApiKey</code></td><td>La clave larga generada en el paso anterior.</td><td>Evita que cualquiera pueda llamar al bridge.</td></tr>
-    <tr><td><code>RelaySlug</code></td><td>Un nombre corto sin espacios, por ejemplo <code>mi-servidor</code>.</td><td>Forma parte del enlace público de la app.</td></tr>
-    <tr><td><code>PublicBridgeUrl</code></td><td>La dirección pública de tu servidor más el puerto, por ejemplo <code>http://123.45.67.89:43000</code>.</td><td>Es la dirección que usa el relay para llegar a tu servidor.</td></tr>
+    <tr><th>Campo</th><th>Qué poner</th><th>Para qué sirve</th></tr>
+    <tr><td><code>Port</code></td><td>El puerto que escucha el mod. Por defecto <code>42421</code>. Si tu hosting ya lo tiene ocupado, elige otro y abre ese mismo en el firewall.</td><td>La puerta del bridge dentro del servidor.</td></tr>
+    <tr><td><code>ApiKey</code></td><td>La clave larga generada en el paso anterior.</td><td>Evita que alguien sin permiso llame al bridge.</td></tr>
+    <tr><td><code>RelaySlug</code></td><td>Un nombre corto sin espacios, por ejemplo <code>mi-servidor</code>.</td><td>Aparece en la URL pública de la app.</td></tr>
+    <tr><td><code>PublicBridgeUrl</code></td><td>La dirección pública de tu servidor con <strong><code>http://</code> delante</strong> y el mismo puerto que pusiste en <code>Port</code>. Ejemplo: <code>http://176.57.153.46:42421</code>.</td><td>La dirección por la que el relay llama a tu servidor desde fuera.</td></tr>
   </table></div>
 
-  <p>Si ves más campos relacionados con el relay o con la URL final de la app, no los rellenes a mano: los escribe el mod cuando arranca y se registra.</p>
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>El <code>http://</code> delante es obligatorio</strong>
+    <p>El campo <code>PublicBridgeUrl</code> tiene que ser una URL completa.</p>
+    <ul>
+      <li>✅ Correcto: <code>http://176.57.153.46:42421</code></li>
+      <li>❌ Incorrecto: <code>176.57.153.46:42421</code> (le falta <code>http://</code>)</li>
+      <li>❌ Incorrecto: <code>https://176.57.153.46:42421</code> (el bridge habla HTTP, no HTTPS — del HTTPS se encarga el relay)</li>
+    </ul>
+  </div></div>
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>El puerto del juego no es el puerto del bridge</strong>
+    <p>Son dos puertos distintos y normalmente abiertos en el firewall por separado:</p>
+    <ul>
+      <li><strong>Puerto del juego de Vintage Story</strong>: el que usan los jugadores para conectarse al servidor (por ejemplo <code>42420</code>).</li>
+      <li><strong>Puerto del bridge</strong> (<code>Port</code> en este config): el que usa la app web. Por defecto <code>42421</code>.</li>
+    </ul>
+    <p>Si tu hosting solo deja abierto el puerto del juego, tendrás que pedir o configurar otro puerto distinto para el bridge.</p>
+  </div></div>
+
+  <p>Si ves en el JSON otros campos relacionados con el relay o una URL final del dashboard, no los rellenes a mano: los escribe el mod automáticamente cuando arranca y se registra.</p>
 
   <p>Reinicia el servidor. En los logs debe aparecer una línea del tipo:</p>
-  <pre><code>[AxinBridge] Listening on http://+:TU_PUERTO/</code></pre>
+  <pre><code>[AxinBridge] Listening on http://+:42421/</code></pre>
 
   <p>Con <code>RelayEnabled=true</code>, el mod intentará registrarse solo en el relay. Puedes comprobar el estado con <code>/ams relay status</code>.</p>
 
@@ -181,26 +204,28 @@ openssl rand -hex 32</code></pre>
 
   <h2>🔧 Bloque recomendado</h2>
   <pre><span class="pre-label">axinbridge/config.json</span><code>{
-  <span class="key">"Port"</span>: <span class="num">TU_PUERTO</span>,
+  <span class="key">"Port"</span>: <span class="num">42421</span>,
   <span class="key">"ListenAddress"</span>: <span class="str">"+"</span>,
   <span class="key">"ApiKey"</span>: <span class="str">"TU_API_KEY_GENERADA"</span>,
   <span class="key">"RelayEnabled"</span>: <span class="kw">true</span>,
   <span class="key">"RelayUrl"</span>: <span class="str">"https://bridgerelay.axin.es"</span>,
   <span class="key">"RelaySlug"</span>: <span class="str">"mi-servidor"</span>,
-  <span class="key">"PublicBridgeUrl"</span>: <span class="str">"http://TU_HOST_PUBLICO:TU_PUERTO"</span>,
+  <span class="key">"PublicBridgeUrl"</span>: <span class="str">"http://TU_IP_PUBLICA:42421"</span>,
   <span class="key">"RateLimitPerMinute"</span>: <span class="num">30</span>
 }</code></pre>
+
+  <p>El puerto por defecto del mod es <code>42421</code>. Si tu hosting permite abrirlo, deja ese valor — los ejemplos de la wiki lo usan. Si está ocupado o tu hosting te obliga a otro, elige uno y úsalo igual en <code>Port</code>, en <code>PublicBridgeUrl</code> y en el firewall.</p>
 
   <h2>📋 Campos para admins</h2>
   <div class="table-wrap"><table>
     <tr><th>Campo</th><th>Obligatorio</th><th>Explicación humana</th></tr>
-    <tr><td><code>Port</code></td><td>Sí</td><td>Puerto por el que el mod escucha. Debe estar abierto en el hosting.</td></tr>
+    <tr><td><code>Port</code></td><td>Sí</td><td>Puerto del bridge dentro del servidor. Por defecto <code>42421</code>. No es el puerto del juego — son dos cosas distintas.</td></tr>
     <tr><td><code>ListenAddress</code></td><td>Sí para uso externo</td><td>Usa <code>"+"</code> si el bridge debe aceptar conexiones desde fuera del servidor.</td></tr>
     <tr><td><code>ApiKey</code></td><td>Sí</td><td>Clave privada larga. No se comparte con jugadores ni se escribe en la app cuando usas relay.</td></tr>
     <tr><td><code>RelayEnabled</code></td><td>Sí en modo recomendado</td><td>Activa la puerta segura de AXIN para que la app web pueda conectar.</td></tr>
     <tr><td><code>RelayUrl</code></td><td>Sí en modo recomendado</td><td>Debe ser <code>https://bridgerelay.axin.es</code> para el relay público actual.</td></tr>
     <tr><td><code>RelaySlug</code></td><td>Recomendado</td><td>Nombre corto que aparecerá en la URL pública. Ejemplo: <code>mi-servidor</code>.</td></tr>
-    <tr><td><code>PublicBridgeUrl</code></td><td>Sí para relay</td><td>Dirección pública por la que el relay puede llegar a tu servidor. Debe incluir el mismo puerto que <code>Port</code>.</td></tr>
+    <tr><td><code>PublicBridgeUrl</code></td><td>Sí para relay</td><td>Dirección pública del servidor escrita como URL completa: <code>http://</code> + tu IP + <code>:</code> + el mismo puerto que pusiste en <code>Port</code>. Ejemplo: <code>http://176.57.153.46:42421</code>.</td></tr>
     <tr><td><code>RateLimitPerMinute</code></td><td>No</td><td>Límite básico de peticiones por minuto. El valor por defecto suele servir.</td></tr>
     <tr><td><code>AccountsAllowPassword</code></td><td>No</td><td>Permite que jugadores vinculados creen contraseña para volver a entrar sin pedir otro código.</td></tr>
     <tr><td><code>SessionMaxInactiveDays</code></td><td>No</td><td>Días que una sesión puede estar sin usarse antes de caducar.</td></tr>
@@ -446,11 +471,10 @@ openssl rand -hex 32</code></pre>
   <h2>✅ Qué hacer</h2>
   <ul>
     <li>Usar como URL normal de la app <code>https://bridgerelay.axin.es/s/&lt;slug&gt;/api</code>.</li>
-    <li>Configurar un puerto del bridge distinto al predeterminado cuando el servidor vaya a exponerse hacia Internet. Mejor un puerto TCP alto no predeterminado elegido por el admin.</li>
+    <li>Mantener el puerto del bridge bajo control: por defecto es <code>42421</code>; si tu hosting tiene reglas estrictas o quieres una capa extra de privacidad, puedes elegir otro puerto TCP alto, siempre coordinándolo con <code>Port</code>, <code>PublicBridgeUrl</code> y el firewall.</li>
     <li>Abrir en el hosting/firewall el puerto real del bridge y hacer que <code>PublicBridgeUrl</code> use exactamente ese mismo puerto.</li>
-    <li>Si el hosting/firewall lo permite, restringir el acceso al puerto del bridge solo a <code>212.227.153.142</code>.</li>
-    <li>Si el hosting no permite filtrar por IP origen, usar un puerto alto no predeterminado sigue siendo mejor que reutilizar siempre <code>42421</code>.</li>
-    <li>Reservar la conexión directa al bridge para despliegues controlados o pruebas concretas.</li>
+    <li>Si el hosting/firewall lo permite, restringir el acceso al puerto del bridge solo a la IP del relay (<code>212.227.153.142</code>).</li>
+    <li>Reservar la conexión directa al bridge (sin relay) para despliegues controlados o pruebas concretas.</li>
   </ul>
 
   <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Chequeo rápido del relay</strong><p>Si el registro ya está hecho, <code>/ams relay status</code> te mostrará la URL para el dashboard. Si el relay no alcanza al bridge, revisa tres cosas: que el puerto está abierto, que <code>PublicBridgeUrl</code> usa ese mismo puerto y que el servidor responde desde fuera.</p></div></div>
