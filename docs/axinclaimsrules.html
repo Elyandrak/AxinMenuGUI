@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AxinClaimsRules — Documentación</title>
+<link rel="stylesheet" href="./assets/wiki.css?v=axin-ecosystem-20260427-03">
+</head>
+<body>
+
+<header id="header">
+  <a class="logo" href="index.html" title="AXIN Mods Vintagestory">
+    <div class="logo-icon">A</div>
+    <div><div class="logo-text">AXIN</div><div class="logo-sub">Wikis</div></div>
+  </a>
+  <div class="header-search">
+    <span style="color:var(--stone);font-size:13px">🔍</span>
+    <input type="text" placeholder="Buscar en la documentación..." id="searchInput" onkeyup="handleSearch(event)">
+    <span class="search-hint">Ctrl K</span>
+  </div>
+  <nav class="mod-switcher" aria-label="Wikis y mods AXIN">
+    <a class="mod-pill" href="index.html"><span class="mod-pill-dot"></span>AXIN Mods Vintagestory</a>
+    <a class="mod-pill" href="axinmenugui.html"><span class="mod-pill-dot"></span>AxinMenuGui Wiki</a>
+    <a class="mod-pill" href="axinmobileserverbridge.html"><span class="mod-pill-dot"></span>AXINMobileServerBridge Wiki</a>
+    <a class="mod-pill active" href="axinclaimsrules.html"><span class="mod-pill-dot"></span>AxinClaimsRules Wiki</a>
+  </nav>
+  <div class="header-badge">Claims · Rules</div>
+</header>
+
+<div id="layout">
+<nav id="sidebar">
+  <div class="nav-home"><a href="#" onclick="showPage('home')"><span>🏠</span> Inicio</a></div>
+  <div class="nav-section">
+    <div class="nav-section-title">⚙ Comenzar</div>
+    <a class="nav-link" onclick="showPage('installation')"><span class="nav-icon">🚀</span> Instalación</a>
+    <a class="nav-link" onclick="showPage('commands')"><span class="nav-icon">📋</span> Comandos</a>
+    <a class="nav-link" onclick="showPage('flags')"><span class="nav-icon">🔥</span> Flags</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">🧭 Organización</div>
+    <a class="nav-link" onclick="showPage('folders')"><span class="nav-icon">📁</span> Carpetas y orden</a>
+    <a class="nav-link" onclick="showPage('teleport')"><span class="nav-icon">🧭</span> Teleport</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">⚙ Configuración</div>
+    <a class="nav-link" onclick="showPage('configuration')"><span class="nav-icon">⚙</span> Configuración</a>
+    <a class="nav-link" onclick="showPage('default-config')"><span class="nav-icon">🧾</span> Default Config</a>
+    <a class="nav-link" onclick="showPage('global-defaults')"><span class="nav-icon">🌐</span> Global Defaults</a>
+    <a class="nav-link" onclick="showPage('alias-config')"><span class="nav-icon">🔤</span> Alias Config</a>
+    <a class="nav-link" onclick="showPage('permissions')"><span class="nav-icon">🛡</span> Permisos</a>
+    <a class="nav-link" onclick="showPage('registry')"><span class="nav-icon">🗂</span> Registry Format</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">📖 Recursos</div>
+    <a class="nav-link" onclick="showPage('addons')"><span class="nav-icon">🧩</span> Addons</a>
+    <a class="nav-link" onclick="showPage('troubleshooting')"><span class="nav-icon">🩺</span> Troubleshooting</a>
+    <a class="nav-link" onclick="showPage('changelog')"><span class="nav-icon">🗒</span> Changelog</a>
+  </div>
+</nav>
+
+<div id="content-wrap">
+<main id="content">
+
+<div class="page active" id="page-home">
+  <div class="breadcrumb">AxinClaimsRules</div>
+  <h1><span class="h1-icon">🛡</span> AxinClaimsRules</h1>
+  <p class="page-subtitle">Reglas por claim para Vintage Story, con aliases, carpetas, orden, flags y TP por zona.</p>
+  <img class="shot" src="Imagenes/AxinClaimsRulesImages/portada.png" alt="Portada de AxinClaimsRules">
+
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Versión documentada</strong><p>La exportación fuente marca <strong>v0.6.5</strong> y compatibilidad objetivo <strong>Vintage Story 1.21.6</strong>. Algunas notas técnicas mencionan comportamiento observado en <strong>v0.6.6.4</strong>.</p></div></div>
+
+  <h2>Qué hace este mod</h2>
+  <ul>
+    <li>Registra claims del mundo en <code>ClaimsRegistry.json</code> con merge no destructivo.</li>
+    <li>Permite aliases, carpetas y orden manual para organizar zonas, incluyendo UI clicable en chat.</li>
+    <li>Expone flags por claim: <code>fireSpread.enabled</code>, <code>fireIgnition.enabled</code>, <code>allowTorches</code>, <code>allowFirepit</code>, <code>allowCharcoalPit</code> y <code>allowFirestarterOnBlocks</code>.</li>
+    <li>Implementa bloqueo real de propagación de fuego cuando <code>fireSpread.enabled=false</code>.</li>
+    <li>Permite guardar un TP por claim y teletransportarse por alias.</li>
+    <li>Incluye purge opcional de claims fantasma <code>custommessage-</code> y gestión configurable de claims de traders.</li>
+  </ul>
+
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>FireSpread y FireIgnition no son equivalentes</strong><p>En v0.6.6.4 se detectó patch de gameplay para <strong>FireSpread</strong>. Los flags de <strong>FireIgnition</strong> existen, se guardan y aparecen en UI, pero la documentación fuente indica que no se encontró un patch de gameplay que los aplique; pueden depender de módulos, addons o versiones futuras.</p></div></div>
+
+  <h2>Quick Start</h2>
+  <ol>
+    <li>Instala el mod en servidor recomendado.</li>
+    <li>Entra al juego y, dentro de un claim, ejecuta <code>/ac id</code>.</li>
+    <li>Exporta todos los claims del mundo con <code>/ac claims export</code>.</li>
+    <li>Lista y organiza con <code>/ac list</code>.</li>
+    <li>Revisa o cambia flags con <code>/ac flags</code>.</li>
+  </ol>
+
+  <h2>Archivos que crea</h2>
+  <p>Ruta base: <code>VintagestoryData/ModConfig/AxinClaimsRules/</code></p>
+  <ul>
+    <li><code>Config.json</code>: idioma, permisos por comando y opciones de limpieza.</li>
+    <li><code>GlobalConfig.json</code>: defaults globales.</li>
+    <li><code>ClaimsRegistry.json</code>: aliases, carpetas, reglas por claim y TP.</li>
+    <li><code>Alias.json</code>: alias de <code>/ac</code> y subcomandos.</li>
+    <li><code>ClaimsOverrides.json</code>: legacy, deltas por <code>claimId</code>.</li>
+  </ul>
+</div>
+
+<div class="page" id="page-installation">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Instalación</div>
+  <h1><span class="h1-icon">🚀</span> Installation Guide</h1>
+  <p class="page-subtitle">Objetivo: que el servidor cargue el mod y los jugadores puedan usar <code>/ac</code>.</p>
+  <h2>Requisitos</h2>
+  <ul>
+    <li>Vintage Story <strong>1.21.6</strong>, según <code>modinfo.json</code>.</li>
+    <li>AxinClaimsRules <strong>v0.6.6.4</strong>, según la guía fuente.</li>
+  </ul>
+  <h2>Servidor dedicado / host</h2>
+  <ol>
+    <li>Descarga el <code>.zip</code> del mod desde VS ModDB o desde tu release.</li>
+    <li>Copia el ZIP a la carpeta de mods del servidor: <code>VintagestoryData/Mods/</code> en Windows o <code>~/.config/VintagestoryData/Mods/</code> en Linux.</li>
+    <li>Reinicia el servidor.</li>
+    <li>Verifica en <code>server-main.txt</code> o <code>server-debug.log</code> que aparece <code>[AxinClaimsRules] Loaded</code> y <code>/axinclaim REGISTERED (alias /ac).</code></li>
+  </ol>
+  <h2>Singleplayer</h2>
+  <ol>
+    <li>Copia el ZIP a <code>VintagestoryData/Mods/</code>.</li>
+    <li>Inicia el mundo.</li>
+    <li>Prueba <code>/ac</code>.</li>
+  </ol>
+  <h2>Primera ejecución</h2>
+  <p>El mod crea defaults en <code>VintagestoryData/ModConfig/AxinClaimsRules/</code>: <code>Config.json</code>, <code>GlobalConfig.json</code>, <code>ClaimsRegistry.json</code> y <code>Alias.json</code>.</p>
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>JSON válido</strong><p>Edita esos archivos con un editor de texto para PC. Un JSON inválido puede romper la carga.</p></div></div>
+  <h2>Actualizar o desinstalar</h2>
+  <p>Para actualizar: detén el servidor, reemplaza el ZIP, arranca y ejecuta <code>/ac reload</code> o <code>/ac refresh</code>. Para desinstalar, elimina el ZIP; conserva la carpeta de ModConfig si quieres mantener registry, aliases, TP y flags.</p>
+</div>
+
+<div class="page" id="page-commands">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Comandos</div>
+  <h1><span class="h1-icon">📋</span> Commands</h1>
+  <p class="page-subtitle">Root command: <code>/ac</code>, configurable en <code>Alias.json</code>. Puedes ejecutar <code>/ac</code> sin argumentos para ver ayuda.</p>
+  <h2>Tabla rápida</h2>
+  <div class="table-wrap"><table><thead><tr><th>Comando</th><th>Uso</th><th>Para qué sirve</th></tr></thead><tbody>
+    <tr><td><code>/ac id</code></td><td>Dentro de un claim</td><td>Registra el claim actual, asegura alias y TP por defecto.</td></tr>
+    <tr><td><code>/ac list</code></td><td><code>[/ac list] [folder|page] [page]</code></td><td>Lista claims registrados, Outside y carpetas.</td></tr>
+    <tr><td><code>/ac flags</code></td><td><code>[/ac flags] [page]</code></td><td>Muestra flags efectivos del claim actual con UI clicable.</td></tr>
+    <tr><td><code>/ac flag</code></td><td><code>(alias) (flag) (true|false)</code></td><td>Cambia un flag en un claim.</td></tr>
+    <tr><td><code>/ac claims export</code></td><td>Exporta claims del mundo</td><td>Merge no destructivo hacia <code>ClaimsRegistry.json</code>.</td></tr>
+    <tr><td><code>/ac settp</code></td><td>Dentro de un claim</td><td>Guarda TP del claim.</td></tr>
+    <tr><td><code>/ac tp &lt;alias&gt;</code></td><td>Alias o carpeta/alias</td><td>Teleporta al TP guardado.</td></tr>
+    <tr><td><code>/ac reload</code> / <code>/ac refresh</code></td><td>Admin</td><td>Recarga config, registry y lang desde disco.</td></tr>
+  </tbody></table></div>
+  <h2>Ejemplos</h2>
+  <pre><code>/ac id
+/ac claims export
+/ac list
+/ac list Folders 1
+/ac flags
+/ac flag ExampleYandrack4 fireSpread.enabled false</code></pre>
+  <h2>Flags soportados por comando</h2>
+  <ul>
+    <li><code>fireSpread.enabled</code></li>
+    <li><code>fireIgnition.enabled</code></li>
+    <li><code>allowTorches</code></li>
+    <li><code>allowFirepit</code></li>
+    <li><code>allowCharcoalPit</code></li>
+    <li><code>allowFirestarterOnBlocks</code></li>
+  </ul>
+</div>
+
+<div class="page" id="page-flags">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Flags</div>
+  <h1><span class="h1-icon">🔥</span> Flags</h1>
+  <p class="page-subtitle">Reglas por claim editables desde chat, comando o JSON avanzado.</p>
+  <h2>Editar desde el chat</h2>
+  <p>Ejecuta <code>/ac flags</code> dentro de un claim. El mod mostrará cada flag con su valor y dos opciones clicables: <code>true</code> y <code>false</code>.</p>
+  <img class="shot" src="Imagenes/AxinClaimsRulesImages/flags-clickable.png" alt="Flags clicables en chat">
+  <h3>Requisitos</h3>
+  <ul>
+    <li>Estar dentro de un claim.</li>
+    <li>Tener permisos.</li>
+    <li>Si editaste JSON a mano, usar <code>/ac reload</code>.</li>
+  </ul>
+  <h2>Editar por comando</h2>
+  <pre><code>/ac flag &lt;aliasZona&gt; &lt;flag&gt; true
+/ac flag &lt;aliasZona&gt; &lt;flag&gt; false
+
+/ac flag ExampleYandrack4 fireSpread.enabled false
+/ac flag ExampleYandrack4 allowTorches false</code></pre>
+  <h2>Editar desde ClaimsRegistry.json</h2>
+  <p>Ruta: <code>VintagestoryData/ModConfig/AxinClaimsRules/ClaimsRegistry.json</code>. Edita el bloque <code>claimRules</code>, guarda JSON válido y ejecuta <code>/ac reload</code>.</p>
+  <h2>Lista de flags CORE</h2>
+  <div class="table-wrap"><table><thead><tr><th>Flag</th><th>Tipo</th><th>Qué hace</th></tr></thead><tbody>
+    <tr><td><code>fireSpread.enabled</code></td><td>bool</td><td>Permite o bloquea propagación del fuego dentro del claim.</td></tr>
+    <tr><td><code>fireIgnition.enabled</code></td><td>bool</td><td>Control de ignición según módulos/addons instalados.</td></tr>
+    <tr><td><code>allowTorches</code></td><td>bool</td><td>Sub-flag de ignición.</td></tr>
+    <tr><td><code>allowFirepit</code></td><td>bool</td><td>Sub-flag de ignición.</td></tr>
+    <tr><td><code>allowCharcoalPit</code></td><td>bool</td><td>Sub-flag de ignición.</td></tr>
+    <tr><td><code>allowFirestarterOnBlocks</code></td><td>bool</td><td>Sub-flag de ignición.</td></tr>
+  </tbody></table></div>
+  <h2>Cómo se aplican</h2>
+  <ul>
+    <li><strong>fireSpread.enabled</strong>: cuando está en <code>false</code>, el mod bloquea la propagación de fuego dentro del claim.</li>
+    <li><strong>fireIgnition / sub-flags</strong>: se gestionan en UI/registry y pueden ser aplicadas por módulos/addons según tu setup.</li>
+  </ul>
+</div>
+
+<div class="page" id="page-folders">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Carpetas y orden</div>
+  <h1><span class="h1-icon">📁</span> Folders & Ordering</h1>
+  <p class="page-subtitle">Organiza claims en carpetas y controla el orden del listado con UI clicable, comandos o JSON.</p>
+  <h2>UI clicable desde el chat</h2>
+  <p>Ejecuta <code>/ac list</code>. El chat muestra secciones <code>[Folders]</code>, <code>[Outside]</code> y filas con botones <code>^[Up]</code>, <code>v[Down]</code>, <strong>Add to folder</strong> y <strong>Sacar</strong>.</p>
+  <h2>Añadir un claim a una carpeta</h2>
+  <ol>
+    <li>Ejecuta <code>/ac list</code>.</li>
+    <li>En la fila del claim, haz click en <strong>Add to folder</strong>.</li>
+    <li>Elige la carpeta.</li>
+    <li>El claim pasará a verse como <code>Carpeta/Alias</code>.</li>
+  </ol>
+  <img class="shot" src="Imagenes/AxinClaimsRulesImages/folders-add-to-folder.png" alt="Añadir claim a carpeta">
+  <pre><code>/ac folder add &lt;NombreCarpeta&gt;</code></pre>
+  <h2>Sacar un claim de una carpeta</h2>
+  <p>Cuando un claim está dentro de una carpeta, el listado muestra <strong>Sacar</strong>. Al pulsarlo, el claim vuelve a <strong>Outside</strong>.</p>
+  <img class="shot" src="Imagenes/AxinClaimsRulesImages/folders-outside-sacar.png" alt="Sacar claim de carpeta">
+  <h2>Subir y bajar posición</h2>
+  <p><code>^[Up]</code> sube una posición y <code>v[Down]</code> baja una posición. Afecta a <code>outsideOrder</code> y <code>folderOrders[NombreCarpeta]</code>.</p>
+  <img class="shot" src="Imagenes/AxinClaimsRulesImages/folders-updown-list.png" alt="Reordenar claims con botones Up Down">
+  <h2>Comandos manuales</h2>
+  <pre><code>/ac folder add &lt;folderName&gt;
+/ac folder up &lt;folderName&gt;
+/ac folder down &lt;folderName&gt;
+/ac folder assign &lt;folderName&gt; &lt;alias&gt;
+/ac claim extract &lt;folder/alias&gt;
+/ac claim up &lt;aliasOrFolder/alias&gt;
+/ac claim down &lt;aliasOrFolder/alias&gt;</code></pre>
+  <h2>Persistencia</h2>
+  <p>Todo se guarda en <code>ClaimsRegistry.json</code>: <code>foldersOrder</code>, <code>outsideOrder</code> y <code>folderOrders</code>. Tras editar a mano, usa <code>/ac reload</code>.</p>
+</div>
+
+<div class="page" id="page-teleport">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Teleport</div>
+  <h1><span class="h1-icon">🧭</span> Teleport</h1>
+  <p class="page-subtitle">Cada claim puede tener un TP guardado en el registry.</p>
+  <h2>Guardar TP del claim actual</h2>
+  <pre><code>/ac settp</code></pre>
+  <h2>Teleport por alias</h2>
+  <pre><code>/ac tp &lt;alias&gt;
+/ac tp home1
+/ac tp Spawns/home1</code></pre>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>TP por defecto</strong><p>La primera vez que uses <code>/ac id</code> dentro de un claim, el mod intenta asegurar un TP por defecto si no existe.</p></div></div>
+</div>
+
+<div class="page" id="page-configuration">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Configuración</div>
+  <h1><span class="h1-icon">⚙</span> Configuration</h1>
+  <p class="page-subtitle">Mapa de archivos en <code>VintagestoryData/ModConfig/AxinClaimsRules/</code>.</p>
+  <ul>
+    <li><strong>Default Configuration</strong>: <code>Config.json</code>, idioma, permisos y toggles de limpieza.</li>
+    <li><strong>Global Defaults</strong>: <code>GlobalConfig.json</code>, defaults globales.</li>
+    <li><strong>Alias Configuration</strong>: <code>Alias.json</code>, root <code>/ac</code> y alias de subcomandos.</li>
+    <li><strong>Registry Format</strong>: <code>ClaimsRegistry.json</code>, schema v2.</li>
+    <li><code>ClaimsOverrides.json</code>: legacy, deltas por <code>claimId</code>.</li>
+  </ul>
+  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Regla operativa</strong><p>La documentación fuente indica que el mod intenta ser no destructivo y no debería pisar cambios manuales del admin al recargar.</p></div></div>
+</div>
+
+<div class="page" id="page-default-config">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Default Configuration</div>
+  <h1><span class="h1-icon">🧾</span> Default Configuration</h1>
+  <p class="page-subtitle"><code>Config.json</code> controla idioma, permisos, allowlists y opciones de limpieza.</p>
+  <h2>Campos principales</h2>
+  <ul>
+    <li><code>language</code>: idioma del mod.</li>
+    <li><code>commandPrivileges</code>: privilegio requerido por subcomando.</li>
+    <li><code>commandPrivilegeAllowPlayers</code>: allowlist para comandos <code>controlserver</code>.</li>
+    <li><code>exportTraderClaims</code>: incluye claims de traders en export.</li>
+    <li><code>purgeGhostCustomMessageClaims</code>: purga claims fantasma.</li>
+    <li><code>uiColorMoveButtons</code> y <code>uiColorFolderButtons</code>: colores de UI de chat.</li>
+  </ul>
+  <h2>Ejemplo mínimo</h2>
+  <pre><code>{
+  "schemaVersion": 5,
+  "language": "en",
+  "exportTraderClaims": false,
+  "purgeGhostCustomMessageClaims": true,
+  "uiColorMoveButtons": "#66aaff",
+  "uiColorFolderButtons": "#b07a3a",
+  "debugFlagCommands": false,
+  "debugRegistryNoOpHarness": false,
+  "debugFireSpreadLog": false,
+  "claimFlightLeaveDelaySeconds": 5,
+  "commandPrivileges": {
+    "id": "chat",
+    "list": "chat",
+    "folder": "chat",
+    "claim": "chat",
+    "flags": "chat",
+    "flag": "controlserver",
+    "claims": "controlserver",
+    "tp": "controlserver",
+    "settp": "controlserver",
+    "reload": "controlserver"
+  },
+  "commandPrivilegeAllowPlayers": {
+    "reload": "",
+    "flag": "",
+    "claims": "",
+    "tp": ""
+  }
+}</code></pre>
+  <h2>Allowlist</h2>
+  <p>Admins con <code>controlserver</code> siempre pueden usar comandos elevados. Jugadores normales solo pueden si están en allowlist por UID, nombre o separadores <code>/ , ; |</code> y espacios.</p>
+  <pre><code>{
+  "commandPrivilegeAllowPlayers": {
+    "tp": "elYandrack/1234-abcd-uid",
+    "flagfireSpread.enabled": "Moderador1/Moderador2"
+  }
+}</code></pre>
+</div>
+
+<div class="page" id="page-global-defaults">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Global Defaults</div>
+  <h1><span class="h1-icon">🌐</span> Global Defaults</h1>
+  <p class="page-subtitle"><code>GlobalConfig.json</code> define defaults globales si un claim no tiene reglas en <code>ClaimsRegistry.json</code>.</p>
+  <h2>Defaults relevantes v0.6.6.4</h2>
+  <ul>
+    <li><code>defaults.fireSpread.enabled</code>, por defecto <code>false</code>.</li>
+    <li><code>defaults.fireIgnition.*</code>, por defecto <code>true</code> en enabled y sub-opciones.</li>
+  </ul>
+  <pre><code>{
+  "version": "0.3.0",
+  "defaults": {
+    "fireSpread": {
+      "enabled": false
+    },
+    "fireIgnition": {
+      "enabled": true,
+      "allowTorches": true,
+      "allowFirepit": true,
+      "allowCharcoalPit": true,
+      "allowFirestarterOnBlocks": true
+    }
+  }
+}</code></pre>
+  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Importante</strong><p>Aunque <code>fireIgnition</code> existe como regla y flag, en v0.6.6.4 no se detectó un patch de gameplay que lo aplique.</p></div></div>
+</div>
+
+<div class="page" id="page-alias-config">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Alias Configuration</div>
+  <h1><span class="h1-icon">🔤</span> Alias Configuration</h1>
+  <p class="page-subtitle"><code>Alias.json</code> controla el alias raíz y subcomandos.</p>
+  <h2>Qué puedes cambiar</h2>
+  <ul>
+    <li><code>rootAlias</code>: alias principal del comando, por defecto <code>ac</code>.</li>
+    <li><code>subAliases</code>: alias de subcomandos; por ejemplo, <code>reload</code> usa <code>refresh</code>.</li>
+  </ul>
+  <pre><code>{
+  "schemaVersion": 2,
+  "rootAlias": "ac",
+  "subAliases": {
+    "id": "id",
+    "list": "list",
+    "claims": "claims",
+    "tp": "tp",
+    "settp": "settp",
+    "flags": "flags",
+    "flag": "flag",
+    "folder": "folder",
+    "reload": "refresh"
+  },
+  "extraRootAliases": {}
+}</code></pre>
+  <h2>Compatibilidad</h2>
+  <p>Además de <code>rootAlias</code>, el mod mantiene alias de compatibilidad: <code>/axinclaim</code> y <code>/axinclaims</code>.</p>
+</div>
+
+<div class="page" id="page-permissions">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Permisos</div>
+  <h1><span class="h1-icon">🛡</span> Permissions</h1>
+  <p class="page-subtitle">Permisos por comando usando <code>Config.json</code>.</p>
+  <h2>Privilegios típicos</h2>
+  <ul>
+    <li><code>chat</code>: jugadores normales.</li>
+    <li><code>controlserver</code>: admins/operadores.</li>
+  </ul>
+  <h2>Regla de evaluación</h2>
+  <ol>
+    <li>Si el comando no requiere <code>controlserver</code>, se chequea el privilegio normal.</li>
+    <li>Si requiere <code>controlserver</code>, el jugador debe tenerlo o estar en allowlist.</li>
+  </ol>
+  <h2>Allowlist por comando y por flag</h2>
+  <pre><code>{
+  "commandPrivileges": {
+    "tp": "controlserver",
+    "flag": "controlserver"
+  },
+  "commandPrivilegeAllowPlayers": {
+    "tp": "Moderador1/Moderador2",
+    "flagfireSpread.enabled": "Moderador1"
+  }
+}</code></pre>
+</div>
+
+<div class="page" id="page-registry">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Registry Format</div>
+  <h1><span class="h1-icon">🗂</span> Registry Format</h1>
+  <p class="page-subtitle"><code>ClaimsRegistry.json</code>, schema documentado en código: <strong>v2</strong>.</p>
+  <img class="shot" src="Imagenes/AxinClaimsRulesImages/claim-registry-capture.png" alt="Captura relacionada con registry de claims">
+  <h2>Estructura de alto nivel</h2>
+  <ul>
+    <li><code>aliases</code>: <code>aliasKey -> axinClaimId</code>.</li>
+    <li><code>foldersOrder</code>: lista de carpetas.</li>
+    <li><code>outsideOrder</code>: orden de alias fuera de carpetas.</li>
+    <li><code>folderOrders</code>: <code>folderName -> [aliasKey...]</code>.</li>
+    <li><code>players</code>: <code>playerUid -> { lastKnownName, claims }</code>.</li>
+  </ul>
+  <h2>ClaimEntry</h2>
+  <ul>
+    <li><code>info</code>: dueño y áreas observadas, como cuboids, bounds o center.</li>
+    <li><code>claimRules</code>: flags por claim, editable.</li>
+    <li><code>tp</code>: TP por claim, editable.</li>
+  </ul>
+  <h2>Recomendaciones</h2>
+  <ul>
+    <li>Haz backup antes de editar.</li>
+    <li>Mantén JSON válido.</li>
+    <li>Refresca desde disco con <code>/ac reload</code> o <code>/ac refresh</code>.</li>
+  </ul>
+</div>
+
+<div class="page" id="page-addons">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Addons</div>
+  <h1><span class="h1-icon">🧩</span> Addons & Extensions</h1>
+  <p class="page-subtitle">El core detecta extensiones si otro mod implementa <code>IRuleExtension</code>.</p>
+  <h2>ClaimFlight opcional</h2>
+  <p>En el modelo de reglas existe <code>claimRules.claimFlight</code>, pero solo se crea si está cargada la extensión/mod <code>axinclaimsrulesflight</code>.</p>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Sin extensión no afecta al juego</strong><p>Si la extensión no está cargada, <code>claimFlight</code> será <code>null</code> y no tendrá efecto.</p></div></div>
+  <h2>Cómo saber si hay addons cargados</h2>
+  <p>Revisa <code>server-main.txt</code> o <code>server-debug.log</code> buscando <code>[AxinClaimsRules] Loading extension: ...</code> o <code>[AxinClaimsRules] No rule extensions detected.</code></p>
+</div>
+
+<div class="page" id="page-troubleshooting">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Troubleshooting</div>
+  <h1><span class="h1-icon">🩺</span> Troubleshooting</h1>
+  <h2><code>/ac</code> no existe</h2>
+  <ul>
+    <li>Verifica que el ZIP está en <code>VintagestoryData/Mods/</code>.</li>
+    <li>Revisa logs: debe aparecer <code>/axinclaim REGISTERED (alias /ac).</code></li>
+  </ul>
+  <h2>“Players only”</h2>
+  <p>Los comandos están pensados para ser ejecutados por un jugador.</p>
+  <h2>“No tienes privilegios...”</h2>
+  <p>Edita <code>Config.json</code>: <code>commandPrivileges</code> para subir/bajar permisos y <code>commandPrivilegeAllowPlayers</code> para allowlistear jugadores.</p>
+  <h2>No se crean archivos en ModConfig</h2>
+  <ul>
+    <li>El servidor necesita permisos de escritura en <code>VintagestoryData/ModConfig/</code>.</li>
+    <li>Si el JSON está corrupto, el mod puede fallar al cargarlo. Revisa formato.</li>
+  </ul>
+  <h2>Fire spread sigue propagándose dentro de un claim</h2>
+  <ol>
+    <li>Entra al claim y ejecuta <code>/ac flags</code>.</li>
+    <li>Asegúrate de que <code>fireSpread.enabled=false</code>.</li>
+    <li>Recarga con <code>/ac reload</code>.</li>
+  </ol>
+  <p>Para logs, activa <code>debugFireSpreadLog=true</code> en <code>Config.json</code>. La guía avisa que está rate-limited, pero puede generar logs.</p>
+</div>
+
+<div class="page" id="page-changelog">
+  <div class="breadcrumb">AxinClaimsRules <span class="sep">/</span> Changelog</div>
+  <h1><span class="h1-icon">🗒</span> Changelog</h1>
+  <h2>v0.6.5</h2>
+  <ul>
+    <li>Purge de claims fantasma <code>custommessage-</code>, con skip export y purge en reload/export.</li>
+    <li><code>Config.json</code> en <code>ModConfig/AxinClaimsRules/</code>.</li>
+    <li>UI, flags y registry modularizados según IA-ARCH.</li>
+  </ul>
+  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Historial limitado</strong><p>La exportación fuente indica que para generar un changelog automático haría falta el repo o historial como canon.</p></div></div>
+  <hr>
+  <p><strong>AxinClaimsRules</strong> · Wiki integrada AXIN. Si encuentras un bug, adjunta <code>server-debug.log</code>, <code>Config.json</code> y el fragmento relevante de <code>ClaimsRegistry.json</code>.</p>
+</div>
+
+</main>
+
+<aside id="toc">
+  <div class="toc-title">En esta página</div>
+  <div id="toc-links"></div>
+</aside>
+</div>
+</div>
+
+<script>window.WIKI_DEFAULT_PAGE = "home";</script>
+<script src="assets/wiki.js"></script>
+</body>
+</html>

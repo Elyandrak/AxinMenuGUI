@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AXINServerBridge — Documentación</title>
-<link rel="stylesheet" href="assets/wiki.css">
+<link rel="stylesheet" href="./assets/wiki.css?v=axin-ecosystem-20260427-03">
 </head>
 <body>
 
@@ -19,9 +19,10 @@
     <span class="search-hint">Ctrl K</span>
   </div>
   <nav class="mod-switcher" aria-label="Wikis y mods AXIN">
-    <a class="mod-pill" href="axin-mods-vintagestory.html"><span class="mod-pill-dot"></span>AXIN Mods Vintagestory</a>
-    <a class="mod-pill" href="index.html"><span class="mod-pill-dot"></span>AxinMenuGui Wiki</a>
+    <a class="mod-pill" href="index.html"><span class="mod-pill-dot"></span>AXIN Mods Vintagestory</a>
+    <a class="mod-pill" href="axinmenugui.html"><span class="mod-pill-dot"></span>AxinMenuGui Wiki</a>
     <a class="mod-pill active" href="axinmobileserverbridge.html"><span class="mod-pill-dot"></span>AXINMobileServerBridge Wiki</a>
+    <a class="mod-pill" href="axinclaimsrules.html"><span class="mod-pill-dot"></span>AxinClaimsRules Wiki</a>
   </nav>
   <div class="header-badge">Bridge · Mobile Admin</div>
 </header>
@@ -74,7 +75,7 @@
 
   <p><strong>AXINServerBridge</strong> (también llamado <em>AXIN Mobile Server Bridge</em>) permite abrir una app web desde el juego y consultar o administrar el servidor desde el móvil. El camino normal es usar el enlace que genera <code>/ams appweb</code>.</p>
 
-  <p>Pertenece a la familia de mods <strong>AXIN</strong> y se integra con <a href="index.html">AxinMenuGui</a> cuando ambos están instalados (p.ej. para la pestaña Tienda).</p>
+  <p>Pertenece a la familia de mods <strong>AXIN</strong> y se integra con <a href="axinmenugui.html">AxinMenuGui</a> cuando ambos están instalados (p.ej. para la pestaña Tienda).</p>
 
   <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Idea simple</strong><p>La app web necesita una dirección segura. El relay de AXIN (<code>https://bridgerelay.axin.es</code>) hace de puerta segura entre la web y tu servidor. Normalmente no tienes que escribir la API key en la app.</p></div></div>
 
@@ -381,7 +382,7 @@ openssl rand -hex 32</code></pre>
 <div class="page" id="page-shop">
   <div class="breadcrumb">📱 DASHBOARD <span class="sep">›</span> Pestaña Tienda</div>
   <h1><span class="h1-icon">🏪</span> Pestaña Tienda</h1>
-  <p class="page-subtitle">Interfaz web del <strong>Mercado Global</strong> de <a href="index.html">AxinMenuGui</a>: ver ofertas activas, comprar y consultar tus ventas.</p>
+  <p class="page-subtitle">Interfaz web del <strong>Mercado Global</strong> de <a href="axinmenugui.html">AxinMenuGui</a>: ver ofertas activas, comprar y consultar tus ventas.</p>
 
   <h2>🔗 Contrato</h2>
   <p>La tienda web no toca <code>market.json</code> directamente. Depende del mod <code>axinmenugui</code>, resuelve <code>AxinMenuGuiMod</code> con <code>api.ModLoader.GetModSystem&lt;T&gt;()</code> y opera contra <code>MarketStore</code> / <code>BankService</code> vivos en el hilo principal.</p>

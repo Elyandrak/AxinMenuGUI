@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AxinMenuGUI — Documentación v0.9.5</title>
-<link rel="stylesheet" href="assets/wiki.css">
+<title>AXIN Mods Vintagestory</title>
+<link rel="stylesheet" href="./assets/wiki.css?v=axin-ecosystem-20260427-04">
 </head>
-<body>
+<body class="portal-page">
 
 <header id="header">
-  <a class="logo" href="index.html" title="Wikis AXIN">
+  <a class="logo" href="index.html" title="AXIN Mods Vintagestory">
     <div class="logo-icon">A</div>
-    <div><div class="logo-text">AXIN</div><div class="logo-sub">Wikis</div></div>
+    <div><div class="logo-text">AXIN</div><div class="logo-sub">Mods</div></div>
   </a>
   <div class="header-search">
     <span style="color:var(--stone);font-size:13px">🔍</span>
@@ -19,1060 +19,232 @@
     <span class="search-hint">Ctrl K</span>
   </div>
   <nav class="mod-switcher" aria-label="Wikis y mods AXIN">
-    <a class="mod-pill" href="axin-mods-vintagestory.html"><span class="mod-pill-dot"></span>AXIN Mods Vintagestory</a>
-    <a class="mod-pill active" href="index.html"><span class="mod-pill-dot"></span>AxinMenuGui Wiki</a>
+    <a class="mod-pill active" href="index.html"><span class="mod-pill-dot"></span>AXIN Mods Vintagestory</a>
+    <a class="mod-pill" href="axinmenugui.html"><span class="mod-pill-dot"></span>AxinMenuGui Wiki</a>
     <a class="mod-pill" href="axinmobileserverbridge.html"><span class="mod-pill-dot"></span>AXINMobileServerBridge Wiki</a>
+    <a class="mod-pill" href="axinclaimsrules.html"><span class="mod-pill-dot"></span>AxinClaimsRules Wiki</a>
   </nav>
-  <div class="header-badge">M=4 · v0.9.5</div>
+  <div class="header-badge">Hub · Vintage Story</div>
 </header>
 
 <div id="layout">
-<nav id="sidebar">
-  <div class="nav-home"><a href="#" onclick="showPage('home')"><span>🏠</span> Inicio</a></div>
-  <div class="nav-section">
-    <div class="nav-section-title">⚙ Comenzar</div>
-    <a class="nav-link" onclick="showPage('quickstart')"><span class="nav-icon">🚀</span> Inicio rápido</a>
-    <a class="nav-link" onclick="showPage('commands')"><span class="nav-icon">📋</span> Comandos y permisos</a>
-    <a class="nav-link" onclick="showPage('config')"><span class="nav-icon">⚙</span> Configuración</a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-section-title">🎨 Crear GUIs</div>
-    <a class="nav-link" onclick="showPage('creating')"><span class="nav-icon">🖼</span> Estructura del GUI</a>
-    <a class="nav-link" onclick="showPage('scenes')"><span class="nav-icon">📄</span> Escenas y temas</a>
-    <a class="nav-link" onclick="showPage('themes')"><span class="nav-icon">🎨</span> Temas visuales</a>
-    <a class="nav-link" onclick="showPage('clickevents')"><span class="nav-icon">🖱</span> Click Events</a>
-    <a class="nav-link" onclick="showPage('conditions')"><span class="nav-icon">✅</span> Condiciones</a>
-    <a class="nav-link" onclick="showPage('generator')"><span class="nav-icon">⚡</span> Generador Visual</a>
-    <a class="nav-link" onclick="showPage('modicons')"><span class="nav-icon">🖼</span> Iconos del mod</a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-section-title">💬 Datos y tokens</div>
-    <a class="nav-link" onclick="showPage('playerdata')"><span class="nav-icon">💾</span> Player Data</a>
-    <a class="nav-link" onclick="showPage('tokens')"><span class="nav-icon">🔗</span> Tokens / Placeholders</a>
-    <a class="nav-link" onclick="showPage('chatfetcher')"><span class="nav-icon">💬</span> Chat Fetcher</a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-section-title">🔌 Triggers</div>
-    <a class="nav-link" onclick="showPage('triggers')"><span class="nav-icon">⚡</span> Modos de apertura</a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-section-title">🏪 Economía</div>
-    <a class="nav-link" onclick="showPage('market')"><span class="nav-icon">🏪</span> Mercado Global</a>
-    <a class="nav-link" onclick="showPage('bank')"><span class="nav-icon">🏦</span> Bank (bloque)</a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-section-title">🎯 Misiones</div>
-    <a class="nav-link" onclick="showPage('missions')"><span class="nav-icon">🎯</span> KillRanking Missions</a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-section-title">📖 Recursos</div>
-    <a class="nav-link" onclick="showPage('examples')"><span class="nav-icon">📦</span> Ejemplos completos</a>
-    <a class="nav-link" onclick="showPage('roadmap')"><span class="nav-icon">🗺</span> Roadmap</a>
-    <a class="nav-link" onclick="showPage('vs-diff')"><span class="nav-icon">⚔</span> vs GUIPlus (MC)</a>
-  </div>
-</nav>
-
 <div id="content-wrap">
 <main id="content">
 
-<!-- ═══════════════ HOME ═══════════════ -->
 <div class="page active" id="page-home">
-  <div class="breadcrumb">AxinMenuGUI</div>
-  <h1><span class="h1-icon">⚔</span> AxinMenuGUI</h1>
-  <p class="page-subtitle">Crea menús GUI completamente configurables para tu servidor VintageStory — sin escribir código.</p>
-  <p>AxinMenuGUI es un mod de menús interactivos para <strong>VintageStory</strong> que permite a los administradores construir menús complejos y multipágina mediante ficheros <strong>JSON</strong>. Sin programar, sin reiniciar el servidor.</p>
-  <p>Inspirado en <em>GUIPlus</em> (Minecraft/Spigot), diseñado desde cero para la API de VintageStory y la metodología <strong>AXIN</strong>.</p>
-  <div class="feat-grid">
-    <div class="feat-card"><div class="feat-card-icon">🖼</div><div class="feat-card-title">100% JSON</div><div class="feat-card-desc">Crea y edita menús con ficheros JSON. Recarga en caliente sin reiniciar con <code>/amenu reload</code>.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🎨</div><div class="feat-card-title">14 Temas visuales</div><div class="feat-card-desc">Paneles con colores personalizados: oscuros, pergamino, piedra, noche, cofre, cristal. Un tema por escena.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🖱</div><div class="feat-card-title">Click Events</div><div class="feat-card-desc">Mensajes, comandos, dar/quitar ítems, navegar entre escenas, abrir submenús y más.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">✅</div><div class="feat-card-title">Condiciones</div><div class="feat-card-desc">Muestra u oculta botones según permisos, ítems en inventario, cooldowns y variables.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">📄</div><div class="feat-card-title">Multi-escena</div><div class="feat-card-desc">Menús multipágina con navegación y tema visual diferente en cada escena.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">💾</div><div class="feat-card-title">Player Stats</div><div class="feat-card-desc">Kills, muertes, tiempo de juego, puntos por mob. Ranking de jugadores con caché.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🔗</div><div class="feat-card-title">Tokens dinámicos</div><div class="feat-card-desc"><code>{player}</code>, <code>{stats.deaths}</code>, <code>{ranking.position}</code> y más en cualquier texto del menú.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🖼</div><div class="feat-card-title">58 Iconos propios</div><div class="feat-card-desc">Iconos pixel art 32×32 en el dominio <code>axinmenugui:</code> listos para usar en cualquier botón.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🌀</div><div class="feat-card-title">Sistema de Teleport</div><div class="feat-card-desc">Teleport a coordenadas, puntos ATP guardados por nombre y teletransporte aleatorio seguro (<code>/artp</code>) con validación de terreno.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🧱</div><div class="feat-card-title">Block Click Triggers</div><div class="feat-card-desc">Clic derecho en un bloque vinculado abre el menú configurado. Persistencia en <code>menusClick.json</code>.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🏪</div><div class="feat-card-title">Mercado Global P2P</div><div class="feat-card-desc">Mercado entre jugadores con escrow automático. Compra, venta rápida y asistente de venta personalizada. Integrado con Bank y Treasury.</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🏦</div><div class="feat-card-title">Bank (bloque)</div><div class="feat-card-desc">Cofre especial crafteable. Sus ítems se usan automáticamente como fuente de pago en el mercado (solo cuando está cerrado).</div></div>
-    <div class="feat-card"><div class="feat-card-icon">🎯</div><div class="feat-card-title">KillRanking Missions</div><div class="feat-card-desc">Hitos de puntos de ranking: recompensa automática (ítem, mensaje, comando) la primera vez que el jugador cruza cada umbral.</div></div>
-  </div>
-  <hr>
-  <h2>📋 Requisitos</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Requisito</th><th>Valor</th></tr>
-    <tr><td>VintageStory</td><td>1.21.x+</td></tr>
-    <tr><td>Versión actual</td><td>0.9.5</td></tr>
-    <tr><td>Tipo de mod</td><td>Universal (cliente <strong>y</strong> servidor)</td></tr>
-    <tr><td>Dependencias</td><td>Ninguna (mod standalone)</td></tr>
-  </table></div>
-  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Distribución al cliente — obligatoria</strong><p>AxinMenuGUI renderiza GUI en el cliente. Debe estar instalado en el cliente además del servidor.</p></div></div>
-  <div class="page-nav"><div></div><a class="page-nav-btn" onclick="showPage('quickstart')"><div><span class="direction">Siguiente</span><span class="label">Inicio rápido →</span></div></a></div>
-</div>
-
-<!-- ═══════════════ QUICKSTART ═══════════════ -->
-<div class="page" id="page-quickstart">
-  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Inicio rápido</div>
-  <h1><span class="h1-icon">🚀</span> Inicio rápido</h1>
-  <p class="page-subtitle">Instala AxinMenuGUI y crea tu primer menú en minutos.</p>
-  <h2>📥 Instalación</h2>
-  <ol>
-    <li>Copia <code>AxinMenuGUI_v0.9.5.zip</code> en la carpeta <code>Mods/</code> del servidor.</li>
-    <li>Reinicia el servidor. Se generan los ficheros de configuración y menús de ejemplo.</li>
-    <li>Verifica en los logs: <code>[AxinMenuGUI] Alias registrado: /menu → 'ejemplo'</code></li>
-    <li>Entra al juego y escribe <code>/menu</code> para ver el menú de ejemplo.</li>
-  </ol>
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body">El mod es <strong>Universal</strong>: también debe instalarse en el cliente.</div></div>
-  <h2>📂 Ficheros generados</h2>
-  <pre><code>ModConfig/AxinMenuGUI/
-├── config.json             <span class="cmt"># Configuración global (idioma, killPoints, ranking, RTP, market)</span>
-├── adminteleports.json     <span class="cmt"># Puntos ATP guardados con /atp set (auto-generado)</span>
-├── menus/                  <span class="cmt"># Tus ficheros JSON de menú</span>
-│   ├── ejemplo.json        <span class="cmt"># Menú índice con submenús (/menu)</span>
-│   ├── ejemplo_jugador.json
-│   ├── ejemplo_stats.json
-│   ├── ejemplo_temas.json  <span class="cmt"># 13 escenas, un tema por pestaña (/temas)</span>
-│   ├── ejemplo_tp.json     <span class="cmt"># Panel de teleport admin (ATP, RTP, waypoints)</span>
-│   └── ...
-├── playerdata/             <span class="cmt"># Stats por jugador (auto-generado)</span>
-│   └── {uid}.json
-├── bank/                   <span class="cmt"># Snapshots de Banks por jugador (auto-generado)</span>
-│   └── {uid}.json
-├── missions/               <span class="cmt"># Configuración de misiones (auto-generado)</span>
-│   └── killranking.json
-└── marketlog/              <span class="cmt"># Log persistente de transacciones de mercado (auto-generado)</span>
-    └── market_log_{fecha}.json</code></pre>
-  <h2>🎯 Tu primer menú</h2>
-  <pre><span class="pre-label">hola.json</span><code>{
-  <span class="key">"id"</span>: <span class="str">"hola"</span>,
-  <span class="key">"title"</span>: <span class="str">"Mi primer menú"</span>,
-  <span class="key">"theme"</span>: <span class="str">"dark-red"</span>,
-  <span class="key">"rows"</span>: <span class="num">3</span>,
-  <span class="key">"commandAlias"</span>: <span class="str">"hola"</span>,
-  <span class="key">"scenes"</span>: {
-    <span class="key">"0"</span>: {
-      <span class="key">"items"</span>: {
-        <span class="key">"saludo"</span>: {
-          <span class="key">"slot"</span>: <span class="num">13</span>,
-          <span class="key">"item"</span>: <span class="str">"axinmenugui:menuicon-star"</span>,
-          <span class="key">"name"</span>: <span class="str">"Hola, {player}!"</span>,
-          <span class="key">"lore"</span>: [<span class="str">"Clic para saludar"</span>],
-          <span class="key">"clickEvents"</span>: {
-            <span class="key">"msg"</span>: { <span class="key">"type"</span>: <span class="str">"message"</span>, <span class="key">"message"</span>: <span class="str">"¡Bienvenido, {player}!"</span> }
-          }
-        }
-      }
-    }
-  }
-}</code></pre>
-  <p>Guarda el fichero en <code>ModConfig/AxinMenuGUI/menus/</code> y ejecuta <code>/amenu reload</code>. Luego <code>/hola</code> para abrir el menú.</p>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('home')"><div><span class="direction">Anterior</span><span class="label">← Inicio</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Siguiente</span><span class="label">Comandos →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ COMMANDS ═══════════════ -->
-<div class="page" id="page-commands">
-  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Comandos</div>
-  <h1><span class="h1-icon">📋</span> Comandos y permisos</h1>
-  <p class="page-subtitle">Todos los comandos disponibles en AxinMenuGUI.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Comando</th><th>Permiso</th><th>Descripción</th></tr>
-    <tr><td><code>/amenu open &lt;id&gt; [jugador]</code></td><td>chat</td><td>Abre un menú. Con jugador: requiere controlserver.</td></tr>
-    <tr><td><code>/amenu reload</code></td><td>controlserver</td><td>Recarga todos los JSONs y re-registra alias.</td></tr>
-    <tr><td><code>/amenu list</code></td><td>controlserver</td><td>Lista los menús cargados.</td></tr>
-    <tr><td><code>/amenu info &lt;id&gt;</code></td><td>controlserver</td><td>Detalle de un menú.</td></tr>
-    <tr><td><code>/amenu player &lt;nombre&gt;</code></td><td>controlserver</td><td>Stats del jugador + ranking.</td></tr>
-    <tr><td><code>/amenu ranking</code></td><td>chat</td><td>Muestra el ranking público.</td></tr>
-    <tr><td><code>/amenu click open &lt;id&gt;</code></td><td>controlserver</td><td>Modo vinculación: el siguiente clic derecho en un bloque lo vincula al menú indicado.</td></tr>
-    <tr><td><code>/amenu click delete</code></td><td>controlserver</td><td>Modo desvinculación: el siguiente clic derecho en un bloque elimina su vínculo de menú.</td></tr>
-    <tr><td><code>/&lt;alias&gt;</code></td><td>chat</td><td>Abre el menú con ese <code>commandAlias</code>.</td></tr>
-  </table></div>
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>/amenu click — flujo de dos pasos</strong><p>Tras ejecutar <code>/amenu click open &lt;id&gt;</code> o <code>/amenu click delete</code>, el jugador entra en modo de selección. El siguiente <strong>clic derecho</strong> sobre cualquier bloque confirma la operación. Los vínculos se guardan en <code>ModConfig/AxinMenuGUI/menusClick.json</code>.</p></div></div>
-  <h2>🏪 Mercado global (/market)</h2>
-  <p>El mercado P2P permite a los jugadores publicar y comprar ofertas. Todos los subcomandos requieren privilegio <code>chat</code>.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Comando</th><th>Descripción</th></tr>
-    <tr><td><code>/market</code></td><td>Alias directo: abre el menú principal del mercado.</td></tr>
-    <tr><td><code>/amenu market</code></td><td>Ídem: abre el menú principal del mercado.</td></tr>
-    <tr><td><code>/amenu market buy</code></td><td>Abre la vista de compra (explorar y comprar ofertas).</td></tr>
-    <tr><td><code>/amenu market browse [página]</code></td><td>Lista ofertas agrupadas por tipo de ítem (paginada).</td></tr>
-    <tr><td><code>/amenu market detail &lt;itemCode&gt;</code></td><td>Muestra todos los vendedores de un ítem concreto con precio y cantidad.</td></tr>
-    <tr><td><code>/amenu market sell</code></td><td>Sin argumentos: abre la GUI de venta personalizada (wizard interactivo).</td></tr>
-    <tr><td><code>/amenu market sell &lt;item&gt; &lt;cant&gt; &lt;precioItem&gt; &lt;precioCant&gt;</code></td><td>Venta rápida: publica la oferta directamente con todos los parámetros.</td></tr>
-    <tr><td><code>/amenu market cancel &lt;offerId&gt;</code></td><td>Cancela tu oferta activa; devuelve los ítems restantes al inventario.</td></tr>
-    <tr><td><code>/amenu market myoffers</code></td><td>Muestra tu lista de ofertas activas.</td></tr>
-    <tr><td><code>/amenu market collect</code></td><td>Cobra las ganancias pendientes generadas por ventas completadas.</td></tr>
-    <tr><td><code>/amenu market list</code></td><td>Lista todas las ofertas activas en formato texto (chat).</td></tr>
-  </table></div>
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Wizard de venta personalizada</strong><p>Al ejecutar <code>/amenu market sell</code> sin argumentos, se inicia un asistente paso a paso por chat: (1) selecciona qué ítem vender del inventario en la GUI, (2) escribe o selecciona el ítem de pago, (3) escribe la cantidad de pago por unidad. Escribe <code>cancel</code> en cualquier momento para salir. El wizard expira por inactividad según <code>marketSellWizardTimeoutSeconds</code> en config.json.</p></div></div>
-  <h2>⚡ Teleport administrativo (ATP)</h2>
-  <p>Gestiona puntos de teletransporte guardados en el servidor. Todos requieren privilegio <code>controlserver</code>.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Comando</th><th>Descripción</th></tr>
-    <tr><td><code>/atp set &lt;nombre&gt;</code></td><td>Guarda tu posición actual como punto ATP con ese nombre.</td></tr>
-    <tr><td><code>/atp setat &lt;nombre&gt; &lt;x&gt; &lt;y&gt; &lt;z&gt;</code></td><td>Guarda un ATP en coordenadas explícitas.</td></tr>
-    <tr><td><code>/atp go &lt;nombre&gt;</code></td><td>Teleport al punto ATP guardado.</td></tr>
-    <tr><td><code>/atp del &lt;nombre&gt;</code></td><td>Elimina un punto ATP.</td></tr>
-    <tr><td><code>/atp list</code></td><td>Lista todos los puntos ATP guardados.</td></tr>
-    <tr><td><code>/atp info &lt;nombre&gt;</code></td><td>Muestra coordenadas y metadatos del punto ATP.</td></tr>
-  </table></div>
-  <h2>🌀 Teletransporte aleatorio (RTP)</h2>
-  <p>Teletransporta al jugador a una posición aleatoria segura. Requiere privilegio <code>controlserver</code>.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Comando</th><th>Descripción</th></tr>
-    <tr><td><code>/artp</code></td><td>RTP con radio mínimo y máximo definidos en <code>config.json</code>.</td></tr>
-    <tr><td><code>/artp &lt;min&gt; &lt;max&gt;</code></td><td>RTP con radio explícito. Acepta enteros o sufijo <code>k</code> (ej. <code>/artp 5k 10k</code>).</td></tr>
-  </table></div>
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Limitaciones del RTP</strong><p>La verificación de claims solo comprueba el punto exacto de aterrizaje (limitación de la API de VintageStory). Las story zones se aproximan por distancia al spawn. Verificado en mundo plano; se recomienda prueba adicional en mundos con relieve.</p></div></div>
-  <h2>Output de /amenu player</h2>
-  <pre><code>[AxinMenuGUI] Stats: elYandrack
-  timeRealSeconds:       77  (1m 17s)
-  timeGameDays:          0.00
-  deaths:                0
-  mobKillsAll:           4
-  mobKillsHostile:       3
-  mobKillsHostilePoints: 22.5
-  playerKills:           0
-  ranking.position:      #1</code></pre>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('quickstart')"><div><span class="direction">Anterior</span><span class="label">← Inicio rápido</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('config')"><div><span class="direction">Siguiente</span><span class="label">Configuración →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ CONFIG ═══════════════ -->
-<div class="page" id="page-config">
-  <div class="breadcrumb">⚙ COMENZAR <span class="sep">›</span> Configuración</div>
-  <h1><span class="h1-icon">⚙</span> Configuración global</h1>
-  <p class="page-subtitle">El fichero <code>config.json</code> se genera automáticamente al primer inicio.</p>
-  <pre><span class="pre-label">ModConfig/AxinMenuGUI/config.json</span><code>{
-  <span class="key">"language"</span>: <span class="str">"en"</span>,
-  <span class="key">"rankingSize"</span>: <span class="num">10</span>,
-  <span class="key">"rankingField"</span>: <span class="str">"mobKillsHostilePoints"</span>,
-  <span class="key">"killPoints"</span>: {
-    <span class="key">"drifter-normal"</span>:        <span class="num">0.5</span>,
-    <span class="key">"drifter-deep"</span>:          <span class="num">2.0</span>,
-    <span class="key">"drifter-tainted"</span>:       <span class="num">4.0</span>,
-    <span class="key">"drifter-corrupt"</span>:       <span class="num">8.0</span>,
-    <span class="key">"drifter-nightmare"</span>:     <span class="num">14.0</span>,
-    <span class="key">"drifter-double-headed"</span>: <span class="num">20.0</span>
-    <span class="cmt">// ... 29 mobs en total</span>
-  },
-  <span class="key">"randomTeleport"</span>: {
-    <span class="key">"defaultMin"</span>:          <span class="num">5000</span>,
-    <span class="key">"defaultMax"</span>:          <span class="num">10000</span>,
-    <span class="key">"maxAttempts"</span>:         <span class="num">40</span>,
-    <span class="key">"claimMargin"</span>:         <span class="num">128</span>,
-    <span class="key">"storyZoneMargin"</span>:     <span class="num">256</span>,
-    <span class="key">"forbidWater"</span>:         <span class="kw">true</span>,
-    <span class="key">"requireTwoAirBlocks"</span>: <span class="kw">true</span>
-  },
-  <span class="key">"saveIntervalSeconds"</span>:            <span class="num">30</span>,
-  <span class="key">"rankingCacheSeconds"</span>:            <span class="num">60</span>,
-  <span class="key">"marketLogRetentionDays"</span>:         <span class="num">30</span>,
-  <span class="key">"marketLogFlushSeconds"</span>:          <span class="num">30</span>,
-  <span class="key">"marketSellWizardTimeoutSeconds"</span>:  <span class="num">60</span>
-}</code></pre>
-  <div class="table-wrap"><table>
-    <tr><th>Campo</th><th>Default</th><th>Descripción</th></tr>
-    <tr><td><code>language</code></td><td><code>en</code></td><td>Idioma del mod: <code>en</code>, <code>es</code>, <code>fr</code>, <code>de</code>, <code>pt-br</code>, <code>ru</code></td></tr>
-    <tr><td><code>rankingSize</code></td><td>10</td><td>Número de jugadores en el ranking</td></tr>
-    <tr><td><code>rankingField</code></td><td><code>mobKillsHostilePoints</code></td><td>Campo por el que se ordena: <code>mobKillsHostilePoints</code>, <code>deaths</code>, <code>playerKills</code>…</td></tr>
-    <tr><td><code>saveIntervalSeconds</code></td><td>30</td><td>Intervalo entre flush automático de player stats a disco. Mínimo 5.</td></tr>
-    <tr><td><code>rankingCacheSeconds</code></td><td>60</td><td>Duración del caché de ranking en segundos.</td></tr>
-    <tr><td><code>killPoints</code></td><td>—</td><td>Puntos por tipo de mob hostil. Lookup progresivo: <code>wolf-male-adult</code> → <code>wolf-male</code> → <code>wolf</code>.</td></tr>
-  </table></div>
-  <h2>🏪 Bloque market</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Campo</th><th>Default</th><th>Descripción</th></tr>
-    <tr><td><code>marketLogRetentionDays</code></td><td>30</td><td>Días de histórico de <code>marketlog/</code> a conservar. Los archivos más antiguos se purgan automáticamente.</td></tr>
-    <tr><td><code>marketLogFlushSeconds</code></td><td>30</td><td>Intervalo en segundos entre flush de la cola de log de mercado a disco. Mínimo 5.</td></tr>
-    <tr><td><code>marketSellWizardTimeoutSeconds</code></td><td>60</td><td>Segundos de inactividad antes de cancelar un wizard de venta personalizada activo.</td></tr>
-  </table></div>
-  <h2>🌀 Bloque randomTeleport</h2>
-  <p>Configuración del teletransporte aleatorio (<code>/artp</code> y click event <code>randomTeleport</code>).</p>
-  <div class="table-wrap"><table>
-    <tr><th>Campo</th><th>Default</th><th>Descripción</th></tr>
-    <tr><td><code>randomTeleport.defaultMin</code></td><td>5000</td><td>Radio mínimo por defecto al usar <code>/artp</code> sin argumentos.</td></tr>
-    <tr><td><code>randomTeleport.defaultMax</code></td><td>10000</td><td>Radio máximo por defecto al usar <code>/artp</code> sin argumentos.</td></tr>
-    <tr><td><code>randomTeleport.maxAttempts</code></td><td>40</td><td>Intentos máximos antes de cancelar la búsqueda de posición segura.</td></tr>
-    <tr><td><code>randomTeleport.claimMargin</code></td><td>128</td><td>Margen de claims. <em>Limitación de API: solo se comprueba el punto exacto de aterrizaje, no el perímetro.</em></td></tr>
-    <tr><td><code>randomTeleport.storyZoneMargin</code></td><td>256</td><td>Distancia mínima al spawn como proxy de story zones. No equivale a detección real de zonas de historia.</td></tr>
-    <tr><td><code>randomTeleport.forbidWater</code></td><td>true</td><td>Rechaza agua u otros líquidos como suelo de aterrizaje.</td></tr>
-    <tr><td><code>randomTeleport.requireTwoAirBlocks</code></td><td>true</td><td>Exige dos bloques de aire libres (pies y cabeza) en el punto de destino.</td></tr>
-  </table></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('commands')"><div><span class="direction">Anterior</span><span class="label">← Comandos</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('creating')"><div><span class="direction">Siguiente</span><span class="label">Crear GUIs →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ CREATING ═══════════════ -->
-<div class="page" id="page-creating">
-  <div class="breadcrumb">🎨 CREAR GUIS <span class="sep">›</span> Estructura</div>
-  <h1><span class="h1-icon">🖼</span> Estructura del GUI</h1>
-  <p class="page-subtitle">Anatomía completa de un menú JSON.</p>
-  <pre><span class="pre-label">mi_menu.json</span><code>{
-  <span class="key">"id"</span>: <span class="str">"mi_menu"</span>,
-  <span class="key">"title"</span>: <span class="str">"Mi Menú"</span>,
-  <span class="key">"theme"</span>: <span class="str">"dark-red"</span>,
-  <span class="key">"rows"</span>: <span class="num">3</span>,
-  <span class="key">"commandAlias"</span>: <span class="str">"menu"</span>,
-  <span class="key">"commandAliasTarget"</span>: <span class="str">"OPTIONAL"</span>,
-  <span class="key">"permission"</span>: <span class="str">""</span>,
-  <span class="key">"openTriggers"</span>: [],
-  <span class="key">"scenes"</span>: {
-    <span class="key">"0"</span>: {
-      <span class="key">"delay"</span>: <span class="num">0</span>,
-      <span class="key">"theme"</span>: <span class="str">"parchment"</span>,
-      <span class="key">"items"</span>: {
-        <span class="key">"boton1"</span>: {
-          <span class="key">"slot"</span>: <span class="num">13</span>,
-          <span class="key">"item"</span>: <span class="str">"axinmenugui:menuicon-star"</span>,
-          <span class="key">"amount"</span>: <span class="num">1</span>,
-          <span class="key">"name"</span>: <span class="str">"Hola, {player}!"</span>,
-          <span class="key">"lore"</span>: [<span class="str">"Primera línea"</span>, <span class="str">"Segunda línea"</span>],
-          <span class="key">"hideOnFail"</span>: <span class="kw">false</span>,
-          <span class="key">"clickEvents"</span>: {
-            <span class="key">"ev1"</span>: { <span class="key">"type"</span>: <span class="str">"message"</span>, <span class="key">"message"</span>: <span class="str">"¡Hola!"</span> }
-          },
-          <span class="key">"conditions"</span>: {},
-          <span class="key">"conditionFailMessage"</span>: <span class="str">""</span>
-        }
-      }
-    }
-  }
-}</code></pre>
-  <div class="table-wrap"><table>
-    <tr><th>Campo del menú</th><th>Tipo</th><th>Descripción</th></tr>
-    <tr><td><code>id</code></td><td>string</td><td>ID único del menú (requerido)</td></tr>
-    <tr><td><code>title</code></td><td>string</td><td>Título mostrado en la barra del GUI</td></tr>
-    <tr><td><code>theme</code></td><td>string</td><td>Tema visual del menú (ver sección Temas)</td></tr>
-    <tr><td><code>rows</code></td><td>int</td><td>Filas del grid (1–6)</td></tr>
-    <tr><td><code>commandAlias</code></td><td>string</td><td>Alias de comando para abrir el menú</td></tr>
-    <tr><td><code>commandAliasTarget</code></td><td>string</td><td><code>OPTIONAL</code> · <code>REQUIRED</code> · <code>DISABLED</code></td></tr>
-    <tr><td><code>permission</code></td><td>string</td><td>Privilegio VS requerido (vacío = todos)</td></tr>
-  </table></div>
-  <div class="table-wrap"><table>
-    <tr><th>Campo del ítem</th><th>Tipo</th><th>Descripción</th></tr>
-    <tr><td><code>slot</code></td><td>int</td><td>Posición 0-indexed (9 columnas)</td></tr>
-    <tr><td><code>item</code></td><td>string</td><td>Código VS o <code>axinmenugui:menuicon-*</code></td></tr>
-    <tr><td><code>amount</code></td><td>int</td><td>Cantidad visual</td></tr>
-    <tr><td><code>name</code></td><td>string</td><td>Nombre. Admite tokens y VTML.</td></tr>
-    <tr><td><code>lore</code></td><td>string[]</td><td>Tooltip. Admite tokens y VTML.</td></tr>
-    <tr><td><code>hideOnFail</code></td><td>bool</td><td><code>true</code> = ocultar si condición falla</td></tr>
-  </table></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('config')"><div><span class="direction">Anterior</span><span class="label">← Configuración</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('scenes')"><div><span class="direction">Siguiente</span><span class="label">Escenas →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ SCENES ═══════════════ -->
-<div class="page" id="page-scenes">
-  <div class="breadcrumb">🎨 CREAR GUIS <span class="sep">›</span> Escenas y temas</div>
-  <h1><span class="h1-icon">📄</span> Escenas y navegación</h1>
-  <p class="page-subtitle">Un menú puede tener múltiples escenas (páginas). Cada escena puede tener su propio tema visual.</p>
-  <h2>🗂 Múltiples escenas</h2>
-  <pre><code><span class="key">"scenes"</span>: {
-  <span class="key">"0"</span>: { <span class="key">"theme"</span>: <span class="str">"dark-red"</span>,  <span class="key">"items"</span>: { ... } },
-  <span class="key">"1"</span>: { <span class="key">"theme"</span>: <span class="str">"dark-blue"</span>, <span class="key">"items"</span>: { ... } },
-  <span class="key">"2"</span>: { <span class="cmt">/* sin theme → hereda el del menú */</span> <span class="key">"items"</span>: { ... } }
-}</code></pre>
-  <h2>🧭 Click events de navegación</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Type</th><th>Descripción</th></tr>
-    <tr><td><code>nextScene</code></td><td>Avanza a la escena siguiente</td></tr>
-    <tr><td><code>previousScene</code></td><td>Retrocede a la escena anterior</td></tr>
-    <tr><td><code>openGui</code></td><td>Abre otro menú (submenú). Se registra en el historial.</td></tr>
-    <tr><td><code>back</code></td><td>Vuelve al menú anterior del historial.</td></tr>
-    <tr><td><code>closeGui</code></td><td>Cierra el menú activo.</td></tr>
-  </table></div>
-  <h2>🔗 Patrón submenús con back</h2>
-  <pre><code><span class="cmt">// En el menú índice:</span>
-<span class="key">"sub_stats"</span>: {
-  <span class="key">"slot"</span>: <span class="num">13</span>,
-  <span class="key">"item"</span>: <span class="str">"axinmenugui:menuicon-trophy"</span>,
-  <span class="key">"name"</span>: <span class="str">"Estadísticas"</span>,
-  <span class="key">"clickEvents"</span>: {
-    <span class="key">"open"</span>: { <span class="key">"type"</span>: <span class="str">"openGui"</span>, <span class="key">"guiId"</span>: <span class="str">"ejemplo_stats"</span> }
-  }
-}
-
-<span class="cmt">// En ejemplo_stats.json:</span>
-<span class="key">"volver"</span>: {
-  <span class="key">"slot"</span>: <span class="num">17</span>,
-  <span class="key">"item"</span>: <span class="str">"axinmenugui:menuicon-back"</span>,
-  <span class="key">"name"</span>: <span class="str">"← Volver"</span>,
-  <span class="key">"clickEvents"</span>: {
-    <span class="key">"back"</span>: { <span class="key">"type"</span>: <span class="str">"back"</span> }
-  }
-}</code></pre>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('creating')"><div><span class="direction">Anterior</span><span class="label">← Estructura</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('themes')"><div><span class="direction">Siguiente</span><span class="label">Temas visuales →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ THEMES ═══════════════ -->
-<div class="page" id="page-themes">
-  <div class="breadcrumb">🎨 CREAR GUIS <span class="sep">›</span> Temas visuales</div>
-  <h1><span class="h1-icon">🎨</span> Temas visuales</h1>
-  <p class="page-subtitle">14 temas Cairo para personalizar completamente el aspecto de tus menús.</p>
-
-  <h2>🖼 Cómo aplicar un tema</h2>
-  <p>Añade el campo <code>"theme"</code> al menú y/o a cada escena:</p>
-  <pre><code>{
-  <span class="key">"id"</span>: <span class="str">"mi_menu"</span>,
-  <span class="key">"theme"</span>: <span class="str">"dark-red"</span>,    <span class="cmt">// tema por defecto del menú</span>
-  <span class="key">"scenes"</span>: {
-    <span class="key">"0"</span>: { <span class="key">"theme"</span>: <span class="str">"parchment"</span>, <span class="key">"items"</span>: { ... } },  <span class="cmt">// sobreescribe el del menú</span>
-    <span class="key">"1"</span>: { <span class="key">"items"</span>: { ... } }                         <span class="cmt">// hereda "dark-red"</span>
-  }
-}</code></pre>
-
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body">El menú <code>ejemplo_temas.json</code> tiene 13 escenas, una por tema. Abre con <code>/temas</code> para ver todos en acción.</div></div>
-
-  <h2>🎨 Temas disponibles (14)</h2>
-  <div class="theme-showcase">
-    <div class="theme-card"><div class="theme-card-bar" style="background:#3a3020;color:#b5a98a">default</div><div class="theme-card-body" style="background:#2a2418">
-      <div class="theme-card-slot" style="background:#3a3020"></div><div class="theme-card-slot" style="background:#3a3020"></div><div class="theme-card-slot" style="background:#3a3020"></div><div class="theme-card-slot" style="background:#3a3020"></div><div class="theme-card-slot" style="background:#3a3020"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Aspecto estándar VS</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#5a0a08;color:#e8c96a">dark-red</div><div class="theme-card-body" style="background:#2a0c0b">
-      <div class="theme-card-slot" style="background:#3a100e"></div><div class="theme-card-slot" style="background:#3a100e"></div><div class="theme-card-slot" style="background:#3a100e"></div><div class="theme-card-slot" style="background:#3a100e"></div><div class="theme-card-slot" style="background:#3a100e"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Rojo oscuro, esquinas redondeadas</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#0a1a3a;color:#c0d8f0">dark-blue</div><div class="theme-card-body" style="background:#070c1e">
-      <div class="theme-card-slot" style="background:#0e1a30"></div><div class="theme-card-slot" style="background:#0e1a30"></div><div class="theme-card-slot" style="background:#0e1a30"></div><div class="theme-card-slot" style="background:#0e1a30"></div><div class="theme-card-slot" style="background:#0e1a30"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Azul oscuro marino</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#0a2a0a;color:#a0e0a0">dark-green</div><div class="theme-card-body" style="background:#071507">
-      <div class="theme-card-slot" style="background:#0e220e"></div><div class="theme-card-slot" style="background:#0e220e"></div><div class="theme-card-slot" style="background:#0e220e"></div><div class="theme-card-slot" style="background:#0e220e"></div><div class="theme-card-slot" style="background:#0e220e"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Verde bosque oscuro</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#8a6020;color:#3a1a00">parchment</div><div class="theme-card-body" style="background:#c8a060">
-      <div class="theme-card-slot" style="background:#a07840"></div><div class="theme-card-slot" style="background:#a07840"></div><div class="theme-card-slot" style="background:#a07840"></div><div class="theme-card-slot" style="background:#a07840"></div><div class="theme-card-slot" style="background:#a07840"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Pergamino dorado</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#303030;color:#d0d0e0">stone</div><div class="theme-card-body" style="background:#202020">
-      <div class="theme-card-slot" style="background:#2e2e2e"></div><div class="theme-card-slot" style="background:#2e2e2e"></div><div class="theme-card-slot" style="background:#2e2e2e"></div><div class="theme-card-slot" style="background:#2e2e2e"></div><div class="theme-card-slot" style="background:#2e2e2e"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Piedra gris</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#1a0a3a;color:#70a0f0">night</div><div class="theme-card-body" style="background:#0a0516">
-      <div class="theme-card-slot" style="background:#180a2a"></div><div class="theme-card-slot" style="background:#180a2a"></div><div class="theme-card-slot" style="background:#180a2a"></div><div class="theme-card-slot" style="background:#180a2a"></div><div class="theme-card-slot" style="background:#180a2a"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Noche violeta</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#800a06;color:#ffea60;border-top:3px solid #cc1a10">dark-red-2 ⬛</div><div class="theme-card-body" style="background:#1e0504">
-      <div class="theme-card-slot" style="background:#2a0604"></div><div class="theme-card-slot" style="background:#2a0604"></div><div class="theme-card-slot" style="background:#2a0604"></div><div class="theme-card-slot" style="background:#2a0604"></div><div class="theme-card-slot" style="background:#2a0604"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Rojo sangre, marco cofre 7px</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#051236;color:#80c8ff;border-top:3px solid #2050cc">dark-blue-2 ⬛</div><div class="theme-card-body" style="background:#020718">
-      <div class="theme-card-slot" style="background:#060a1e"></div><div class="theme-card-slot" style="background:#060a1e"></div><div class="theme-card-slot" style="background:#060a1e"></div><div class="theme-card-slot" style="background:#060a1e"></div><div class="theme-card-slot" style="background:#060a1e"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Azul océano, marco cofre 7px</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#052a07;color:#80ff90;border-top:3px solid #20aa30">dark-green-2 ⬛</div><div class="theme-card-body" style="background:#020e03">
-      <div class="theme-card-slot" style="background:#051205"></div><div class="theme-card-slot" style="background:#051205"></div><div class="theme-card-slot" style="background:#051205"></div><div class="theme-card-slot" style="background:#051205"></div><div class="theme-card-slot" style="background:#051205"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Verde bosque, marco cofre 7px</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#5a3010;color:#ffe090;border-top:3px solid #9a5020">parchment-2 ⬛</div><div class="theme-card-body" style="background:#2e1808">
-      <div class="theme-card-slot" style="background:#3a200a"></div><div class="theme-card-slot" style="background:#3a200a"></div><div class="theme-card-slot" style="background:#3a200a"></div><div class="theme-card-slot" style="background:#3a200a"></div><div class="theme-card-slot" style="background:#3a200a"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Madera oscura, marco cofre 8px</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#1a1a1e;color:#f0f4ff;border-top:3px solid #d0d0e0">stone-2 ⬛</div><div class="theme-card-body" style="background:#0a0a0c">
-      <div class="theme-card-slot" style="background:#141416"></div><div class="theme-card-slot" style="background:#141416"></div><div class="theme-card-slot" style="background:#141416"></div><div class="theme-card-slot" style="background:#141416"></div><div class="theme-card-slot" style="background:#141416"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Granito oscuro, marco cofre 7px</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:#060210;color:#80ffee;border-top:3px solid #aa40ff">night-2 ⬛</div><div class="theme-card-body" style="background:#020108">
-      <div class="theme-card-slot" style="background:#0a0418"></div><div class="theme-card-slot" style="background:#0a0418"></div><div class="theme-card-slot" style="background:#0a0418"></div><div class="theme-card-slot" style="background:#0a0418"></div><div class="theme-card-slot" style="background:#0a0418"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Void negro, marco violeta 8px</div></div>
-
-    <div class="theme-card"><div class="theme-card-bar" style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.15)">glass 🔮</div><div class="theme-card-body" style="background:rgba(0,0,0,0.01);border:none">
-      <div class="theme-card-slot" style="background:rgba(255,255,255,0.05)"></div><div class="theme-card-slot" style="background:rgba(255,255,255,0.05)"></div><div class="theme-card-slot" style="background:rgba(255,255,255,0.05)"></div><div class="theme-card-slot" style="background:rgba(255,255,255,0.05)"></div><div class="theme-card-slot" style="background:rgba(255,255,255,0.05)"></div>
-    </div><div style="padding:4px 8px;font-size:11px;color:var(--stone)">Panel transparente, título flotante</div></div>
-  </div>
-
-  <h2>📐 Diferencias entre variantes</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Variante</th><th>BorderW</th><th>CornerR</th><th>Efecto</th></tr>
-    <tr><td>Original (<code>dark-red</code>, etc.)</td><td>4px</td><td>8px</td><td>Marco fino, esquinas redondeadas</td></tr>
-    <tr><td>Cofre (<code>dark-red-2</code>, etc.)</td><td>7–8px</td><td>2px</td><td>Marco grueso con bisel automático, esquinas cuadradas. Estilo cofre VS.</td></tr>
-    <tr><td><code>glass</code></td><td>1px</td><td>6px</td><td>Completamente transparente. Solo cuadrícula y título visibles.</td></tr>
-  </table></div>
-
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body">Los temas <code>-2</code> activan automáticamente un bisel (highlight de borde) cuando el mod detecta <code>BorderW &gt; 4</code>. Este efecto no requiere configuración adicional.</div></div>
-
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('scenes')"><div><span class="direction">Anterior</span><span class="label">← Escenas</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('clickevents')"><div><span class="direction">Siguiente</span><span class="label">Click Events →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ CLICK EVENTS ═══════════════ -->
-<div class="page" id="page-clickevents">
-  <div class="breadcrumb">🎨 CREAR GUIS <span class="sep">›</span> Click Events</div>
-  <h1><span class="h1-icon">🖱</span> Click Events</h1>
-  <p class="page-subtitle">Acciones que se ejecutan al hacer clic en un botón del menú.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Type</th><th>Estado</th><th>Descripción</th></tr>
-    <tr><td><code>message</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Envía un mensaje al jugador. Admite tokens.</td></tr>
-    <tr><td><code>closeGui</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Cierra el menú activo.</td></tr>
-    <tr><td><code>openGui</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Abre otro menú. Guarda el menú actual en historial.</td></tr>
-    <tr><td><code>back</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Vuelve al menú anterior del historial.</td></tr>
-    <tr><td><code>nextScene</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Avanza a la escena siguiente.</td></tr>
-    <tr><td><code>previousScene</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Retrocede a la escena anterior.</td></tr>
-    <tr><td><code>playerCommand</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Ejecuta un comando como el jugador.</td></tr>
-    <tr><td><code>consoleCommand</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Ejecuta un comando de servidor (sin límite de permisos).</td></tr>
-    <tr><td><code>giveItem</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Da ítems al jugador.</td></tr>
-    <tr><td><code>takeItem</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td>Quita ítems del inventario.</td></tr>
-    <tr><td><code>buyItem</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td>Compra: verifica coste + consume + entrega.</td></tr>
-    <tr><td><code>sellItem</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td>Venta: verifica ítem + consume + entrega currency.</td></tr>
-    <tr><td><code>setVariable</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td>Modifica un field del jugador (set/add/subtract/multiply/divide).</td></tr>
-    <tr><td><code>teleport</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Teletransporta al jugador a coordenadas fijas.</td></tr>
-    <tr><td><code>teleportSaved</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Teleport a un punto ATP guardado por nombre.</td></tr>
-    <tr><td><code>randomTeleport</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Teletransporte aleatorio seguro con validación de terreno.</td></tr>
-  </table></div>
-  <h2>Ejemplos de uso</h2>
-  <pre><code><span class="cmt">// message</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"message"</span>, <span class="key">"message"</span>: <span class="str">"Hola {player}, estás en {pos}"</span> }
-
-<span class="cmt">// openGui (submenú)</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"openGui"</span>, <span class="key">"guiId"</span>: <span class="str">"mi_submenu"</span> }
-
-<span class="cmt">// back</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"back"</span> }
-
-<span class="cmt">// consoleCommand</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"consoleCommand"</span>, <span class="key">"commands"</span>: [<span class="str">"/tp {player} 0 150 0"</span>] }
-
-<span class="cmt">// giveItem</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"giveItem"</span>, <span class="key">"itemCode"</span>: <span class="str">"game:ingot-iron"</span>, <span class="key">"quantity"</span>: <span class="num">5</span> }
-
-<span class="cmt">// setVariable</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"setVariable"</span>, <span class="key">"field"</span>: <span class="str">"puntos"</span>, <span class="key">"op"</span>: <span class="str">"add"</span>, <span class="key">"value"</span>: <span class="num">10</span> }
-
-<span class="cmt">// teleport — coordenadas fijas separadas por coma</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"teleport"</span>, <span class="key">"location"</span>: <span class="str">"0,150,0"</span> }
-
-<span class="cmt">// teleportSaved — usa un punto ATP guardado con /atp set</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"teleportSaved"</span>, <span class="key">"target"</span>: <span class="str">"spawn"</span> }
-
-<span class="cmt">// randomTeleport — radios explícitos (0,0 usa defaults de config.json)</span>
-<span class="key">"ev"</span>: { <span class="key">"type"</span>: <span class="str">"randomTeleport"</span>, <span class="key">"radiusMin"</span>: <span class="num">1000</span>, <span class="key">"radiusMax"</span>: <span class="num">5000</span> }</code></pre>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('themes')"><div><span class="direction">Anterior</span><span class="label">← Temas</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('conditions')"><div><span class="direction">Siguiente</span><span class="label">Condiciones →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ CONDITIONS ═══════════════ -->
-<div class="page" id="page-conditions">
-  <div class="breadcrumb">🎨 CREAR GUIS <span class="sep">›</span> Condiciones</div>
-  <h1><span class="h1-icon">✅</span> Condiciones</h1>
-  <p class="page-subtitle">Muestra u oculta botones según el estado del jugador.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Type</th><th>Estado</th><th>Parámetros</th></tr>
-    <tr><td><code>hasPrivilege</code></td><td><span class="badge badge-done">✅ RUN</span></td><td><code>privilege</code>: string</td></tr>
-    <tr><td><code>hasPrivilegeLevel</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td><code>minLevel</code>: int</td></tr>
-    <tr><td><code>hasItem</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td><code>itemCode</code>, <code>quantity</code></td></tr>
-    <tr><td><code>hasRole</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td><code>roleCode</code>: string</td></tr>
-    <tr><td><code>playerDataCompare</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td><code>field</code>, <code>op</code>, <code>value</code></td></tr>
-    <tr><td><code>cooldownActive</code></td><td><span class="badge badge-v2">✅ IMPL</span></td><td><code>id</code>, <code>duration</code></td></tr>
-  </table></div>
-  <pre><code><span class="key">"conditions"</span>: {
-  <span class="key">"es-admin"</span>: { <span class="key">"type"</span>: <span class="str">"hasPrivilege"</span>, <span class="key">"privilege"</span>: <span class="str">"controlserver"</span>, <span class="key">"inverted"</span>: <span class="kw">false</span> }
-},
-<span class="key">"hideOnFail"</span>: <span class="kw">true</span>,
-<span class="key">"conditionFailMessage"</span>: <span class="str">"Solo administradores."</span></code></pre>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('clickevents')"><div><span class="direction">Anterior</span><span class="label">← Click Events</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('generator')"><div><span class="direction">Siguiente</span><span class="label">Generador →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ GENERATOR ═══════════════ -->
-<div class="page" id="page-generator">
-  <iframe id="gen-frame" src="AxinMenuGUI_Generator_v1_3.html"></iframe>
-</div>
-
-<!-- ═══════════════ MOD ICONS ═══════════════ -->
-<div class="page" id="page-modicons">
-  <div class="breadcrumb">🎨 CREAR GUIS <span class="sep">›</span> Iconos del mod</div>
-  <h1><span class="h1-icon">🖼</span> Iconos del mod</h1>
-  <p class="page-subtitle">58 iconos pixel art 32×32 incluidos en AxinMenuGUI. Úsalos en cualquier botón de tus menús.</p>
-
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Cómo usarlos</strong><p>En el campo <code>"item"</code> de cualquier ítem, usa el prefijo <code>axinmenugui:menuicon-</code> seguido del nombre del icono.</p><p>Ejemplo: <code>"item": "axinmenugui:menuicon-star"</code></p></div></div>
-
-  <h2>🧭 Navegación</h2>
-  <div class="icon-gallery">
-    <div class="icon-item"><span class="icon-emoji">↩</span><span class="icon-name">back</span></div>
-    <div class="icon-item"><span class="icon-emoji">◀</span><span class="icon-name">arrow-left</span></div>
-    <div class="icon-item"><span class="icon-emoji">▶</span><span class="icon-name">arrow-right</span></div>
-    <div class="icon-item"><span class="icon-emoji">▲</span><span class="icon-name">arrow-up</span></div>
-    <div class="icon-item"><span class="icon-emoji">▼</span><span class="icon-name">arrow-down</span></div>
-    <div class="icon-item"><span class="icon-emoji">✛</span><span class="icon-name">arrows-all</span></div>
-    <div class="icon-item"><span class="icon-emoji">🏠</span><span class="icon-name">home</span></div>
-    <div class="icon-item"><span class="icon-emoji">✕</span><span class="icon-name">close</span></div>
-    <div class="icon-item"><span class="icon-emoji">🚪</span><span class="icon-name">exit</span></div>
-    <div class="icon-item"><span class="icon-emoji">↺</span><span class="icon-name">refresh</span></div>
-    <div class="icon-item"><span class="icon-emoji">☰</span><span class="icon-name">menu</span></div>
-  </div>
-
-  <h2>ℹ UI / Información</h2>
-  <div class="icon-gallery">
-    <div class="icon-item"><span class="icon-emoji">ℹ</span><span class="icon-name">info</span></div>
-    <div class="icon-item"><span class="icon-emoji">?</span><span class="icon-name">question</span></div>
-    <div class="icon-item"><span class="icon-emoji">⚠</span><span class="icon-name">warning</span></div>
-    <div class="icon-item"><span class="icon-emoji">✔</span><span class="icon-name">check</span></div>
-    <div class="icon-item"><span class="icon-emoji">⧩</span><span class="icon-name">filter</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔍</span><span class="icon-name">search</span></div>
-    <div class="icon-item"><span class="icon-emoji">☰</span><span class="icon-name">list</span></div>
-    <div class="icon-item"><span class="icon-emoji">👁</span><span class="icon-name">eye</span></div>
-    <div class="icon-item"><span class="icon-emoji">⚙</span><span class="icon-name">settings</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔖</span><span class="icon-name">bookmark</span></div>
-    <div class="icon-item"><span class="icon-emoji">🗺</span><span class="icon-name">map</span></div>
-    <div class="icon-item"><span class="icon-emoji">🚩</span><span class="icon-name">flag</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔔</span><span class="icon-name">bell</span></div>
-    <div class="icon-item"><span class="icon-emoji">✉</span><span class="icon-name">mail</span></div>
-  </div>
-
-  <h2>🛒 Tienda / Economía</h2>
-  <div class="icon-gallery">
-    <div class="icon-item"><span class="icon-emoji">🏪</span><span class="icon-name">shop</span></div>
-    <div class="icon-item"><span class="icon-emoji">🛒</span><span class="icon-name">buy</span></div>
-    <div class="icon-item"><span class="icon-emoji">💰</span><span class="icon-name">sell</span></div>
-    <div class="icon-item"><span class="icon-emoji">🪙</span><span class="icon-name">coin</span></div>
-    <div class="icon-item"><span class="icon-emoji">📦</span><span class="icon-name">chest</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔒</span><span class="icon-name">lock</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔓</span><span class="icon-name">unlock</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔑</span><span class="icon-name">key</span></div>
-    <div class="icon-item"><span class="icon-emoji">💎</span><span class="icon-name">diamond</span></div>
-    <div class="icon-item"><span class="icon-emoji">🎁</span><span class="icon-name">gift</span></div>
-  </div>
-
-  <h2>👤 Social / Admin / Roles</h2>
-  <div class="icon-gallery">
-    <div class="icon-item"><span class="icon-emoji">👤</span><span class="icon-name">player</span></div>
-    <div class="icon-item"><span class="icon-emoji">👥</span><span class="icon-name">group</span></div>
-    <div class="icon-item"><span class="icon-emoji">💬</span><span class="icon-name">chat</span></div>
-    <div class="icon-item"><span class="icon-emoji">🛡</span><span class="icon-name">shield-role</span></div>
-    <div class="icon-item"><span class="icon-emoji">👑</span><span class="icon-name">crown</span></div>
-    <div class="icon-item"><span class="icon-emoji">⭐</span><span class="icon-name">star</span></div>
-    <div class="icon-item"><span class="icon-emoji">🏆</span><span class="icon-name">trophy</span></div>
-  </div>
-
-  <h2>✨ Decorativos / Misc</h2>
-  <div class="icon-gallery">
-    <div class="icon-item"><span class="icon-emoji">🔥</span><span class="icon-name">fire</span></div>
-    <div class="icon-item"><span class="icon-emoji">❤</span><span class="icon-name">heart</span></div>
-    <div class="icon-item"><span class="icon-emoji">⚡</span><span class="icon-name">lightning</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔵</span><span class="icon-name">circle-blue</span></div>
-    <div class="icon-item"><span class="icon-emoji">🟡</span><span class="icon-name">circle-gold</span></div>
-    <div class="icon-item"><span class="icon-emoji">🟢</span><span class="icon-name">circle-green</span></div>
-    <div class="icon-item"><span class="icon-emoji">🔴</span><span class="icon-name">circle-red</span></div>
-    <div class="icon-item"><span class="icon-emoji">◆</span><span class="icon-name">quality-common</span></div>
-    <div class="icon-item"><span class="icon-emoji">◆</span><span class="icon-name">quality-rare</span></div>
-    <div class="icon-item"><span class="icon-emoji">◆</span><span class="icon-name">quality-epic</span></div>
-    <div class="icon-item"><span class="icon-emoji">◆</span><span class="icon-name">quality-superior</span></div>
-    <div class="icon-item"><span class="icon-emoji">⚒</span><span class="icon-name">trait-job</span></div>
-    <div class="icon-item"><span class="icon-emoji">🎓</span><span class="icon-name">trait-master</span></div>
-    <div class="icon-item"><span class="icon-emoji">🎭</span><span class="icon-name">trait-playstyle</span></div>
-    <div class="icon-item"><span class="icon-emoji">+</span><span class="icon-name">plus</span></div>
-    <div class="icon-item"><span class="icon-emoji">−</span><span class="icon-name">minus</span></div>
-  </div>
-
-  <h2>💡 Cómo añadir iconos propios</h2>
-  <p>Puedes añadir tus propios iconos al mod creando los ficheros necesarios:</p>
-  <ol>
-    <li>Coloca el PNG (32×32, fondo transparente, estilo pixel art) en:<br><code>assets/axinmenugui/textures/item/menuicon-MINOMBRE.png</code></li>
-    <li>Crea el fichero de itemtype en:<br><code>assets/axinmenugui/itemtypes/menuicon-MINOMBRE.json</code></li>
-    <li>El contenido del JSON del itemtype es:</li>
-  </ol>
-  <pre><span class="pre-label">menuicon-MINOMBRE.json</span><code>{
-  <span class="key">"code"</span>: <span class="str">"menuicon-MINOMBRE"</span>,
-  <span class="key">"class"</span>: <span class="str">"Item"</span>,
-  <span class="key">"maxStackSize"</span>: <span class="num">1</span>,
-  <span class="key">"texture"</span>: { <span class="key">"base"</span>: <span class="str">"axinmenugui:item/menuicon-MINOMBRE"</span> }
-}</code></pre>
-  <div class="callout danger"><span class="callout-icon">🚨</span><div class="callout-body"><strong>El campo <code>texture</code> es OBLIGATORIO</strong><p>VintageStory no infiere la textura desde el código del ítem. Sin este campo el slot aparece negro aunque el PNG exista.</p></div></div>
-  <ol start="4">
-    <li>Reinicia el servidor. Usa el icono con: <code>"item": "axinmenugui:menuicon-MINOMBRE"</code></li>
-  </ol>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('generator')"><div><span class="direction">Anterior</span><span class="label">← Generador</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('playerdata')"><div><span class="direction">Siguiente</span><span class="label">Player Data →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ PLAYER DATA ═══════════════ -->
-<div class="page" id="page-playerdata">
-  <div class="breadcrumb">💬 DATOS <span class="sep">›</span> Player Data</div>
-  <h1><span class="h1-icon">💾</span> Player Data y Stats</h1>
-  <p class="page-subtitle">Variables persistentes por jugador: stats automáticos, campos personalizados, cooldowns.</p>
-  <h2>📊 Stats automáticos</h2>
-  <p>El mod trackea automáticamente al entrar, morir y matar entidades:</p>
-  <div class="table-wrap"><table>
-    <tr><th>Campo</th><th>Descripción</th></tr>
-    <tr><td><code>deaths</code></td><td>Número de veces que ha muerto</td></tr>
-    <tr><td><code>mobKillsAll</code></td><td>Total de mobs asesinados</td></tr>
-    <tr><td><code>mobKillsHostile</code></td><td>Mobs hostiles asesinados</td></tr>
-    <tr><td><code>mobKillsHostilePoints</code></td><td>Puntos acumulados (escala en config.json)</td></tr>
-    <tr><td><code>playerKills</code></td><td>Jugadores asesinados</td></tr>
-    <tr><td><code>timeRealSeconds</code></td><td>Tiempo real en el servidor (segundos)</td></tr>
-    <tr><td><code>timeGameDays</code></td><td>Días de juego vividos</td></tr>
-  </table></div>
-  <h2>🎯 Puntos por mob</h2>
-  <p>Los puntos se calculan con lookup progresivo: <code>wolf-male-adult</code> → prueba <code>wolf-male</code> → prueba <code>wolf</code>. Configúralos en <code>config.json</code>.</p>
-  <h2>📋 Ranking</h2>
-  <p>El ranking se calcula automáticamente sobre el campo <code>rankingField</code> (por defecto <code>mobKillsHostilePoints</code>). Se refresca con caché de 30 segundos.</p>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('modicons')"><div><span class="direction">Anterior</span><span class="label">← Iconos</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('tokens')"><div><span class="direction">Siguiente</span><span class="label">Tokens →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ TOKENS ═══════════════ -->
-<div class="page" id="page-tokens">
-  <div class="breadcrumb">💬 DATOS <span class="sep">›</span> Tokens</div>
-  <h1><span class="h1-icon">🔗</span> Tokens / Placeholders</h1>
-  <p class="page-subtitle">Variables dinámicas que puedes usar en cualquier campo de texto del menú.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Token</th><th>Descripción</th></tr>
-    <tr><td><code>{player}</code></td><td>Nombre del jugador</td></tr>
-    <tr><td><code>{uid}</code></td><td>UID único del jugador</td></tr>
-    <tr><td><code>{pos}</code></td><td>Posición X,Y,Z actual</td></tr>
-    <tr><td><code>{gamemode}</code></td><td>Modo de juego actual</td></tr>
-    <tr><td><code>{world}</code></td><td>Nombre del mundo</td></tr>
-    <tr><td><code>{var:campo}</code></td><td>Field personalizado del jugador</td></tr>
-    <tr><td><code>{stats.deaths}</code></td><td>Número de muertes</td></tr>
-    <tr><td><code>{stats.mobKillsAll}</code></td><td>Total mobs asesinados</td></tr>
-    <tr><td><code>{stats.mobKillsHostile}</code></td><td>Mobs hostiles asesinados</td></tr>
-    <tr><td><code>{stats.mobKillsHostilePoints}</code></td><td>Puntos por kills hostiles</td></tr>
-    <tr><td><code>{stats.playerKills}</code></td><td>Jugadores asesinados</td></tr>
-    <tr><td><code>{stats.timeReal}</code></td><td>Tiempo real formateado (Xh Ym)</td></tr>
-    <tr><td><code>{stats.timeGame}</code></td><td>Tiempo in-game (X.X días)</td></tr>
-    <tr><td><code>{ranking.position}</code></td><td>Posición en el ranking</td></tr>
-    <tr><td><code>{ranking.value}</code></td><td>Valor del campo de ranking</td></tr>
-    <tr><td><code>{ranking.top}</code></td><td>Ranking completo formateado</td></tr>
-    <tr><td><code>{ranking.top3}</code></td><td>Top 3 formateado</td></tr>
-    <tr><td><code>{ranking.topN}</code></td><td>Top N formateado</td></tr>
-  </table></div>
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body">Los tokens se resuelven en el servidor antes de enviar el menú al cliente, por lo que son visibles directamente en el nombre y lore de los botones.</div></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('playerdata')"><div><span class="direction">Anterior</span><span class="label">← Player Data</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('chatfetcher')"><div><span class="direction">Siguiente</span><span class="label">Chat Fetcher →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ CHAT FETCHER ═══════════════ -->
-<div class="page" id="page-chatfetcher">
-  <div class="breadcrumb">💬 DATOS <span class="sep">›</span> Chat Fetcher</div>
-  <h1><span class="h1-icon">💬</span> Chat Fetcher</h1>
-  <p class="page-subtitle">Solicita input al jugador vía chat. <span class="badge badge-wip">Fase 3</span></p>
-  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body">Chat Fetcher está planificado para la Fase 3 y aún no está implementado.</div></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('tokens')"><div><span class="direction">Anterior</span><span class="label">← Tokens</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('triggers')"><div><span class="direction">Siguiente</span><span class="label">Triggers →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ TRIGGERS ═══════════════ -->
-<div class="page" id="page-triggers">
-  <div class="breadcrumb">🔌 TRIGGERS <span class="sep">›</span> Modos de apertura</div>
-  <h1><span class="h1-icon">⚡</span> Modos de apertura</h1>
-  <p class="page-subtitle">Formas de abrir un menú en AxinMenuGUI.</p>
-  <div class="table-wrap"><table>
-    <tr><th>Trigger</th><th>Estado</th><th>Descripción</th></tr>
-    <tr><td><code>/amenu open &lt;id&gt;</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Comando directo de admin.</td></tr>
-    <tr><td><code>commandAlias</code></td><td><span class="badge badge-done">✅ RUN</span></td><td>Alias por menú: <code>/menu</code>, <code>/temas</code>, etc.</td></tr>
-    <tr><td>Block Click Trigger</td><td><span class="badge badge-done">✅ RUN</span></td><td>Clic derecho en un bloque vinculado. Configuración guardada en <code>menusClick.json</code>.</td></tr>
-    <tr><td>Menús ATP/RTP</td><td><span class="badge badge-done">✅ RUN</span></td><td>Menús con click events de teleport o ATP, accesibles por alias propio.</td></tr>
-    <tr><td>Ítem especial</td><td><span class="badge badge-wip">Fase 2 — pendiente</span></td><td>Clic derecho en un ítem configurado (Bloque 2.7).</td></tr>
-    <tr><td>Hotkey</td><td><span class="badge badge-wip">Fase 3</span></td><td>Tecla configurable (ClientSide).</td></tr>
-    <tr><td>onJoin</td><td><span class="badge badge-wip">Fase 3</span></td><td>Al conectarse al servidor.</td></tr>
-    <tr><td>claimZone</td><td><span class="badge badge-wip">Fase 3 (opcional)</span></td><td>Al entrar en una zona con flag.</td></tr>
-  </table></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('chatfetcher')"><div><span class="direction">Anterior</span><span class="label">← Chat Fetcher</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('examples')"><div><span class="direction">Siguiente</span><span class="label">Ejemplos →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ EXAMPLES ═══════════════ -->
-<div class="page" id="page-examples">
-  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Ejemplos</div>
-  <h1><span class="h1-icon">📦</span> Menús de ejemplo incluidos</h1>
-  <p class="page-subtitle">8 menús se generan automáticamente al instalar el mod.</p>
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Los menús de ejemplo se actualizan automáticamente</strong><p>A partir de la v0.7.2, los menús de ejemplo oficiales se sobreescriben en cada recarga del mod para mantenerse al día. Tus menús propios (con IDs distintos) nunca se ven afectados.</p></div></div>
-  <div class="table-wrap"><table>
-    <tr><th>ID</th><th>Alias</th><th>Descripción</th></tr>
-    <tr><td><code>ejemplo</code></td><td><code>/menu</code></td><td>Índice con submenús navegables (openGui + back). Incluye acceso al panel TP si eres admin.</td></tr>
-    <tr><td><code>ejemplo_jugador</code></td><td>—</td><td>Datos del jugador: nombre, pos, modo, UID</td></tr>
-    <tr><td><code>ejemplo_stats</code></td><td>—</td><td>Estadísticas completas + ranking</td></tr>
-    <tr><td><code>ejemplo_tienda</code></td><td>—</td><td>Tienda demo con giveItem (solo admins)</td></tr>
-    <tr><td><code>ejemplo_admin</code></td><td>—</td><td>Panel admin: reload, list, info, open</td></tr>
-    <tr><td><code>ejemplo_temas</code></td><td><code>/temas</code></td><td>13 escenas, 1 por tema visual. Todo en 1 JSON.</td></tr>
-    <tr><td><code>ejemplo_multitema</code></td><td><code>/multitema</code></td><td>Demo de theme por escena (7 temas en 1 menú)</td></tr>
-    <tr><td><code>ejemplo_tp</code></td><td>—</td><td>Panel de teleport admin: lista ATP, RTP con distintos radios, waypoints personales (solo admins)</td></tr>
-  </table></div>
-  <h2>Navegación del menú principal</h2>
-  <pre><code>/menu → ejemplo.json (índice)
-    ├── Sobre ti     → ejemplo_jugador.json  [← Volver]
-    ├── Estadísticas → ejemplo_stats.json    [← Volver]
-    ├── Tienda       → ejemplo_tienda.json
-    ├── Panel Admin  → ejemplo_admin.json    (oculto si no es admin)
-    └── Teleport TP  → ejemplo_tp.json       (oculto si no es admin)</code></pre>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('triggers')"><div><span class="direction">Anterior</span><span class="label">← Triggers</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('roadmap')"><div><span class="direction">Siguiente</span><span class="label">Roadmap →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ ROADMAP ═══════════════ -->
-<div class="page" id="page-roadmap">
-  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> Roadmap</div>
-  <h1><span class="h1-icon">🗺</span> Roadmap</h1>
-  <p class="page-subtitle">Plan de desarrollo por fases del mod.</p>
-  <div class="phase-list">
-    <div class="phase-item">
-      <div class="phase-num" style="border-color:var(--green);color:var(--green)">1</div>
-      <div class="phase-body">
-        <div class="phase-title">Fase 1 — MVP <span class="badge badge-done" style="margin-left:8px">✅ CERRADA</span></div>
-        <div class="phase-desc">✅ Estructura + modinfo · ✅ Carga menús JSON · ✅ GUI grid posicionado · ✅ Click events: message, closeGui, openGui, nextScene, previousScene, back, consoleCommand, playerCommand · ✅ commandAlias · ✅ 58 iconos personalizados · ✅ 8 menús de ejemplo embebidos · ✅ Block Click Triggers · ✅ Distribución cliente verificada ingame</div>
-      </div>
+  <section class="portal-hero">
+    <div class="portal-hero-content">
+      <div class="portal-kicker">Ecosistema AXIN</div>
+      <h1>AXIN Mods Vintagestory</h1>
+      <p class="portal-subtitle">Ecosistema de mods AXIN para servidores Vintage Story</p>
+      <p>Esta web centraliza los mods publicados de AXIN, sus wikis, enlaces de descarga cuando estén definidos y guías técnicas para administradores de servidores.</p>
     </div>
-    <div class="phase-item">
-      <div class="phase-num" style="border-color:var(--green);color:var(--green)">2</div>
-      <div class="phase-body">
-        <div class="phase-title">Fase 2 — Acciones y condiciones <span class="badge badge-done" style="margin-left:8px">✅ CERRADA</span></div>
-        <div class="phase-desc">
-          ✅ giveItem/takeItem/buyItem/sellItem · ✅ setVariable (matemáticas) · ✅ Condiciones: hasPrivilege, hasItem, hasRole, cooldownActive · ✅ hideOnFail · ✅ PlayerStats (kills, tiempo, muertes, ranking) · ✅ 14 temas Cairo (glass y variantes cofre) · ✅ Theme por escena · ✅ Click event <code>teleport</code> (coordenadas) · ✅ ATP: <code>/atp set|setat|go|del|list|info</code> y click event <code>teleportSaved</code> · ✅ RTP: <code>/artp</code> y click event <code>randomTeleport</code>
+  </section>
+
+  <details class="game-intro">
+    <summary>¿Qué es Vintage Story?</summary>
+    <div class="game-intro-content">
+      <p>Vintage Story es un juego de supervivencia sandbox inspirado en la naturaleza, la artesanía profunda, la exploración y la gestión técnica de servidores.</p>
+      <p>Los mods AXIN están pensados para ampliar la administración, automatización, control y experiencia multijugador en servidores Vintage Story, manteniendo una documentación clara para jugadores y administradores.</p>
+      <a href="https://www.vintagestory.at/" target="_blank" rel="noopener noreferrer">Página oficial de Vintage Story</a>
+    </div>
+  </details>
+
+  <section class="portal-section" aria-labelledby="mods-title">
+    <div class="breadcrumb">AXIN Mods</div>
+    <h2 id="mods-title">Mods publicados</h2>
+    <p class="section-intro">Cada tarjeta enlaza a la página publicada del mod cuando existe URL confirmada y deja preparada la ruta de wiki actual o futura.</p>
+
+    <div class="mods-grid">
+      <article class="mod-card mod-card-primary">
+        <div class="mod-card-media">
+          <img src="Imagenes/AXINMobileServerBridgeImages/Banner.png" alt="AXINMobileServerBridge">
         </div>
-      </div>
-    </div>
-    <div class="phase-item">
-      <div class="phase-num" style="border-color:var(--green);color:var(--green)">2.5</div>
-      <div class="phase-body">
-        <div class="phase-title">Fase 2.5 — Economía y misiones <span class="badge badge-done" style="margin-left:8px">✅ CERRADA · v0.9.5</span></div>
-        <div class="phase-desc">
-          ✅ Mercado Global P2P: publicar ofertas con escrow, comprar, cancelar, cobrar ganancias · ✅ Venta rápida por comando · ✅ Wizard de venta personalizada (chat interactivo, timeout configurable) · ✅ Log persistente de transacciones (rotación diaria, retención configurable) · ✅ Bank: bloque crafteable como fuente de pago secundaria · ✅ Integración Treasury + Bank en CanAfford/PayFromBuyer · ✅ KillRanking Missions: hitos de puntos con recompensa de ítem, mensaje, broadcast y comando · ✅ Migración automática de config.json (v0.4)
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-new">Nuevo</span>
+            <span class="status-pill status-server">Servidor</span>
+            <span class="status-pill status-wiki">Wiki disponible</span>
+          </div>
+          <h3>AXINMobileServerBridge</h3>
+          <p>Bridge móvil/web para consultar y controlar información del servidor.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/show/mod/46915">Ver mod</a>
+            <a class="portal-btn secondary" href="axinmobileserverbridge.html">Wiki</a>
+          </div>
         </div>
+      </article>
+
+      <article class="mod-card mod-card-primary">
+        <div class="mod-card-media">
+          <img src="Imagenes/AXINDiagnosticserver_9ed9b4d66bce099ae226952c008dd77a.png" alt="AxinDiagnosticsServer">
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-admin">Admin tools</span>
+            <span class="status-pill status-pending">Wiki próximamente</span>
+          </div>
+          <h3>AxinDiagnosticsServer</h3>
+          <p>Herramientas de diagnóstico para servidor AXIN.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/show/mod/46307">Ver mod</a>
+            <span class="portal-btn disabled" aria-disabled="true">Wiki próximamente</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="mod-card mod-card-primary">
+        <div class="mod-card-media mod-card-fallback">AS</div>
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-server">Servidor</span>
+            <span class="status-pill status-pending">Wiki próximamente</span>
+          </div>
+          <h3>AxinSleepVote</h3>
+          <p>Sistema de control/votación del sueño multijugador.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/show/mod/45943">Ver mod</a>
+            <span class="portal-btn disabled" aria-disabled="true">Wiki próximamente</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="mod-card mod-card-primary">
+        <div class="mod-card-media">
+          <img src="Imagenes/AcinMenuGui_6afdc533364ffa6bb84388da455ddb96.png" alt="AxinMenuGui">
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-published">Publicado</span>
+            <span class="status-pill status-wiki">Wiki disponible</span>
+          </div>
+          <h3>AxinMenuGui</h3>
+          <p>Menús interactivos tipo cofre, configurables y traducibles.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/show/mod/45080">Ver mod</a>
+            <a class="portal-btn secondary" href="axinmenugui.html">Wiki</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="mod-card mod-card-primary">
+        <div class="mod-card-media mod-card-fallback">AML</div>
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-admin">Admin tools</span>
+            <span class="status-pill status-pending">Wiki próximamente</span>
+          </div>
+          <h3>AxinModsList</h3>
+          <p>Gestor/listado de mods in-game con histórico.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/show/mod/40813">Ver mod</a>
+            <span class="portal-btn disabled" aria-disabled="true">Wiki próximamente</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="mod-card mod-card-claims-family mod-card-claims-core">
+        <div class="mod-card-media">
+          <img src="Imagenes/AxinClaimsRulesPORTADA_f5ef2e62099d74b3eada6010e6d814bb.jpg" alt="AxinClaimsRules">
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-core">Mod base</span>
+            <span class="status-pill status-server">Servidor</span>
+            <span class="status-pill status-wiki">Wiki disponible</span>
+          </div>
+          <h3>AxinClaimsRules</h3>
+          <p>Reglas por claim, bloqueo de propagación de fuego y overrides por claim.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/axinclaimsrules">Ver mod</a>
+            <a class="portal-btn secondary" href="axinclaimsrules.html">Wiki</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="mod-card mod-card-claims-family">
+        <div class="mod-card-media">
+          <img src="Imagenes/FlagCreative_8c80b78008aa18e82b9265ce57cbfd36.png" alt="FlagCreative">
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-addon-claims">Addon AxinClaimsRules</span>
+            <span class="status-pill status-pending">Wiki próximamente</span>
+          </div>
+          <h3>FlagCreative</h3>
+          <p>Addon para AxinClaimsRules: separa inventarios y flags de modo creativo.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/show/mod/44568">Ver mod</a>
+            <span class="portal-btn disabled" aria-disabled="true">Wiki próximamente</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="mod-card mod-card-claims-family">
+        <div class="mod-card-media">
+          <img src="Imagenes/AxinClaimsRulesAddonFly_ba27d44f2d1291c37c9c95ce258e810d.png" alt="AxinClaimsRulesAddonFly">
+        </div>
+        <div class="mod-card-body">
+          <div class="mod-card-tags">
+            <span class="status-pill status-addon-claims">Addon AxinClaimsRules</span>
+            <span class="status-pill status-pending">Wiki próximamente</span>
+          </div>
+          <h3>AxinClaimsRulesAddonFly</h3>
+          <p>Addon para AxinClaimsRules: zonas de vuelo por claim.</p>
+          <div class="mod-card-actions">
+            <a class="portal-btn" href="https://mods.vintagestory.at/show/mod/43936">Ver mod</a>
+            <span class="portal-btn disabled" aria-disabled="true">Wiki próximamente</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="portal-section portal-split" aria-label="Estado de wikis">
+    <div>
+      <h2>Wikis disponibles</h2>
+      <div class="wiki-list">
+        <a class="wiki-item" href="axinmenugui.html">
+          <span class="wiki-item-title">AxinMenuGui Wiki</span>
+          <span class="wiki-item-desc">Menús, eventos, configuración, mercado, bank y generador visual.</span>
+        </a>
+        <a class="wiki-item" href="axinmobileserverbridge.html">
+          <span class="wiki-item-title">AXINMobileServerBridge Wiki</span>
+          <span class="wiki-item-desc">Instalación, relay, app web, sesiones, chat, admin y tienda.</span>
+        </a>
+        <a class="wiki-item" href="axinclaimsrules.html">
+          <span class="wiki-item-title">AxinClaimsRules Wiki</span>
+          <span class="wiki-item-desc">Claims, flags, carpetas, orden, TP, permisos y registry.</span>
+        </a>
       </div>
     </div>
-    <div class="phase-item">
-      <div class="phase-num">3</div>
-      <div class="phase-body">
-        <div class="phase-title">Fase 3 — Avanzado</div>
-        <div class="phase-desc">ChatFetcher · PlayerPicker · Trigger por ítem especial · Trigger onJoin · Trigger hotkey · Trigger claimZone (integración AxinClaimsRules, opcional) · Sound events · Title events · Condición playerDataCompare</div>
+
+    <div>
+      <h2>Próximas wikis</h2>
+      <div class="upcoming-list">
+        <span>AxinDiagnosticsServer</span>
+        <span>AxinSleepVote</span>
+        <span>FlagCreative</span>
+        <span>AxinClaimsRulesAddonFly</span>
+        <span>AxinModsList</span>
       </div>
     </div>
-    <div class="phase-item">
-      <div class="phase-num">4</div>
-      <div class="phase-body">
-        <div class="phase-title">Fase 4 — Editor en juego <span class="badge badge-wip" style="margin-left:8px">v1.0.0</span></div>
-        <div class="phase-desc">Interfaz visual de creación y edición de menús directamente en el juego · Vista previa en tiempo real · Generación automática de JSON</div>
-      </div>
+  </section>
+
+  <footer class="portal-footer">
+    <div>
+      <strong>AXIN Mods Vintagestory</strong>
+      <span>Vintage Story mods · Autor: elYandrack</span>
     </div>
-  </div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('examples')"><div><span class="direction">Anterior</span><span class="label">← Ejemplos</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('vs-diff')"><div><span class="direction">Siguiente</span><span class="label">vs GUIPlus →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ VS GUIPLUS ═══════════════ -->
-<div class="page" id="page-vs-diff">
-  <div class="breadcrumb">📖 RECURSOS <span class="sep">›</span> vs GUIPlus</div>
-  <h1><span class="h1-icon">⚔</span> AxinMenuGUI vs GUIPlus</h1>
-  <p class="page-subtitle">Diferencias y equivalencias entre los dos sistemas.</p>
-  <div class="table-wrap"><table>
-    <tr><th>GUIPlus (Minecraft)</th><th>AxinMenuGUI (VintageStory)</th><th>Nota</th></tr>
-    <tr><td>YAML</td><td>JSON</td><td>Estándar en VS</td></tr>
-    <tr><td>Inventario Chest</td><td><code>GuiDialog</code> con grid configurable</td><td>VS no tiene chest como GUI nativa</td></tr>
-    <tr><td>Temas de color limitados</td><td>14 temas Cairo personalizables</td><td>✅ Sistema propio completo</td></tr>
-    <tr><td><code>§</code> color codes</td><td>VTML — <code>&lt;font color="#FF8C00"&gt;texto&lt;/font&gt;</code></td><td>✅ Verificado en GuiDialog</td></tr>
-    <tr><td>Vault / economy</td><td>Player Data numérico + stats</td><td>No hay economy nativa en VS</td></tr>
-    <tr><td>PlaceholderAPI</td><td>Sistema de tokens <code>{token}</code></td><td>18+ tokens incluyendo stats y ranking</td></tr>
-    <tr><td>LuckPerms</td><td>Roles nativos VS (<code>hasRole</code>, <code>hasPrivilegeLevel</code>)</td><td>API nativa VS</td></tr>
-    <tr><td>Skull textures</td><td>58 iconos pixel art propios</td><td>Dominio <code>axinmenugui:</code></td></tr>
-    <tr><td>BungeeCord</td><td>No aplica</td><td>VS es standalone</td></tr>
-    <tr><td>In-game editor</td><td>Fase 4</td><td>Primero config 100% por JSON</td></tr>
-  </table></div>
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('roadmap')"><div><span class="direction">Anterior</span><span class="label">← Roadmap</span></div></a>
-    <div></div>
-  </div>
-</div>
-
-<!-- ═══════════════ MARKET ═══════════════ -->
-<div class="page" id="page-market">
-  <div class="breadcrumb">🏪 ECONOMÍA <span class="sep">›</span> Mercado Global</div>
-  <h1><span class="h1-icon">🏪</span> Mercado Global P2P</h1>
-  <p class="page-subtitle">Permite a los jugadores publicar ofertas de venta y comprar ítems de otros jugadores. Las transacciones usan escrow automático.</p>
-
-  <h2>🚀 Cómo acceder</h2>
-  <p>Usa el comando <code>/market</code> o <code>/amenu market</code> para abrir el menú principal. No requiere permisos especiales.</p>
-
-  <h2>🛒 Flujo de compra</h2>
-  <ol>
-    <li>Abre el mercado con <code>/market</code>.</li>
-    <li>Selecciona <strong>Comprar</strong> para ver ítems disponibles agrupados por tipo.</li>
-    <li>Selecciona un ítem para ver los vendedores, precio y cantidad disponible.</li>
-    <li>Haz clic en la oferta que quieras comprar. El sistema verificará que puedes pagar (inventario + Treasury + Bank cerrados).</li>
-    <li>Si la compra prospera, los ítems aparecen en tu inventario y el vendedor recibe una notificación.</li>
-  </ol>
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Fuentes de pago automáticas</strong><p>El sistema cobra en este orden: (1) inventario del jugador, (2) Treasury cerrada, (3) Banks cerrados. No es necesario tener el pago en el inventario si tienes saldo en Treasury o Bank.</p></div></div>
-
-  <h2>💰 Flujo de venta — venta rápida</h2>
-  <p>Para publicar una oferta directamente sin GUI:</p>
-  <pre><code>/amenu market sell &lt;itemCode&gt; &lt;cantidad&gt; &lt;precioItem&gt; &lt;precioCantidad&gt;
-
-<span class="cmt">Ejemplo: vender 10 lingotes de hierro a 2 engranajes oxidados cada uno</span>
-/amenu market sell game:ingot-iron 10 game:gear-rusty 2</code></pre>
-  <p>Los ítems se retiran inmediatamente del inventario y quedan en escrow hasta ser comprados o cancelados.</p>
-
-  <h2>🧙 Flujo de venta — asistente personalizado</h2>
-  <p>Para iniciar el wizard interactivo, ejecuta <code>/amenu market sell</code> sin argumentos. Se abre la GUI de tu inventario y el proceso es guiado por chat:</p>
-  <ol>
-    <li>Haz clic en el ítem de tu inventario que quieres vender.</li>
-    <li>Si tienes más de 1 unidad, escribe por chat la cantidad a vender.</li>
-    <li>Selecciona en la GUI (o escribe por chat en formato <code>dominio:codigo</code>) el ítem que pides como precio.</li>
-    <li>Escribe por chat la cantidad de ese ítem que pides <em>por cada unidad vendida</em>.</li>
-    <li>La oferta se publica y los ítems pasan a escrow.</li>
-  </ol>
-  <div class="callout warn"><span class="callout-icon">⚠</span><div class="callout-body"><strong>Escribe <code>cancel</code> para salir</strong><p>En cualquier paso del wizard puedes escribir <code>cancel</code> por chat para cancelar. El wizard también expira automáticamente por inactividad según <code>marketSellWizardTimeoutSeconds</code> en config.json (default 60s).</p></div></div>
-
-  <h2>📋 Gestión de ofertas</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Acción</th><th>Comando</th></tr>
-    <tr><td>Ver mis ofertas activas</td><td><code>/amenu market myoffers</code></td></tr>
-    <tr><td>Cancelar una oferta</td><td><code>/amenu market cancel &lt;offerId&gt;</code> — devuelve ítems restantes</td></tr>
-    <tr><td>Cobrar ganancias pendientes</td><td><code>/amenu market collect</code></td></tr>
-    <tr><td>Listar todas las ofertas (texto)</td><td><code>/amenu market list</code></td></tr>
-  </table></div>
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Ganancias pendientes</strong><p>Cuando alguien compra tu oferta, el pago queda en cola hasta que uses <code>/amenu market collect</code>. El vendedor recibe una notificación in-game si está conectado.</p></div></div>
-
-  <h2>📦 Estado de una oferta</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Estado</th><th>Significado</th></tr>
-    <tr><td><code>active</code></td><td>La oferta está disponible para compra.</td></tr>
-    <tr><td><code>sold</code></td><td>Toda la cantidad fue comprada.</td></tr>
-    <tr><td><code>cancelled</code></td><td>Cancelada por el vendedor; ítems devueltos.</td></tr>
-  </table></div>
-
-  <h2>📝 Log de transacciones</h2>
-  <p>Todas las transacciones quedan registradas en <code>ModConfig/AxinMenuGUI/marketlog/</code>. Los archivos se rotan diariamente y se purgan automáticamente pasados <code>marketLogRetentionDays</code> días (default 30).</p>
-  <div class="table-wrap"><table>
-    <tr><th>Acción en log</th><th>Descripción</th></tr>
-    <tr><td><code>SELL_PUBLISHED</code></td><td>Oferta publicada por un vendedor.</td></tr>
-    <tr><td><code>SELL_FILLED</code></td><td>Parte o toda la oferta fue comprada (par con BUY_FILLED, mismo TxId).</td></tr>
-    <tr><td><code>BUY_FILLED</code></td><td>Compra realizada por un comprador.</td></tr>
-    <tr><td><code>OFFER_CANCELLED</code></td><td>Oferta cancelada por el vendedor.</td></tr>
-    <tr><td><code>EARNINGS_COLLECTED</code></td><td>Vendedor cobró sus ganancias pendientes.</td></tr>
-  </table></div>
-
-  <div class="page-nav">
-    <div></div>
-    <a class="page-nav-btn" onclick="showPage('bank')"><div><span class="direction">Siguiente</span><span class="label">Bank →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ BANK ═══════════════ -->
-<div class="page" id="page-bank">
-  <div class="breadcrumb">🏪 ECONOMÍA <span class="sep">›</span> Bank</div>
-  <h1><span class="h1-icon">🏦</span> Bank (bloque)</h1>
-  <p class="page-subtitle">Cofre especial crafteable que actúa como fuente de pago secundaria en el Mercado Global.</p>
-
-  <h2>📐 Qué es el Bank</h2>
-  <p>El Bank es un bloque de almacenamiento similar a un cofre. La diferencia clave es que el <strong>Mercado Global usa automáticamente los ítems del Bank</strong> como fuente de pago cuando el inventario del jugador no es suficiente, siempre que el Bank esté cerrado en el momento de la transacción.</p>
-  <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><strong>Comportamiento open/closed</strong><p>Un Bank <strong>abierto</strong> (interfaz activa) no se usa como fuente de pago. Solo los Banks <strong>cerrados</strong> contribuyen al saldo disponible para compras en el mercado. El snapshot se sincroniza 5 segundos después de cerrar el inventario.</p></div></div>
-
-  <h2>🔨 Crafteo</h2>
-  <p>El Bank se craftea con planchas de madera (cualquier tipo), clavos metálicos y piedra tallada. La receta exacta está disponible en el Handbook del juego buscando <strong>"Bank"</strong>.</p>
-
-  <h2>🏗 Colocación y uso</h2>
-  <ol>
-    <li>Coloca el Bank en el mundo como cualquier cofre.</li>
-    <li>Ábrelo con clic derecho para guardar ítems.</li>
-    <li>Al cerrarlo, el servidor sincroniza el contenido en <code>ModConfig/AxinMenuGUI/bank/{uid}.json</code>.</li>
-    <li>Cuando realices una compra en el mercado, el sistema sumará automáticamente el saldo de todos tus Banks cerrados al calcular si puedes pagar.</li>
-  </ol>
-
-  <h2>📊 Múltiples Banks</h2>
-  <p>Un jugador puede tener varios Banks colocados. El servicio los identifica por su posición en el mundo. Todos los Banks cerrados de un mismo jugador contribuyen al saldo total disponible para el mercado.</p>
-
-  <h2>🗂 Persistencia</h2>
-  <p>Los snapshots se guardan en <code>ModConfig/AxinMenuGUI/bank/{uid}.json</code>, uno por jugador, con la lista de Banks y su contenido en el momento del último cierre.</p>
-
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('market')"><div><span class="direction">Anterior</span><span class="label">← Mercado</span></div></a>
-    <a class="page-nav-btn" onclick="showPage('missions')"><div><span class="direction">Siguiente</span><span class="label">Misiones →</span></div></a>
-  </div>
-</div>
-
-<!-- ═══════════════ MISSIONS ═══════════════ -->
-<div class="page" id="page-missions">
-  <div class="breadcrumb">🎯 MISIONES <span class="sep">›</span> KillRanking Missions</div>
-  <h1><span class="h1-icon">🎯</span> KillRanking Missions</h1>
-  <p class="page-subtitle">Recompensa automática y única cuando un jugador cruza un umbral de puntos de ranking de kills hostiles.</p>
-
-  <h2>📄 Fichero de configuración</h2>
-  <p>Se genera automáticamente en <code>ModConfig/AxinMenuGUI/missions/killranking.json</code> con valores de ejemplo. Se recarga con <code>/amenu reload</code>.</p>
-  <pre><span class="pre-label">missions/killranking.json</span><code>{
-  <span class="key">"DocVersion"</span>: <span class="str">"0.1"</span>,
-  <span class="key">"RankingBonus"</span>: {
-    <span class="key">"10"</span>: {
-      <span class="key">"message"</span>:     <span class="str">"¡Has alcanzado 10 puntos de ranking!"</span>,
-      <span class="key">"all_message"</span>: <span class="str">"{player} ha alcanzado 10 puntos de ranking."</span>,
-      <span class="key">"give"</span>: { <span class="key">"type"</span>: <span class="str">"item"</span>, <span class="key">"code"</span>: <span class="str">"game:gear-rusty"</span>, <span class="key">"amount"</span>: <span class="num">1</span> },
-      <span class="key">"command"</span>:     <span class="str">"/amenu ranking"</span>
-    },
-    <span class="key">"50"</span>: {
-      <span class="key">"message"</span>:     <span class="str">"¡Leyenda! 50 puntos de ranking."</span>,
-      <span class="key">"all_message"</span>: <span class="str">"{player} ha alcanzado 50 puntos de ranking."</span>,
-      <span class="key">"give"</span>: { <span class="key">"type"</span>: <span class="str">"item"</span>, <span class="key">"code"</span>: <span class="str">"game:ingot-iron"</span>, <span class="key">"amount"</span>: <span class="num">5</span> },
-      <span class="key">"command"</span>:     <span class="kw">null</span>
-    }
-  }
-}</code></pre>
-
-  <h2>📋 Campos de un hito</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
-    <tr><td>Clave (número)</td><td>double</td><td>Umbral de <code>mobKillsHostilePoints</code> que activa el hito.</td></tr>
-    <tr><td><code>message</code></td><td>string</td><td>Mensaje privado al jugador. Admite placeholders <code>{player}</code>, <code>{stats.*}</code>, <code>{ranking.*}</code>.</td></tr>
-    <tr><td><code>all_message</code></td><td>string</td><td>Mensaje broadcast a todos los jugadores conectados. Admite los mismos placeholders.</td></tr>
-    <tr><td><code>give.type</code></td><td>string</td><td>Tipo de recompensa. Por ahora solo <code>"item"</code>.</td></tr>
-    <tr><td><code>give.code</code></td><td>string</td><td>Código del ítem a entregar (e.g. <code>game:gear-rusty</code>).</td></tr>
-    <tr><td><code>give.amount</code></td><td>int</td><td>Cantidad del ítem a entregar.</td></tr>
-    <tr><td><code>command</code></td><td>string</td><td>Comando de servidor a ejecutar cuando se cruza el hito. Admite placeholders. <code>null</code> = ninguno.</td></tr>
-  </table></div>
-
-  <h2>⚙ Comportamiento</h2>
-  <ul>
-    <li>Cada hito se concede <strong>exactamente una vez</strong> por jugador, aunque los puntos bajen y vuelvan a subir.</li>
-    <li>La verificación ocurre en el momento del kill, sin I/O adicional (todo en memoria).</li>
-    <li>Los umbrales se evalúan de menor a mayor; si un jugador sube varios umbrales de golpe, recibe todos.</li>
-    <li>Las recompensas no concedidas (<code>give: null</code>) se omiten sin error.</li>
-    <li>El estado "ya concedido" persiste en <code>playerdata/{uid}.json</code> y sobrevive a reloads y reinicios.</li>
-  </ul>
-
-  <div class="callout tip"><span class="callout-icon">💡</span><div class="callout-body"><strong>Recarga en caliente</strong><p>Puedes añadir nuevos umbrales o modificar las recompensas y ejecutar <code>/amenu reload</code> sin reiniciar el servidor. Los hitos ya concedidos no se revierten.</p></div></div>
-
-  <div class="page-nav">
-    <a class="page-nav-btn" onclick="showPage('bank')"><div><span class="direction">Anterior</span><span class="label">← Bank</span></div></a>
-    <div></div>
-  </div>
+    <div class="portal-footer-links">
+      <a href="axinmenugui.html">AxinMenuGui Wiki</a>
+      <a href="axinmobileserverbridge.html">AXINMobileServerBridge Wiki</a>
+      <a href="axinclaimsrules.html">AxinClaimsRules Wiki</a>
+    </div>
+  </footer>
 </div>
 
 </main>
-
-<aside id="toc">
-  <div class="toc-title">En esta página</div>
-  <div id="toc-links"></div>
-</aside>
 </div>
 </div>
 
